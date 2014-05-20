@@ -193,6 +193,188 @@
         ]
       }
       {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(coffee-?script)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.coffee'
+        'patterns': [
+          {
+            'include': 'source.coffee'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(js|javascript)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.js'
+        'patterns': [
+          {
+            'include': 'source.js'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(json)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.json'
+        'patterns': [
+          {
+            'include': 'source.json'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(css)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.css'
+        'patterns': [
+          {
+            'include': 'source.css'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(xml)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.xml'
+        'patterns': [
+          {
+            'include': 'source.xml'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(ruby)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.ruby'
+        'patterns': [
+          {
+            'include': 'source.ruby'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(java)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.java'
+        'patterns': [
+          {
+            'include': 'source.java'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(erlang)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.erlang'
+        'patterns': [
+          {
+            'include': 'source.erlang'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(csharp|c#)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.cs'
+        'patterns': [
+          {
+            'include': 'source.cs'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(php[3-5]?)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.php'
+        'patterns': [
+          {
+            'include': 'source.php'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(shell|(ba|k)?sh)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.shell'
+        'patterns': [
+          {
+            'include': 'source.shell'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(py(thon)?|sage)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.python'
+        'patterns': [
+          {
+            'include': 'source.python'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(objective-?c|obj-?c)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.objc'
+        'patterns': [
+          {
+            'include': 'source.objc'
+          }
+        ]
+      }
+      {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(yaml)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.yaml'
+        'patterns': [
+          {
+            'include': 'source.yaml'
+          }
+        ]
+      }
+      {
         'captures':
           '1':
             'name': 'punctuation.definition.directive.restructuredtext'

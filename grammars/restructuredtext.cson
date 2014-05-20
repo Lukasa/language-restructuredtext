@@ -193,6 +193,19 @@
         ]
       }
       {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(ruby)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.ruby'
+        'patterns': [
+          {
+            'include': 'source.ruby'
+          }
+        ]
+      }
+      {
         'captures':
           '1':
             'name': 'punctuation.definition.directive.restructuredtext'

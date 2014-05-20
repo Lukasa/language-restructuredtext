@@ -2,7 +2,7 @@
   "name": "language-restructuredtext",
   "version": "0.1.0",
   "private": true,
-  "description": "A short description of your package",
+  "description": "RestructuredText Language Support",
   "repository": "https://github.com/Lukasa/language-restructuredtext",
   "license": "MIT",
   "engines": {

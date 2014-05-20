@@ -323,6 +323,19 @@
         ]
       }
       {
+        'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(shell|(ba|k)?sh)\\s*$'
+        'captures':
+          '2':
+            'name': 'entity.name.directive.restructuredtext'
+        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'contentName': 'source.shell'
+        'patterns': [
+          {
+            'include': 'source.shell'
+          }
+        ]
+      }
+      {
         'begin': '^([ \\t]*)\\.\\.\\scode-block::\\s(py(thon)?|sage)\\s*$'
         'captures':
           '2':

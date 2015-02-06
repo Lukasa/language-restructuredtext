@@ -7,10 +7,10 @@
     'body': '\n\\`${1:Title}<${2:http://link}>\\`_'
   'section 1':
     'prefix': 'sec'
-    'body': '${1:subsection name}\n${1/(.)|\\s/(?1:=:=)/g}\n$0'
+    'body': '${1:subsection name}\n================$0\n'
   'section 2':
     'prefix': 'subs'
-    'body': '${1:subsection name}\n${1/(.)|\\s/(?1:*:*)/g}\n$0'
+    'body': '${1:subsection name}\n****************$0\n'
   'section 3':
     'prefix': 'sss'
-    'body': '${1:subsection name}\n${1/(.)|\\s/(?1:-:-)/g}\n$0'
+    'body': '${1:subsection name}\n----------------$0\n'

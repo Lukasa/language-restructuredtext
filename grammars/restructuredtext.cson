@@ -609,7 +609,7 @@
           '2':
             'name': 'punctuation.definition.field.restructuredtext'
         'comment': 'tags (and field lists'
-        'match': '(:)[A-z][A-z0-9  =\\s\\t_]*(:)'
+        'match': '(:)[A-z][A-z0-9  =\\s\\t_.]*(:)'
         'name': 'entity.name.tag.restructuredtext'
       }
     ]

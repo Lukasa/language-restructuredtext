@@ -418,7 +418,7 @@
             'name': 'punctuation.definition.italic.restructuredtext'
           '2':
             'name': 'punctuation.definition.italic.restructuredtext'
-        'match': '(\\*)\\w[^*]+\\w(\\*)'
+        'match': '(\\*)[^*]+(\\*)'
         'name': 'markup.italic.restructuredtext'
       }
     ]

@@ -409,7 +409,7 @@
             'name': 'punctuation.definition.bold.restructuredtext'
           '2':
             'name': 'punctuation.definition.bold.restructuredtext'
-        'match': '(\\*\\*)[^*]+(\\*\\*)'
+        'match': '(\\*\\*)[^\\*\\s][^*]*(\\*\\*)'
         'name': 'markup.bold.restructuredtext'
       }
       {
@@ -418,7 +418,7 @@
             'name': 'punctuation.definition.italic.restructuredtext'
           '2':
             'name': 'punctuation.definition.italic.restructuredtext'
-        'match': '(\\*)[^*]+(\\*)'
+        'match': '(\\*)[^\\*\\s][^*]*(\\*)'
         'name': 'markup.italic.restructuredtext'
       }
     ]

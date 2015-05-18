@@ -137,6 +137,7 @@ Bullet Lists
     - Item 2.
 
   * Nested item 3.
+  * Nested item 4 *with* italics
 
 Enumerated Lists
 ----------------

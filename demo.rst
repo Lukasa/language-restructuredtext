@@ -381,6 +381,11 @@ __ Targets_
 Here's a `hyperlink reference without a target`_, which generates an
 error.
 
+Here's a `hyperlink/with a slash`_ in it.
+
+.. _hyperlink without a slash: http://example.com
+.. _hyperlink/with a slash: http://example.com
+
 Duplicate Target Names
 ``````````````````````
 

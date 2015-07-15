@@ -510,7 +510,7 @@
           '5':
             'name': 'markup.underline.link.restructuredtext'
         'comment': 'replacement'
-        'match': '(\\.\\.)\\s+(_)([-.\\d\\w\\s()]+)(:)\\s+(.*)'
+        'match': '(\\.\\.)\\s+(_)([-.\\d\\w\\s()/]+)(:)\\s+(.*)'
         'name': 'meta.link.reference.def.restructuredtext'
       }
       {

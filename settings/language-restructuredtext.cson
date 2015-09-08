@@ -1,4 +1,4 @@
-'.text.restructuredtext':
+'.text.restructuredtext .source.gfm.restructuredtext':
   'editor':
     'commentStart': '.. '
     'increaseIndentPattern': '::\\s*$'

@@ -1,4 +1,4 @@
-'.text.restructuredtext .source.gfm.restructuredtext':
+'.text.restructuredtext':
   'image':
     'prefix': 'image'
     'body': '.. image:: ${1:path}\n$0'

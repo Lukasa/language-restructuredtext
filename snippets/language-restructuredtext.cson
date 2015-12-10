@@ -4,7 +4,7 @@
     'body': '.. image:: ${1:path}\n$0'
   'link':
     'prefix': 'link'
-    'body': '\n\\`${1:Title}<${2:http://link}>\\`_'
+    'body': '\\`${1:Title} <${2:http://link}>\\`_$0'
   'section 1':
     'prefix': 'sec'
     'body': '${1:subsection name}\n================$0\n'

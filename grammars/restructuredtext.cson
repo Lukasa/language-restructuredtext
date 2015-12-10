@@ -197,7 +197,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.coffee'
         'patterns': [
           {
@@ -210,7 +210,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.js'
         'patterns': [
           {
@@ -223,7 +223,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.json'
         'patterns': [
           {
@@ -236,7 +236,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.css'
         'patterns': [
           {
@@ -249,7 +249,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.xml'
         'patterns': [
           {
@@ -262,7 +262,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.ruby'
         'patterns': [
           {
@@ -275,7 +275,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.java'
         'patterns': [
           {
@@ -288,7 +288,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.erlang'
         'patterns': [
           {
@@ -301,7 +301,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.cs'
         'patterns': [
           {
@@ -314,7 +314,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.php'
         'patterns': [
           {
@@ -327,7 +327,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.shell'
         'patterns': [
           {
@@ -340,7 +340,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.python'
         'patterns': [
           {
@@ -353,7 +353,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.objc'
         'patterns': [
           {
@@ -366,7 +366,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\1[ \\t])(?=\\s*\\S+)'
         'contentName': 'source.yaml'
         'patterns': [
           {

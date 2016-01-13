@@ -238,6 +238,22 @@ Or they can be quoted without indentation::
 >
 > Why didn't I think of that?
 
+Code Blocks
+-----------
+
+Code blocks automatically pick up the declared language highlighting:
+
+.. code-block:: python
+
+    def func(x):
+        return x
+
+.. code-block:: javascript
+
+    func(a, b) {
+        return b, a
+    }
+
 Line Blocks
 -----------
 

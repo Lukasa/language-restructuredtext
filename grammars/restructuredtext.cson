@@ -341,7 +341,7 @@
           '2':
             'name': 'entity.name.directive.restructuredtext'
         'end': '^(?!\\1[ \\t])(?=\\S+)'
-        'contentName': 'source.python'
+        'contentName': 'source.embedded.python'
         'patterns': [
           {
             'include': 'source.python'

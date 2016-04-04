@@ -106,6 +106,10 @@ RFC reference (:RFC:`2822`); a :sub:`subscript`; a :sup:`superscript`;
 and explicit roles for :emphasis:`standard` :strong:`inline`
 :literal:`markup`.
 
+Markup can be \*escaped\* which should not cause highlighting or
+\*\*emphasis\*\*, nor should it create external hyperlinks, e.g. for Python\_.
+Additionally, substitution references like \|example\| shouldn't happen either.
+
 .. DO NOT RE-WRAP THE FOLLOWING PARAGRAPH!
 
 Let's test wrapping and whitespace significance in inline literals:

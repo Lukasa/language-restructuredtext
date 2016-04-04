@@ -36,7 +36,7 @@
           '1':
             'name': 'punctuation.definition.substitution.restructuredtext'
         'comment': 'substitution'
-        'match': '(\\|)[^|]+(\\|_{0,2})'
+        'match': '(?<!\\\\)(\\|)[^|]+(?<!\\\\)(\\|_{0,2})'
         'name': 'markup.underline.substitution.restructuredtext'
       }
       {
@@ -418,7 +418,7 @@
             'name': 'punctuation.definition.italic.restructuredtext'
           '2':
             'name': 'punctuation.definition.italic.restructuredtext'
-        'match': '(\\*)[^\\*\\s][^*]*(\\*)'
+        'match': '(?<!\\\\)(\\*)[^\\*\\s][^*]*(?<!\\\\)(\\*)'
         'name': 'markup.italic.restructuredtext'
       }
     ]

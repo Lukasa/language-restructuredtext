@@ -26,6 +26,24 @@
         'include': '#raw-blocks'
       }
       {
+        'include': '#inlines'
+      }
+      {
+        'include': '#tags'
+      }
+      {
+        'include': '#tables'
+      }
+      {
+        'include': '#headings'
+      }
+      {
+        'include': '#comments'
+      }
+    ]
+  'inlines':
+    'patterns': [
+      {
         'include': '#emphasis'
       }
       {
@@ -114,18 +132,6 @@
       {
         'include': '#citations'
       }
-      {
-        'include': '#tags'
-      }
-      {
-        'include': '#tables'
-      }
-      {
-        'include': '#headings'
-      }
-      {
-        'include': '#comments'
-      }
     ]
   'citations':
     'patterns': [
@@ -197,7 +203,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.coffee'
         'patterns': [
           {
@@ -210,7 +216,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.js'
         'patterns': [
           {
@@ -223,7 +229,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.json'
         'patterns': [
           {
@@ -236,7 +242,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.css'
         'patterns': [
           {
@@ -249,7 +255,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.xml'
         'patterns': [
           {
@@ -262,7 +268,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.ruby'
         'patterns': [
           {
@@ -275,7 +281,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.java'
         'patterns': [
           {
@@ -288,7 +294,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.erlang'
         'patterns': [
           {
@@ -301,7 +307,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.cs'
         'patterns': [
           {
@@ -314,7 +320,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.php'
         'patterns': [
           {
@@ -327,7 +333,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.shell'
         'patterns': [
           {
@@ -340,7 +346,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.python'
         'patterns': [
           {
@@ -353,7 +359,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.objc'
         'patterns': [
           {
@@ -366,7 +372,7 @@
         'captures':
           '2':
             'name': 'entity.name.directive.restructuredtext'
-        'end': '^(?!\\1[ \\t])(?=\\S+)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'contentName': 'source.embedded.yaml'
         'patterns': [
           {
@@ -562,13 +568,19 @@
   'raw-blocks':
     'patterns': [
       {
-        'begin': '(::)$'
+        'begin': '^(?!\\s*\\.\\.\\s\\w+)(\\s*)(.*)(::)$'
         'beginCaptures':
-          '1':
+          '2':
+            'patterns': [
+              {
+                'include': '#inlines'
+              }
+            ]
+          '3':
             'name': 'punctuation.section.raw.restructuredtext'
         'comment': 'Literal Blocks'
         'contentName': 'meta.raw.block.restructuredtext'
-        'end': '^(?=\\S)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
         'patterns': [
           {
             'include': '#raw-blocks-inner'
@@ -609,7 +621,7 @@
           '2':
             'name': 'punctuation.definition.field.restructuredtext'
         'comment': 'tags (and field lists'
-        'match': '(:)[A-z][A-z0-9  =\\s\\t_.]*(:)'
+        'match': '(:)[A-Za-z][\\w\\s=.]*(:)'
         'name': 'entity.name.tag.restructuredtext'
       }
     ]

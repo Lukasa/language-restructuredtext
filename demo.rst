@@ -305,8 +305,8 @@ Block quotes consist of indented body elements:
 Doctest Blocks
 --------------
 
->>> print 'Python-specific usage examples; begun with ">>>"'
-Python-specific usage examples; begun with ">>>"
+>>> print 'Python-specific usage examples; begun with ">>> "'
+Python-specific usage examples; begun with ">>> "
 >>> print '(cut and pasted from interactive Python sessions)'
 (cut and pasted from interactive Python sessions)
 

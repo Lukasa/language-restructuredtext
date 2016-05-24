@@ -35,6 +35,9 @@
         'include': '#tables'
       }
       {
+        'include': '#doctests'
+      }
+      {
         'include': '#headings'
       }
       {
@@ -593,6 +596,22 @@
       {
         'match': '.+'
         'name': 'markup.raw.inner.restructuredtext'
+      }
+    ]
+  'doctests':
+    'patterns': [
+      {
+        'name': 'meta.doctest.restructuredtext'
+        'begin': '^(\\s*)(>>>)\\s+(.*)$\\n'
+        'end': '^\\s*$|^(?=\\1>>> )|^(?=>>>)|^(?!\\1)\\s+\\S'
+        'contentName': 'markup.raw.restructuredtext'
+        'beginCaptures':
+          '2':
+            'name': 'punctuation.separator.prompt.doctest.restructuredtext'
+          '3':
+            'patterns': [
+              'include': 'source.python'
+            ]
       }
     ]
   'tables':

@@ -6,7 +6,11 @@
 'name': 'reStructuredText'
 'patterns': [
   {
-    'begin': '^([ \\t]*)(?=\\S)'
+    'include': '#block-comments'
+  }
+  
+  {
+    'begin': '^([ \\t]*)(?!\\.\\.)(?=\\S)'
     'contentName': 'meta.paragraph.restructuredtext'
     'end': '^(?!\\1)'
     'patterns': [
@@ -171,15 +175,53 @@
         'name': 'meta.link.citation.restructuredtext'
       }
     ]
-  'comments':
+  'block-comments':
     'patterns': [
       {
-        'begin': '^(\\.\\.)[ ]'
+        'name': 'comment.block.empty-start.double-dot.restructuredtext'
+        'begin': '^(\\.\\.)[\\t ]*$\\n?'
+        'end': "^(?<=\\G)\\s*$\\n?|^(?=\\S)"
         'beginCaptures':
           '1':
             'name': 'punctuation.definition.comment.restructuredtext'
-        'end': '^[\\s]*$\\n?'
-        'name': 'comment.line.double-dot.restructuredtext'
+        'patterns': [
+          {
+            'begin': "^(\\s+).*?\\S+\\s*$\\n"
+            'end': "^\\s*$\\n|^(?=\\S)"
+          }
+        ]
+      }
+      
+      {
+        'name': 'comment.block.empty-start.double-dot.restructuredtext'
+        'begin': '^([\\t ]*)(\\.\\.)[\\t ]*$\\n?'
+        'end': "^(?!\\1\\s*\\S)|^(?<!\\G)\\s*$\\n?|^(?=\\S)"
+        'beginCaptures':
+          '2':
+            'name': 'punctuation.definition.comment.restructuredtext'
+        'patterns': [
+          {
+            'begin': "^(\\s+).*?\\S+\\s*$\\n"
+            'end': "^\\s*$\\n|^\\s*(?=\\S)"
+          }
+        ]
+      }
+      
+      {
+        'name': 'comment.block.double-dot.restructuredtext'
+        'begin': '^(\\s*)(\\.\\.)(?=\\s|$)'
+        'end': '^(?!\\s*$|\\1[ \\t]+\\S)'
+      }
+    ]
+  'comments':
+    'patterns': [
+      {
+        'begin': "^([\\t ]*)(\\.\\.)(?=\\s|$)"
+        'end': "^(?!\\1[\\t\\s]+\\S|\\s*$)|^(?=\\S)"
+        'beginCaptures':
+          '2':
+            'name': 'punctuation.definition.comment.restructuredtext'
+        'name': "comment.block.double-dot.restructuredtext"
       }
     ]
   'directives':

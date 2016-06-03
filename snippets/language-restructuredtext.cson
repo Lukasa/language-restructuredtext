@@ -14,3 +14,6 @@
   'section 3':
     'prefix': 'sss'
     'body': '${1:subsection name}\n----------------$0\n'
+  'code block':
+    'prefix': 'code'
+    'body': '.. code-block::\n\n\t$1'

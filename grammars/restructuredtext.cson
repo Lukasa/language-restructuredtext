@@ -686,4 +686,4 @@
         'name': 'entity.name.tag.restructuredtext'
       }
     ]
-'scopeName': 'text.restructuredtext source.gfm.restructuredtext'
+'scopeName': 'text.restructuredtext'

@@ -1,8 +1,15 @@
 {
   "name": "language-restructuredtext",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "private": true,
-  "keywords": ["reStructuredText", "reStructured Text", "rst", "reST", "Docutils", "Python"],
+  "keywords": [
+    "reStructuredText",
+    "reStructured Text",
+    "rst",
+    "reST",
+    "Docutils",
+    "Python"
+  ],
   "description": "Add snippets and syntax highlighting for reStructuredText files",
   "repository": "https://github.com/Lukasa/language-restructuredtext",
   "license": "MIT",

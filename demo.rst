@@ -1,5 +1,12 @@
 .. This is a comment. Note how any initial comments are moved by
    transforms to after the document title, subtitle, and docinfo.
+   
+   Separate paragraphs are okay too, as long as they're indented.
+
+..
+   Comments can be started on their own lines too (like this one).
+   Make sure there's no empty line between the ".." and the first
+   paragraph!
 
 ================================
  reStructuredText Demonstration

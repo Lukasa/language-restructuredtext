@@ -1,4 +1,4 @@
-'.text.restructuredtext, .source.gfm.restructuredtext':
+'.text.restructuredtext':
   'image':
     'prefix': 'image'
     'body': '.. image:: ${1:path}\n$0'
@@ -14,3 +14,6 @@
   'section 3':
     'prefix': 'sss'
     'body': '${1:subsection name}\n----------------$0\n'
+  'code block':
+    'prefix': 'code'
+    'body': '.. code-block:: ${1:language}\n\n\t${2:<code>}'

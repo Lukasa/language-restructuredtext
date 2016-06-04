@@ -16,4 +16,4 @@
     'body': '${1:subsection name}\n----------------$0\n'
   'code block':
     'prefix': 'code'
-    'body': '.. code-block::\n\n\t$1'
+    'body': '.. code-block:: ${1:language}\n\n\t${2:<code>}'

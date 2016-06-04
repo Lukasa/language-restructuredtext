@@ -705,7 +705,7 @@ repository:
 			# Directives
 			{
 				name: "meta.other.directive.restructuredtext"
-				match: "(\\.\\.)\\s([A-z][-A-z0-9_]+)(::)\\s*$"
+				match: "^\\s*(\\.\\.)\\s([A-z][-A-z0-9_]+)(::)\\s*$"
 				captures:
 					1: name: "punctuation.definition.directive.restructuredtext"
 					2: name: "support.directive.restructuredtext"
@@ -716,7 +716,7 @@ repository:
 			# Directives with arguments
 			{
 				name: "meta.other.directive.restructuredtext"
-				match: "(\\.\\.)\\s([A-z][-A-z0-9_]+)(::)\\s+(.+?)\\s*$"
+				match: "^\\s*(\\.\\.)\\s([A-z][-A-z0-9_]+)(::)\\s+(.+?)\\s*$"
 				captures:
 					1: name: "punctuation.definition.directive.restructuredtext"
 					2: name: "support.directive.restructuredtext"

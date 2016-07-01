@@ -4,7 +4,7 @@ fileTypes: ["rst", "rest"]
 patterns: [ include: "#all" ]
 
 repository:
-	
+
 	all:
 		patterns: [
 			{include: "#escape"}
@@ -20,8 +20,8 @@ repository:
 			{include: "#domains"}
 			{include: "#comments"}
 		]
-	
-	
+
+
 	# Inline elements: formatting, links, citations, etc
 	inlines:
 		patterns: [
@@ -30,6 +30,7 @@ repository:
 			{include: "#link-definition"}
 			{include: "#substitution"}
 			{include: "#literal"}
+			{include: "#math-inline"}
 			{include: "#interpreted-line"}
 			{include: "#anonymous-link"}
 			{include: "#link-reference"}
@@ -38,19 +39,19 @@ repository:
 			{include: "#footnotes"}
 			{include: "#citations"}
 		]
-	
+
 	escape:
 		match: "\\\\."
 		name: "constant.character.escape.backslash.restructuredtext"
-	
-	
+
+
 	# Path/URL
 	uri:
 		name: "string.other.uri.restructuredtext"
 		match: "\\S+"
 		captures: 0: name: "markup.link.underline.restructuredtext"
-	
-	
+
+
 	# Numeric length values
 	length:
 		name: "constant.numeric.length.restructuredtext"
@@ -58,16 +59,16 @@ repository:
 		captures:
 			1: name: "keyword.other.${1:/downcase}-unit.restructuredtext"
 			2: name: "keyword.other.percentile-unit.restructuredtext"
-	
-	
+
+
 	# Section border
 	headings:
 		name: "markup.heading.restructuredtext"
 		match: "^[-=~`#\"^+*:.'_]{3,}\\s*$"
 		captures:
 			0: name: "punctuation.definition.heading.restructuredtext"
-	
-	
+
+
 	# Line blocks
 	"line-blocks":
 		name: "meta.line-block.restructuredtext"
@@ -81,15 +82,15 @@ repository:
 				captures:
 					0: name: "punctuation.separator.line-block.restructuredtext"
 			}
-			
+
 			{include: "#inlines"}
 		]
-		
-	
+
+
 	# Emphasised text: bold/italics
 	emphasis:
 		patterns: [
-			
+
 			# Bold
 			{
 				name: "markup.bold.restructuredtext"
@@ -98,7 +99,7 @@ repository:
 					1: "name": "punctuation.definition.bold.restructuredtext"
 					2: "name": "punctuation.definition.bold.restructuredtext"
 			}
-			
+
 			# Italic
 			{
 				name: "markup.italic.restructuredtext"
@@ -108,8 +109,8 @@ repository:
 					2: name: "punctuation.definition.italic.restructuredtext"
 			}
 		]
-	
-	
+
+
 	# Inline literal
 	literal:
 		name: "markup.raw.restructuredtext"
@@ -117,8 +118,10 @@ repository:
 		end:   "``((?=[^`\\w\\d])|$)"
 		captures:
 			0: name: "punctuation.definition.raw.restructuredtext"
-	
-	
+
+
+
+
 	# Intepreted text: Multiline with role
 	"interpreted-block":
 		name: "markup.other.command.restructuredtext"
@@ -132,8 +135,8 @@ repository:
 			4: name: "punctuation.definition.intepreted.restructuredtext"
 		endCaptures:
 			1: name: "punctuation.definition.intepreted.restructuredtext"
-	
-	
+
+
 	# Intepreted text: Single line
 	"interpreted-line":
 		name: "markup.other.command.restructuredtext"
@@ -141,8 +144,8 @@ repository:
 		captures:
 			1: name: "punctuation.definition.intepreted.restructuredtext"
 			2: name: "punctuation.definition.intepreted.restructuredtext"
-	
-	
+
+
 	# Anonymous links: url__
 	"anonymous-link":
 		name: "meta.link.restructuredtext"
@@ -150,9 +153,9 @@ repository:
 		captures:
 			1: name: "punctuation.definition.link.restructuredtext"
 			2: name: "markup.underline.link.restructuredtext"
-	
 
-	# Links: `text`_ 
+
+	# Links: `text`_
 	"link-text":
 		name: "meta.link.inline.restructuredtext"
 		match: "(`)([^<`]+)\\s+(<)(.*?)(>)(`_)"
@@ -163,12 +166,12 @@ repository:
 			4: name: "markup.underline.link.restructuredtext"
 			5: name: "punctuation.definition.location.restructuredtext"
 			6: name: "punctuation.definition.link.restructuredtext"
-	
-	
-	
+
+
+
 	citations:
 		patterns: [
-			
+
 			# Replacement
 			{
 				name: "meta.link.citation.def.restructuredtext"
@@ -181,7 +184,7 @@ repository:
 					5: name: "punctuation.definition.constant.restructuredtext"
 					6: name: "string.other.citation.restructuredtext"
 			}
-			
+
 			# Citation reference
 			{
 				name: "meta.link.citation.restructuredtext"
@@ -193,12 +196,12 @@ repository:
 					4: name: "punctuation.definition.constant.restructuredtext"
 			}
 		]
-	
-	
-	
+
+
+
 	comments:
 		patterns: [
-			
+
 			# Kludge to match empty/unindented block-comments
 			{
 				name:  "comment.block.empty-start.double-dot.restructuredtext"
@@ -212,8 +215,8 @@ repository:
 					end:   "^\\s*$\\n|^(?=\\S)"
 				]
 			}
-			
-			
+
+
 			# Kludge to match (most) indented block-comments
 			{
 				name: "comment.block.empty-start.double-dot.restructuredtext"
@@ -226,8 +229,8 @@ repository:
 					end:   "^\\s*$\\n|^\\s*(?=\\S)"
 				]
 			}
-			
-			
+
+
 			# Every other comment with text on the starting line
 			{
 				name: "comment.block.double-dot.restructuredtext"
@@ -237,14 +240,12 @@ repository:
 					2: name: "punctuation.definition.comment.restructuredtext"
 			}
 		]
-	
 
 
-	
-	
+
 	footnotes:
 		patterns: [
-			
+
 			# Definition
 			{
 				name: "meta.link.footnote.def.restructuredtext"
@@ -259,7 +260,7 @@ repository:
 					7: name: "punctuation.definition.constant.restructuredtext"
 					8: name: "punctuation.definition.constant.restructuredtext"
 			}
-			
+
 			# Reference: [0]_
 			{
 				name: "meta.link.footnote.numeric.restructuredtext"
@@ -270,7 +271,7 @@ repository:
 					3: name: "punctuation.definition.constant.restructuredtext"
 					4: name: "punctuation.definition.constant.restructuredtext"
 			}
-			
+
 			# Reference: [#]_ or [#foo]_
 			{
 				name: "meta.link.footnote.auto.restructuredtext"
@@ -281,7 +282,7 @@ repository:
 					3: name: "punctuation.definition.constant.restructuredtext"
 					4: name: "punctuation.definition.constant.restructuredtext"
 			}
-			
+
 			# Reference: [*]_
 			{
 				name: "meta.link.footnote.symbol.auto.restructuredtext"
@@ -293,9 +294,9 @@ repository:
 					4: name: "punctuation.definition.constant.restructuredtext"
 			}
 		]
-	
-	
-	
+
+
+
 	"link-definition":
 		patterns: [
 			{
@@ -308,7 +309,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: patterns: [include: "#uri"]
 			}
-			
+
 			{
 				name: "meta.link.reference.def.restructuredtext"
 				match: "(\\.\\.)\\s+(_`)([^`]+)(`:)\\s+(.*)"
@@ -320,8 +321,8 @@ repository:
 					5: patterns: [include: "#uri"]
 			}
 		]
-	
-	
+
+
 	"link-reference":
 		patterns: [
 			{
@@ -331,7 +332,7 @@ repository:
 					1: name: "string.other.link.title.restructuredtext"
 					2: name: "punctuation.definition.link.restructuredtext"
 			}
-			
+
 			{
 				name: "meta.link.reference"
 				begin: "(`)"
@@ -344,8 +345,8 @@ repository:
 				]
 			}
 		]
-	
-	
+
+
 	# Literal Blocks
 	"raw-blocks":
 		contentName: "meta.raw.block.restructuredtext"
@@ -371,7 +372,7 @@ repository:
 	# Tables
 	tables:
 		patterns: [
-			
+
 			# Grid tables
 			{
 				name: "meta.table.grid-table.restructuredtext"
@@ -383,7 +384,7 @@ repository:
 					{include: "#inlines"}
 				]
 			}
-			
+
 			# Simple tables
 			{
 				name: "punctuation.definition.table.simple-divider.restructuredtext"
@@ -395,7 +396,7 @@ repository:
 			}
 		]
 
-	
+
 	# Row and column dividers
 	"table-borders":
 		patterns: [
@@ -406,7 +407,7 @@ repository:
 				beginCaptures: 0: name: "punctuation.definition.table.joint.restructuredtext"
 				endCaptures:   0: name: "punctuation.definition.table.joint.restructuredtext"
 			}
-			
+
 			{
 				begin: "\\+(?==+(?=\\+|$))"
 				end:   "(?=\\+(?==)|$)|\\+\\s*$"
@@ -414,13 +415,13 @@ repository:
 				beginCaptures: 0: name: "punctuation.definition.table.joint.restructuredtext"
 				endCaptures:   0: name: "punctuation.definition.table.joint.restructuredtext"
 			}
-			
+
 			{
 				match: "\\|"
 				name: "punctuation.definition.table.header.column-divider.restructuredtext"
 			}
 		]
-	
+
 	# Named tag/field
 	"tag-name":
 		name: "entity.name.tag.restructuredtext"
@@ -437,10 +438,10 @@ repository:
 			1: name: "punctuation.definition.substitution.restructuredtext"
 			2: name: "punctuation.definition.substitution.restructuredtext"
 
-	
+
 	"substitution-definition":
 		patterns: [
-			
+
 			# Image substitution
 			{
 				name: "meta.substitution-definition.image.restructuredtext"
@@ -456,8 +457,8 @@ repository:
 					7: name: "punctuation.separator.key-value.restructuredtext"
 					8: patterns: [include: "#uri"]
 			}
-			
-			
+
+
 			# Generic/custom definition
 			{
 				name: "meta.substitution-definition.restructuredtext"
@@ -474,11 +475,103 @@ repository:
 					8: name: "string.unquoted.substitution.data.restructuredtext"
 			}
 		]
-	
+
+
+  'math-syntax':
+    patterns: [
+      {
+        captures:
+          '1':
+            name: 'punctuation.definition.constant.math.tex'
+        match: '(\\\\)(s(s(earrow|warrow|lash)|h(ort(downarrow|uparrow|parallel|leftarrow|rightarrow|mid)|arp)|tar|i(gma|m(eq)?)|u(cc(sim|n(sim|approx)|curlyeq|eq|approx)?|pset(neq(q)?|plus(eq)?|eq(q)?)?|rd|m|bset(neq(q)?|plus(eq)?|eq(q)?)?)|p(hericalangle|adesuit)|e(tminus|arrow)|q(su(pset(eq)?|bset(eq)?)|c(up|ap)|uare)|warrow|m(ile|all(s(etminus|mile)|frown)))|h(slash|ook(leftarrow|rightarrow)|eartsuit|bar)|R(sh|ightarrow|e|bag)|Gam(e|ma)|n(s(hort(parallel|mid)|im|u(cc(eq)?|pseteq(q)?|bseteq))|Rightarrow|n(earrow|warrow)|cong|triangle(left(eq(slant)?)?|right(eq(slant)?)?)|i(plus)?|u|p(lus|arallel|rec(eq)?)|e(q|arrow|g|xists)|v(dash|Dash)|warrow|le(ss|q(slant|q)?|ft(arrow|rightarrow))|a(tural|bla)|VDash|rightarrow|g(tr|eq(slant|q)?)|mid|Left(arrow|rightarrow))|c(hi|irc(eq|le(d(circ|S|dash|ast)|arrow(left|right)))?|o(ng|prod|lon|mplement)|dot(s|p)?|u(p|r(vearrow(left|right)|ly(eq(succ|prec)|vee(downarrow|uparrow)?|wedge(downarrow|uparrow)?)))|enterdot|lubsuit|ap)|Xi|Maps(to(char)?|from(char)?)|B(ox|umpeq|bbk)|t(h(ick(sim|approx)|e(ta|refore))|imes|op|wohead(leftarrow|rightarrow)|a(u|lloblong)|riangle(down|q|left(eq(slant)?)?|right(eq(slant)?)?)?)|i(n(t(er(cal|leave))?|plus|fty)?|ota|math)|S(igma|u(pset|bset))|zeta|o(slash|times|int|dot|plus|vee|wedge|lessthan|greaterthan|m(inus|ega)|b(slash|long|ar))|d(i(v(ideontimes)?|a(g(down|up)|mond(suit)?)|gamma)|o(t(plus|eq(dot)?)|ublebarwedge|wn(harpoon(left|right)|downarrows|arrow))|d(ots|agger)|elta|a(sh(v|leftarrow|rightarrow)|leth|gger))|Y(down|up|left|right)|C(up|ap)|u(n(lhd|rhd)|p(silon|harpoon(left|right)|downarrow|uparrows|lus|arrow)|lcorner|rcorner)|jmath|Theta|Im|p(si|hi|i(tchfork)?|erp|ar(tial|allel)|r(ime|o(d|pto)|ec(sim|n(sim|approx)|curlyeq|eq|approx)?)|m)|e(t(h|a)|psilon|q(slant(less|gtr)|circ|uiv)|ll|xists|mptyset)|Omega|D(iamond|ownarrow|elta)|v(d(ots|ash)|ee(bar)?|Dash|ar(s(igma|u(psetneq(q)?|bsetneq(q)?))|nothing|curly(vee|wedge)|t(heta|imes|riangle(left|right)?)|o(slash|circle|times|dot|plus|vee|wedge|lessthan|ast|greaterthan|minus|b(slash|ar))|p(hi|i|ropto)|epsilon|kappa|rho|bigcirc))|kappa|Up(silon|downarrow|arrow)|Join|f(orall|lat|a(t(s(emi|lash)|bslash)|llingdotseq)|rown)|P(si|hi|i)|w(p|edge|r)|l(hd|n(sim|eq(q)?|approx)|ceil|times|ightning|o(ng(left(arrow|rightarrow)|rightarrow|maps(to|from))|zenge|oparrow(left|right))|dot(s|p)|e(ss(sim|dot|eq(qgtr|gtr)|approx|gtr)|q(slant|q)?|ft(slice|harpoon(down|up)|threetimes|leftarrows|arrow(t(ail|riangle))?|right(squigarrow|harpoons|arrow(s|triangle|eq)?))|adsto)|vertneqq|floor|l(c(orner|eil)|floor|l|bracket)?|a(ngle|mbda)|rcorner|bag)|a(s(ymp|t)|ngle|pprox(eq)?|l(pha|eph)|rrownot|malg)|V(dash|vdash)|r(h(o|d)|ceil|times|i(singdotseq|ght(s(quigarrow|lice)|harpoon(down|up)|threetimes|left(harpoons|arrows)|arrow(t(ail|riangle))?|rightarrows))|floor|angle|r(ceil|parenthesis|floor|bracket)|bag)|g(n(sim|eq(q)?|approx)|tr(sim|dot|eq(qless|less)|less|approx)|imel|eq(slant|q)?|vertneqq|amma|g(g)?)|Finv|xi|m(ho|i(nuso|d)|o(o|dels)|u(ltimap)?|p|e(asuredangle|rge)|aps(to|from(char)?))|b(i(n(dnasrepma|ampersand)|g(s(tar|qc(up|ap))|nplus|c(irc|u(p|rly(vee|wedge))|ap)|triangle(down|up)|interleave|o(times|dot|plus)|uplus|parallel|vee|wedge|box))|o(t|wtie|x(slash|circle|times|dot|plus|empty|ast|minus|b(slash|ox|ar)))|u(llet|mpeq)|e(cause|t(h|ween|a))|lack(square|triangle(down|left|right)?|lozenge)|a(ck(s(im(eq)?|lash)|prime|epsilon)|r(o|wedge))|bslash)|L(sh|ong(left(arrow|rightarrow)|rightarrow|maps(to|from))|eft(arrow|rightarrow)|leftarrow|ambda|bag)|Arrownot)\\b'
+        name: 'constant.character.math.tex'
+      }
+      {
+        captures:
+          '1':
+            name: 'punctuation.definition.constant.math.tex'
+        match: '(\\\\)(sum|prod|coprod|int|oint|bigcap|bigcup|bigsqcup|bigvee|bigwedge|bigodot|bigotimes|bogoplus|biguplus)\\b'
+        name: 'constant.character.math.tex'
+      }
+      {
+        captures:
+          '1':
+            name: 'punctuation.definition.constant.math.tex'
+        match: '(\\\\)(arccos|arcsin|arctan|arg|cos|cosh|cot|coth|csc|deg|det|dim|exp|gcd|hom|inf|ker|lg|lim|liminf|limsup|ln|log|max|min|pr|sec|sin|sinh|sup|tan|tanh)\\b'
+        name: 'constant.other.math.tex'
+      }
+      {
+        begin: '((\\\\)Sexpr(\\{))'
+        beginCaptures:
+          '1':
+            name: 'support.function.sexpr.math.tex'
+          '2':
+            name: 'punctuation.definition.function.math.tex'
+          '3':
+            name: 'punctuation.section.embedded.begin.math.tex'
+        contentName: 'support.function.sexpr.math.tex'
+        end: '(((\\})))'
+        endCaptures:
+          '1':
+            name: 'support.function.sexpr.math.tex'
+          '2':
+            name: 'punctuation.section.embedded.end.math.tex'
+          '3':
+            name: 'source.r'
+        name: 'meta.embedded.line.r'
+        patterns: [
+          {
+            begin: '\\G(?!\\})'
+            end: '(?=\\})'
+            name: 'source.r'
+            patterns: [
+              {
+                include: 'source.r'
+              }
+            ]
+          }
+        ]
+      }
+      {
+        captures:
+          '1':
+            name: 'punctuation.definition.constant.math.tex'
+        match: '(\\\\)([^a-zA-Z]|[A-Za-z]+)(?=\\b|\\}|\\]|\\^|\\_)'
+        name: 'constant.other.general.math.tex'
+      }
+      {
+        match: '(([0-9]*[\\.][0-9]+)|[0-9]+)'
+        name: 'constant.numeric.math.tex'
+      }
+      {
+        match: '«press a-z and space for greek letter»[a-zA-Z]*'
+        name: 'meta.placeholder.greek.math.tex'
+      }
+      {
+        match: '(?<!\\\\)[{}]'
+        name: 'punctuation.definition.arguments'
+      }
+  ]
+
+	# Intepreted text: Multiline with role
+	"math-inline":
+		name: "markup.other.command.restructuredtext"
+		contentName: "markup.math.inline.restructuredtext"
+		patterns: [{include: '#math-syntax'}]
+		begin: "(:)(math)(:)(`)"
+		end:   "(`)"
+		beginCaptures:
+			1: name: "punctuation.definition.intepreted.restructuredtext"
+			2: name: "entity.name.role.restructuredtext"
+			3: name: "punctuation.definition.intepreted.restructuredtext"
+			4: name: "punctuation.definition.intepreted.restructuredtext"
+		endCaptures:
+			1: name: "punctuation.definition.intepreted.restructuredtext"
+
 
 	directives:
 		patterns: [
-			
+
 			# Image
 			{
 				name: "meta.image.restructuredtext"
@@ -491,7 +584,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: patterns: [include: "#uri"]
 			}
-			
+
 			# Figure
 			{
 				name: "meta.figure.restructuredtext"
@@ -507,7 +600,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: patterns: [include: "#uri"]
 			}
-			
+
 			# HTML
 			{
 				begin: "^([ \\t]*)(\\.\\.)\\s(raw)(::)\\s+(html)\\s*$"
@@ -519,7 +612,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# CoffeeScript
 			{
 				contentName: "source.embedded.coffee"
@@ -532,7 +625,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# JavaScript
 			{
 				contentName: "source.embedded.js"
@@ -545,7 +638,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# JSON
 			{
 				contentName: "source.embedded.json"
@@ -558,7 +651,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# CSS
 			{
 				contentName: "source.embedded.css"
@@ -571,7 +664,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# XML
 			{
 				contentName: "source.embedded.xml"
@@ -584,7 +677,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# Ruby
 			{
 				contentName: "source.embedded.ruby"
@@ -597,7 +690,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# Java
 			{
 				contentName: "source.embedded.java"
@@ -610,7 +703,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# Erlang
 			{
 				contentName: "source.embedded.erlang"
@@ -623,7 +716,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# C-sharp/C#
 			{
 				contentName: "source.embedded.cs"
@@ -636,7 +729,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# PHP
 			{
 				contentName: "source.embedded.php"
@@ -649,7 +742,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# Shell
 			{
 				contentName: "source.embedded.shell"
@@ -662,7 +755,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# Python/Sage
 			{
 				contentName: "source.embedded.python"
@@ -675,7 +768,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# Objective-C
 			{
 				contentName: "source.embedded.objc"
@@ -688,7 +781,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
 			# YAML
 			{
 				contentName: "source.embedded.yaml"
@@ -701,7 +794,21 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
-			
+
+			# Math
+			{
+				name: 'source.embedded.latex'
+				contentName: "markup.math.block.restructuredtext"
+				patterns: [include: "#math-syntax"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(math)(::)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					# 5: name: "entity.name.directive.restructuredtext"
+			}
+
 			# Directives
 			{
 				name: "meta.other.directive.restructuredtext"
@@ -711,8 +818,8 @@ repository:
 					2: name: "support.directive.restructuredtext"
 					3: name: "punctuation.separator.key-value.restructuredtext"
 			}
-			
-			
+
+
 			# Directives with arguments
 			{
 				name: "meta.other.directive.restructuredtext"
@@ -724,7 +831,6 @@ repository:
 					4: name: "entity.name.directive.restructuredtext"
 			}
 		]
-
 
 
 	# Optional :attribute: statements found underneath some directives
@@ -741,7 +847,7 @@ repository:
 	# Image parameters (width/height, etc)
 	"image-options":
 		patterns: [
-			
+
 			# Alt text
 			{
 				name: "meta.image-option.alt.restructuredtext"
@@ -750,7 +856,7 @@ repository:
 					1: patterns: [include: "#tag-name"]
 					2: name: "string.other.tag-value.restructuredtext"
 			}
-			
+
 			# Height
 			{
 				name: "meta.image-option.height.restructuredtext"
@@ -759,7 +865,7 @@ repository:
 					1: patterns: [include: "#tag-name"]
 					2: patterns: [include: "#length"]
 			}
-			
+
 			# Width
 			{
 				name: "meta.image-option.width.restructuredtext"
@@ -768,7 +874,7 @@ repository:
 					1: patterns: [include: "#tag-name"]
 					2: patterns: [include: "#length"]
 			}
-			
+
 			# Scale
 			{
 				name: "meta.image-option.scale.restructuredtext"
@@ -777,7 +883,7 @@ repository:
 					1: patterns: [include: "#tag-name"]
 					2: patterns: [include: "#length"]
 			}
-			
+
 			# Align
 			{
 				name: "meta.image-option.align.restructuredtext"
@@ -786,7 +892,7 @@ repository:
 					1: patterns: [include: "#tag-name"]
 					2: name: "keyword.language.image-alignment.restructuredtext"
 			}
-			
+
 			# Target
 			{
 				name: "meta.image-option.target.restructuredtext"
@@ -795,18 +901,18 @@ repository:
 					1: patterns: [include: "#tag-name"]
 					2: name: "string.other.target.restructuredtext"
 			}
-			
+
 			{include: "#doctree-options"}
 			{include: "#directive-options"}
 		]
-	
-	
-	
+
+
+
 	# Common Doctree options
 	# See: http://docutils.sourceforge.net/docs/ref/rst/directives.html#id17
 	"doctree-options":
 		patterns: [
-			
+
 			# Classes
 			{
 				name: "meta.doctree-option.class.restructuredtext"
@@ -815,7 +921,7 @@ repository:
 					1: patterns: [include: "#tag-name"]
 					2: name: "string.other.class-list.restructuredtext"
 			}
-			
+
 			# Name
 			{
 				name: "meta.doctree-option.name.restructuredtext"
@@ -830,7 +936,7 @@ repository:
 	# Sphinx domains
 	domains:
 		patterns: [
-			
+
 			# Python domain
 			{
 				name: "meta.sphinx-domain.restructuredtext"
@@ -845,8 +951,8 @@ repository:
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
 			}
-			
-			
+
+
 			# C domain
 			{
 				name: "meta.sphinx-domain.restructuredtext"
@@ -861,8 +967,8 @@ repository:
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
 			}
-			
-			
+
+
 			# C++ domain
 			{
 				name: "meta.sphinx-domain.restructuredtext"
@@ -874,7 +980,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
-				
+
 				# This is a hack to stop C++ syntax spilling out of control
 				patterns: [
 					match: "(.+)(\\\\?)$"
@@ -883,8 +989,8 @@ repository:
 						2: name: "constant.character.escape.newline.restructuredtext"
 				]
 			}
-			
-			
+
+
 			# JavaScript domain
 			{
 				name: "meta.sphinx-domain.restructuredtext"
@@ -896,7 +1002,7 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
-				
+
 				# JS syntax might go haywire too: expect its grammar to change at any time
 				patterns: [
 					match: "(.+)(\\\\?)$"
@@ -905,8 +1011,8 @@ repository:
 						2: name: "constant.character.escape.newline.restructuredtext"
 				]
 			}
-			
-			
+
+
 			# Anything else
 			{
 				name: "meta.sphinx-domain.restructuredtext"
@@ -919,5 +1025,5 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
-			}
-		]
+      }
+]

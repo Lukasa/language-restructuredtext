@@ -425,7 +425,7 @@ repository:
 	# Named tag/field
 	"tag-name":
 		name: "entity.name.tag.restructuredtext"
-		match: "(:)[A-Za-z][\\w\\s=.]*(:)"
+		match: "(:)[A-Za-z][\\w\\s=.-]*(:)"
 		captures:
 			1: "name": "punctuation.definition.field.restructuredtext"
 			2: "name": "punctuation.definition.field.restructuredtext"

@@ -113,3 +113,9 @@ __ http://developer.java.sun.com/developer/earlyAccess/
    +-----------------------+-----------------------+
    | .. image:: peak.png   | Mountain              |
    +-----------------------+-----------------------+
+
+
+.. math::
+  (a + b)^2 = a^2 + 2ab + b^2
+
+  (a - b)^2 = a^2 - 2ab + b^2

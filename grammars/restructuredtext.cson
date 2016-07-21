@@ -481,7 +481,7 @@ repository:
 	"math-inline":
 		name: "markup.other.command.restructuredtext"
 		contentName: "markup.math.inline.restructuredtext"
-		patterns: [include: "text.tex.latex"]
+		patterns: [include: "text.tex#math"]
 		begin: "(:)(math)(:)(`)"
 		end:   "(`)"
 		beginCaptures:
@@ -725,7 +725,7 @@ repository:
 				name: 'source.embedded.latex'
 				contentName: "markup.math.block.restructuredtext"
 				# patterns: [include: "meta.function.environment.math.latex"]
-				patterns: [include: "text.tex.latex"]
+				patterns: [include: "text.tex#math"]
 
 				begin: "^([ \\t]*)(\\.\\.)\\s(math)(::)\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"

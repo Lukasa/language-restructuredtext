@@ -952,5 +952,5 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
-      }
+	}
 ]

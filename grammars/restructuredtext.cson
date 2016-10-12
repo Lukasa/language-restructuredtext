@@ -592,7 +592,7 @@ repository:
 			# XML
 			{
 				contentName: "source.embedded.xml"
-				patterns: [include: "source.xml"]
+				patterns: [include: "text.xml"]
 				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(xml)\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:

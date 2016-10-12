@@ -721,19 +721,15 @@ repository:
 
 			# Math
 			{
-				# name: 'meta.function.environment.math.latex'
-				name: 'source.embedded.latex'
+				name: "source.embedded.latex"
 				contentName: "markup.math.block.restructuredtext"
-				# patterns: [include: "meta.function.environment.math.latex"]
 				patterns: [include: "text.tex#math"]
-
 				begin: "^([ \\t]*)(\\.\\.)\\s(math)(::)\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
 					3: name: "support.directive.restructuredtext"
 					4: name: "punctuation.separator.key-value.restructuredtext"
-					# 5: name: "entity.name.directive.restructuredtext"
 			}
 
 			# Directives
@@ -966,5 +962,5 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
-	}
-]
+			}
+	]

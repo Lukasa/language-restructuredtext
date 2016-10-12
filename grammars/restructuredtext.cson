@@ -868,15 +868,29 @@ repository:
 			{
 				name: "meta.sphinx-domain.restructuredtext"
 				contentName: "source.embedded.python"
-				patterns: [include: "source.python"]
 				begin: "^(\\s*)(\\.\\.)\\s+(py)(:)([^:]+)(::)"
-				end:   "^(?!\\s*$|\\1[ \\t]{5,}\\S)"
+				end:   "^(?!\\s*$|\\1[ \\t]{6,}\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
 					3: name: "support.directive.restructuredtext"
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "support.directive.restructuredtext"
 					6: name: "punctuation.separator.key-value.restructuredtext"
+				patterns: [
+					{
+						# Hack to stop runaway issues with backslashes
+						match: "(?:\\G|^)([^(]*)(\\()([^\\\\)]*\\\\[^)]*)(\\))"
+						captures:
+							1: patterns: [include: "source.python"]
+							2: name: "punctuation.parenthesis.begin.python"
+							3: patterns: [
+								{match: "\\\\.", name: "constant.character.escape.restructuredtext"}
+								{include: "source.python"}
+							]
+							4: name: "punctuation.parenthesis.end.python"
+					}
+					{ include: "source.python" }
+				]
 			}
 
 

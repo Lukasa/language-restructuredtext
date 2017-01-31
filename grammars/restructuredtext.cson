@@ -135,6 +135,16 @@ repository:
 			4: name: "punctuation.definition.intepreted.restructuredtext"
 		endCaptures:
 			1: name: "punctuation.definition.intepreted.restructuredtext"
+		patterns: [
+			# Manpage reference: `ls(1)`
+			name: "meta.manpage.link.inline.restructuredtext"
+			match: "(?<=:manpage:`)\\G([-.\\w]+)(\\()(\\d+)(\\))"
+			captures:
+				1: name: "markup.bold.manpage-name.restructuredtext"
+				2: name: "punctuation.definition.round.bracket.begin.restructuredtext"
+				3: name: "constant.numeric.integer.restructuredtext"
+				4: name: "punctuation.definition.round.bracket.begin.restructuredtext"
+		]
 
 
 	# Intepreted text: Single line
@@ -730,6 +740,21 @@ repository:
 					2: name: "punctuation.definition.directive.restructuredtext"
 					3: name: "support.directive.restructuredtext"
 					4: name: "punctuation.separator.key-value.restructuredtext"
+			}
+
+			# Command-line option
+			{
+				name: "meta.option.directive.restructuredtext"
+				match: "^\\s*(\\.\\.)\\s(option)(::)\\s*(.+)?$"
+				captures:
+					1: name: "punctuation.definition.directive.restructuredtext"
+					2: name: "support.directive.restructuredtext"
+					3: name: "punctuation.separator.key-value.restructuredtext"
+					4: patterns: [
+						{match: "<|>",        name: "punctuation.definition.bracket.angle.restructuredtext"}
+						{match: ",",          name: "punctuation.delimiter.comma.restructuredtext"}
+						{match: "[^\\s<>,]+", name: "entity.name.directive.restructuredtext"}
+					]
 			}
 
 			# Directives

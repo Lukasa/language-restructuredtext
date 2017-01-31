@@ -345,10 +345,10 @@ repository:
 
 			{
 				name: "meta.link.reference"
-				begin: "(`)"
-				end:   "(`_)"
-				beginCaptures: 1: name: "punctuation.definition.link.restructuredtext"
-				endCaptures:   1: name: "punctuation.definition.link.restructuredtext"
+				begin: "`"
+				end:   "`__?"
+				beginCaptures: 0: name: "punctuation.definition.link.restructuredtext"
+				endCaptures:   0: name: "punctuation.definition.link.restructuredtext"
 				patterns: [
 					name: "string.other.link.title.restructuredtext"
 					match: "[^`]+"

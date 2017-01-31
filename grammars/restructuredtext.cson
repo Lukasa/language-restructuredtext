@@ -301,7 +301,7 @@ repository:
 		patterns: [
 			{
 				name: "meta.link.reference.def.restructuredtext"
-				match: "(\\.\\.)\\s+(_)([-.\\d\\w\\s()/]+)(:)\\s+(.*)"
+				match: "(\\.\\.)\\s+(_)([-.:\+\\d\\w\\s()/]+?)(:)\\s+(.*)"
 				captures:
 					1: name: "punctuation.definition.link.restructuredtext"
 					2: name: "punctuation.definition.string.restructuredtext"

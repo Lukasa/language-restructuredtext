@@ -2,6 +2,7 @@ name: "reStructuredText"
 scopeName: "text.restructuredtext"
 fileTypes: ["rst", "rest"]
 patterns: [ include: "#all" ]
+limitLineLength: no
 
 repository:
 

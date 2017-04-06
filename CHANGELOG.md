@@ -10,7 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org).
 ------------------------------------------------------------------------
 * Added this change-log
 * Disabled line-highlighting limit introduced in [Atom 1.15][#13820].
+* [[`#52`][]]: Fixed highlighting of code directives containing colons
 
+[`#52`]:  https://github.com/Lukasa/language-restructuredtext/issues/52
 [#13820]: https://github.com/atom/atom/pull/13820
 
 

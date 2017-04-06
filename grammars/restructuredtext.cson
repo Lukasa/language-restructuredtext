@@ -127,7 +127,7 @@ repository:
 	"interpreted-block":
 		name: "markup.other.command.restructuredtext"
 		contentName: "string.other.interpreted.restructuredtext"
-		begin: "(:)([-A-z0-9:_.]*)(:)(`)"
+		begin: "(:)([-A-z0-9:_.]*?)(:)(`)"
 		end:   "(`)"
 		beginCaptures:
 			1: name: "punctuation.definition.intepreted.restructuredtext"

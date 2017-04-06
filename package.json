@@ -1,20 +1,20 @@
 {
-  "name": "language-restructuredtext",
-  "version": "1.0.2",
-  "private": true,
-  "keywords": [
-    "reStructuredText",
-    "reStructured Text",
-    "rst",
-    "reST",
-    "Docutils",
-    "Python"
-  ],
-  "description": "Add snippets and syntax highlighting for reStructuredText files",
-  "repository": "https://github.com/Lukasa/language-restructuredtext",
-  "license": "MIT",
-  "engines": {
-    "atom": ">0.50.0"
-  },
-  "dependencies": {}
+	"name": "language-restructuredtext",
+	"version": "1.0.2",
+	"private": true,
+	"keywords": [
+		"reStructuredText",
+		"reStructured Text",
+		"rst",
+		"reST",
+		"Docutils",
+		"Python"
+	],
+	"description": "Add snippets and syntax highlighting for reStructuredText files",
+	"repository": "https://github.com/Lukasa/language-restructuredtext",
+	"license": "MIT",
+	"engines": {
+		"atom": ">0.50.0"
+	},
+	"dependencies": {}
 }

@@ -65,9 +65,9 @@ repository:
 	# Section border
 	headings:
 		name: "markup.heading.restructuredtext"
-		match: "^[-=~`#\"^+*:.'_]{3,}\\s*$"
+		match: "^(([-=~`#\"^+*:.'_])\\2{2,})(?=\\s*$)"
 		captures:
-			0: name: "punctuation.definition.heading.restructuredtext"
+			1: name: "punctuation.definition.heading.restructuredtext"
 
 
 	# Line blocks

@@ -3,16 +3,17 @@ Change Log
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
-[Unpublished]: https://github.com/Lukasa/language-restructuredtext/compare/v1.0.2...HEAD
+[Unpublished]: https://github.com/Lukasa/language-restructuredtext/compare/v1.1.0...HEAD
 
 
-[Unpublished]
+[v1.1.0]
 ------------------------------------------------------------------------
 * Added this change-log
 * Added editor command to update length of borders to fit their title
 * Disabled line-highlighting limit introduced in [Atom 1.15][#13820].
 * [[`#52`][]]: Fixed highlighting of code directives containing colons
 
+[v1.1.0]: https://github.com/Lukasa/language-restructuredtext/releases/tag/v1.1.0
 [`#52`]:  https://github.com/Lukasa/language-restructuredtext/issues/52
 [#13820]: https://github.com/atom/atom/pull/13820
 

@@ -571,6 +571,19 @@ repository:
 					5: name: "entity.name.directive.restructuredtext"
 			}
 
+			# TypeScript
+			{
+				contentName: "source.embedded.ts"
+				patterns: [include: "source.ts"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(typescript)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+
 			# JSON
 			{
 				contentName: "source.embedded.json"

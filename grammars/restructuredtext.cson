@@ -346,14 +346,11 @@ repository:
 
 			{
 				name: "meta.link.reference"
-				begin: "`"
-				end:   "`__?"
-				beginCaptures: 0: name: "punctuation.definition.link.restructuredtext"
-				endCaptures:   0: name: "punctuation.definition.link.restructuredtext"
-				patterns: [
-					name: "string.other.link.title.restructuredtext"
-					match: "[^`]+"
-				]
+				match: "(`)(.*?)(`__?)"
+				captures:
+					1: name: "punctuation.definition.link.restructuredtext"
+					2: name: "string.other.link.title.restructuredtext"
+					3: name: "punctuation.definition.link.restructuredtext"
 			}
 		]
 
@@ -566,6 +563,19 @@ repository:
 				contentName: "source.embedded.js"
 				patterns: [include: "source.js"]
 				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(js|javascript)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+
+			# TypeScript
+			{
+				contentName: "source.embedded.ts"
+				patterns: [include: "source.ts"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(typescript)\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"

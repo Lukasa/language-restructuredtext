@@ -7,6 +7,9 @@
   'attention directive':
     'prefix': 'attention'
     'body': '.. attention::\n\n\t'
+  'bokeh-plot directive':
+    'prefix': 'bokeh-plot'
+    'body': '.. bokeh-plot::\n\n\t'
   'caution directive':
     'prefix': 'caution'
     'body': '.. caution::\n\n\t'
@@ -21,7 +24,7 @@
     'body': '.. compound::\n\n\t'
   'container directive':
     'prefix': 'container'
-    'body': '.. container:: {$1:class}\n\n\t$0'
+    'body': '.. container:: ${1:class}\n\n\t$0'
   'contents directive':
     'prefix': 'contents'
     'body': '..contents:: ${1:title}\n\t:depth: ${2:2}'
@@ -73,6 +76,9 @@
   'parsed-literal directive':
     'prefix': 'parsed-literal'
     'body': '.. parsed-literal::\n\n\t'
+  'plot directive':
+    'prefix': 'plot'
+    'body': '.. plot::\n\n\t'
   'pull-quote directive':
     'prefix': 'pull-quote'
     'body': '.. pull-quote::\n\n\t'
@@ -91,9 +97,12 @@
   'tip directive':
     'prefix': 'tip'
     'body': '.. tip::\n\n\t'
+  'toctree directive':
+    'prefix': 'toctree'
+    'body': '.. toctree::\n\t:maxdepth: ${1:2}\n\n\t$0'
   'topic directive':
     'prefix': 'topic'
-    'body': '.. topic## $1{1:title}'
+    'body': '.. topic:: ${1:title}'
   'warning directive':
     'prefix': 'warning'
     'body': '.. warning::\n\n\t'
@@ -123,7 +132,7 @@
     'body': ':ref:`$0`'
   'menuselection role':
     'prefix': 'menuselection'
-    'body': ':menuselection:`${1:menu item} --> {$2:submenu item}`'
+    'body': ':menuselection:`${1:menu item} --> ${2:submenu item}`'
   'program role':
     'prefix': 'program'
     'body': ':program:${1:<executable file>}'

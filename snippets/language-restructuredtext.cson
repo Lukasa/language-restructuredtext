@@ -1,10 +1,148 @@
 '.text.restructuredtext':
-  'image':
+
+  # Directives
+  'admonition directive':
+    'prefix': 'admonition'
+    'body': '.. admonition:: ${1:title}\n\n\t$0'
+  'attention directive':
+    'prefix': 'attention'
+    'body': '.. attention::\n\n\t'
+  'bokeh-plot directive':
+    'prefix': 'bokeh-plot'
+    'body': '.. bokeh-plot::\n\n\t'
+  'caution directive':
+    'prefix': 'caution'
+    'body': '.. caution::\n\n\t'
+  'code directive':
+    'prefix': 'Code'
+    'body': '.. code:: ${1:language}\n\n\t${2:<code>}'
+  'code-block directive':
+    'prefix': 'code-block'
+    'body': '.. code-block:: ${1:language}\n\n\t${2:<code>}'
+  'compound directive':
+    'prefix': 'compound'
+    'body': '.. compound::\n\n\t'
+  'container directive':
+    'prefix': 'container'
+    'body': '.. container:: ${1:class}\n\n\t$0'
+  'contents directive':
+    'prefix': 'contents'
+    'body': '..contents:: ${1:title}\n\t:depth: ${2:2}'
+  'csv-table directive':
+    'prefix': 'csv-table'
+    'body': '.. csv-table:: ${1:title}\n\n\t$0'
+  'danger directive':
+    'prefix': 'danger'
+    'body': '.. danger::\n\n\t'
+  'epigraph directive':
+    'prefix': 'epigraph'
+    'body': '.. epigraph::\n\n\t${1:citation}\n\n\t-- ${2:author}'
+  'error directive':
+    'prefix': 'error'
+    'body': '.. error::\n\n\t'
+  'highlights directive':
+    'prefix': 'highlights'
+    'body': '.. highlights::\n\n\t'
+  'hint directive':
+    'prefix': 'hint'
+    'body': '.. hint::\n\n\t'
+  'include directive':
+    'prefix': 'include'
+    'body': '.. include:: ${1:file}'
+  'figure directive':
+    'prefix': 'figure'
+    'body': '.. figure:: ${1:path}\n$0'
+  'image directive':
     'prefix': 'image'
     'body': '.. image:: ${1:path}\n$0'
+  'important directive':
+    'prefix': 'important'
+    'body': '.. important::\n\n\t'
+  'ipython directive':
+    'prefix': 'ipython'
+    'body': '.. ipython:: ${1:python}\n\n\t$0'
+  'line-block directive':
+    'prefix': 'line-block'
+    'body': 'line-block::\n\n\t'
+  'list-table directive':
+    'prefix': 'list-table'
+    'body': '.. list-table:: ${1:title}\n\n\t$0'
+  'math directive':
+    'prefix': 'Math'
+    'body': '.. math::\n\n\t'
+  'note directive':
+    'prefix': 'note'
+    'body': '.. note::\n\n\t'
+  'parsed-literal directive':
+    'prefix': 'parsed-literal'
+    'body': '.. parsed-literal::\n\n\t'
+  'plot directive':
+    'prefix': 'plot'
+    'body': '.. plot::\n\n\t'
+  'pull-quote directive':
+    'prefix': 'pull-quote'
+    'body': '.. pull-quote::\n\n\t'
+  'replace directive':
+    'prefix': 'replace'
+    'body': '.. |${1:text}| replace:: ${2:replacement}'
+  'rubric directive':
+    'prefix': 'rubric'
+    'body': '.. rubric:: '
+  'sidebar directive':
+    'prefix': 'sidebar'
+    'body': '.. sidebar:: ${1:title}\n\n\t$0'
+  'table directive':
+    'prefix': 'table'
+    'body': '.. table:: ${1:title}\n\n\t$0'
+  'tip directive':
+    'prefix': 'tip'
+    'body': '.. tip::\n\n\t'
+  'toctree directive':
+    'prefix': 'toctree'
+    'body': '.. toctree::\n\t:maxdepth: ${1:2}\n\n\t$0'
+  'topic directive':
+    'prefix': 'topic'
+    'body': '.. topic:: ${1:title}'
+  'warning directive':
+    'prefix': 'warning'
+    'body': '.. warning::\n\n\t'
+
+
+  # Roles
+  'abbr role':
+    'prefix': 'abbr'
+    'body': ':abbr:`$0`'
+  'code role':
+    'prefix': 'code'
+    'body': ':code:`$0`'
+  'download role':
+    'prefix': 'download'
+    'body': ':download:`${1:/path/to/file}`'
+  'file role':
+    'prefix': 'file'
+    'body': ':file:`${1:/path/to/file}`'
+  'guilabel role':
+    'prefix': 'guilabel'
+    'body': ':guilabel:`${1:&Cancel}`'
+  'math role':
+    'prefix': 'math'
+    'body': ':math:`$0`'
+  'ref role':
+    'prefix': 'ref'
+    'body': ':ref:`$0`'
+  'menuselection role':
+    'prefix': 'menuselection'
+    'body': ':menuselection:`${1:menu item} --> ${2:submenu item}`'
+  'program role':
+    'prefix': 'program'
+    'body': ':program:${1:<executable file>}'
+
+
   'link':
     'prefix': 'link'
-    'body': '\\`${1:Title} <${2:http://link}>\\`_$0'
+    'body': '`${1:Title} <${2:http://link}>`_$0'
+
+  # Sectioning
   'section 1':
     'prefix': 'sec'
     'body': '${1:subsection name}\n================$0\n'
@@ -14,6 +152,3 @@
   'section 3':
     'prefix': 'sss'
     'body': '${1:subsection name}\n----------------$0\n'
-  'code block':
-    'prefix': 'code'
-    'body': '.. code-block:: ${1:language}\n\n\t${2:<code>}'

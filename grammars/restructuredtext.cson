@@ -3,6 +3,17 @@ scopeName: "text.restructuredtext"
 fileTypes: ["rst", "rest"]
 patterns: [ include: "#all" ]
 limitLineLength: no
+firstLineMatch: """(?x)
+	# Emacs modeline
+	-\\*-(?:\\s*(?=[^:;\\s]+\\s*-\\*-)|(?:.*?[;\\s]|(?<=-\\*-))mode\\s*:\\s*)
+		rst
+	(?=[\\s;]|(?<![-*])-\\*-).*?-\\*-
+	|
+	# Vim modeline
+	(?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s* set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=
+		rst
+	(?=\\s|:|$)
+"""
 
 repository:
 

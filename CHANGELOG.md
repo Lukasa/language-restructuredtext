@@ -3,11 +3,26 @@ Change Log
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
-[Unpublished]: https://github.com/Lukasa/language-restructuredtext/compare/v1.1.0...HEAD
+[Unpublished]: https://github.com/Lukasa/language-restructuredtext/compare/v1.1.1...HEAD
+
+
+[v1.1.1]
+------------------------------------------------------------------------
+**January 19th, 2018**  
+* [[`#57`][]]: Fixed overzealous matching of inline link references
+* [[`#57`][]]: Added support for embedded TypeScript highlighting
+* [[`#59`][]]: Added extra snippets for roles and directives
+* [[`#62`][]]: Added `firstLineMatch` support for modeline recognition
+
+[v1.1.1]: https://github.com/Lukasa/language-restructuredtext/releases/tag/v1.1.1
+[`#57`]:  https://github.com/Lukasa/language-restructuredtext/pull/57
+[`#59`]:  https://github.com/Lukasa/language-restructuredtext/pull/59
+[`#62`]:  https://github.com/Lukasa/language-restructuredtext/issues/62
 
 
 [v1.1.0]
 ------------------------------------------------------------------------
+**April 8th, 2017**  
 * Added this change-log
 * Added editor command to update length of borders to fit their title
 * Disabled line-highlighting limit introduced in [Atom 1.15][#13820].

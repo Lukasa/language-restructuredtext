@@ -547,7 +547,7 @@ repository:
 			# HTML
 			{
 				begin: "^([ \\t]*)(\\.\\.)\\s(raw)(::)\\s+(html)\\s*$"
-				end:   "^(?!\\1[ \\t])"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				patterns: [include: "text.html.basic"]
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"

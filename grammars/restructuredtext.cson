@@ -106,19 +106,21 @@ repository:
 			# Bold
 			{
 				name: "markup.bold.restructuredtext"
-				match: "(\\*\\*)[^\\*\\s][^*]*(\\*\\*)"
-				captures:
-					1: "name": "punctuation.definition.bold.restructuredtext"
-					2: "name": "punctuation.definition.bold.restructuredtext"
+				begin: "\\*\\*(?=[^\\*\\s])"
+				end:   "\\*\\*|^(?=\\s*$)"
+				beginCaptures: 0: "name": "punctuation.definition.bold.begin.restructuredtext"
+				endCaptures:   0: "name": "punctuation.definition.bold.end.restructuredtext"
+				patterns: [include: "#inlines"]
 			}
 
 			# Italic
 			{
 				name: "markup.italic.restructuredtext"
-				match: "(?<!\\\\)(\\*)[^\\*\\s][^*]*(?<!\\\\)(\\*)"
-				captures:
-					1: name: "punctuation.definition.italic.restructuredtext"
-					2: name: "punctuation.definition.italic.restructuredtext"
+				begin: "(?<!\\\\)\\*(?=[^\\*\\s])"
+				end:   "(?<!\\\\)\\*|^(?=\\s*$)"
+				beginCaptures: 0: name: "punctuation.definition.italic.begin.restructuredtext"
+				endCaptures:   0: name: "punctuation.definition.italic.end.restructuredtext"
+				patterns: [include: "#inlines"]
 			}
 		]
 
@@ -128,8 +130,8 @@ repository:
 		name: "markup.raw.restructuredtext"
 		begin: "``"
 		end:   "``((?=[^`\\w\\d])|$)"
-		captures:
-			0: name: "punctuation.definition.raw.restructuredtext"
+		beginCaptures: 0: name: "punctuation.definition.raw.begin.restructuredtext"
+		endCaptures:   0: name: "punctuation.definition.raw.end.restructuredtext"
 
 
 

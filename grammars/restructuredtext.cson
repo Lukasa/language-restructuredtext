@@ -547,7 +547,7 @@ repository:
 			# HTML
 			{
 				begin: "^([ \\t]*)(\\.\\.)\\s(raw)(::)\\s+(html)\\s*$"
-				end:   "^(?!\\1[ \\t])"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				patterns: [include: "text.html.basic"]
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -717,6 +717,45 @@ repository:
 				contentName: "source.embedded.python"
 				patterns: [include: "source.python"]
 				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(py(thon)?|sage)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+
+			# IPython
+			{
+				contentName: "source.embedded.python"
+				patterns: [include: "source.python"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(ipython)(::)\\s+(py(thon)?)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+
+			# Stata
+			{
+				contentName: "source.embedded.stata"
+				patterns: [include: "source.stata"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(stata)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+
+			# SAS
+			{
+				contentName: "source.embedded.python"
+				patterns: [include: "source.python"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(sas)\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"

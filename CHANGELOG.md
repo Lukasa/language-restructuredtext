@@ -3,7 +3,23 @@ Change Log
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
-[Unpublished]: https://github.com/Lukasa/language-restructuredtext/compare/v1.1.1...HEAD
+[Unpublished]: https://github.com/Lukasa/language-restructuredtext/compare/v1.1.2...HEAD
+
+
+[v1.1.2]
+------------------------------------------------------------------------
+**April 16th, 2018**  
+* [[`#55`][]]: Fixed broken HTML hinting in `.. raw:: html` directives
+* [[`#61`][]]: Fixed missing highlighting for multi-line bold/italics
+* [[`#63`][]]: Added support for `.. ipython:: python`
+* [[`#63`][]]: Added support for embedded [Stata][] and [SAS][] code blocks
+
+[v1.1.2]: https://github.com/Lukasa/language-restructuredtext/releases/tag/v1.1.2
+[`#55`]:  https://github.com/Lukasa/language-restructuredtext/issues/55
+[`#61`]:  https://github.com/Lukasa/language-restructuredtext/issues/61
+[`#63`]:  https://github.com/Lukasa/language-restructuredtext/issues/63
+[Stata]:  https://atom.io/packages/language-stata
+[SAS]:    https://atom.io/packages/language-sas
 
 
 [v1.1.1]

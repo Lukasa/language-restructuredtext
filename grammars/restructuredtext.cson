@@ -150,6 +150,8 @@ repository:
 		endCaptures:
 			1: name: "punctuation.definition.intepreted.restructuredtext"
 		patterns: [
+			{include: "#escape"}
+			
 			# Manpage reference: `ls(1)`
 			name: "meta.manpage.link.inline.restructuredtext"
 			match: "(?<=:manpage:`)\\G([-.\\w]+)(\\()(\\d+)(\\))"

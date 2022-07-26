@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org).
 [Unpublished]: https://github.com/Lukasa/language-restructuredtext/compare/v1.1.2...HEAD
 
 
+[Unpublished]
+------------------------------------------------------------------------
+* Fixed untokenised escape sequences within interpreted text roles
+
+
 [v1.1.2]
 ------------------------------------------------------------------------
 **April 16th, 2018**  

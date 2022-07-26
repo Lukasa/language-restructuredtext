@@ -92,7 +92,7 @@ repository:
 			{
 				match: "^\\s*(\\|)"
 				captures:
-					0: name: "punctuation.separator.line-block.restructuredtext"
+					1: name: "punctuation.separator.line-block.restructuredtext"
 			}
 
 			{include: "#inlines"}

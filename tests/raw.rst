@@ -1,3 +1,5 @@
+.. # vim: ts=4
+
 .. raw:: html
 
 	<samp><b>at</b>tach [<var>options</var>] <var>unit</var> <var>filename</var></samp>
@@ -45,3 +47,21 @@
 
 	@documentlanguage en
 	@documentencoding ISO-8859-1
+
+.. role:: html(raw)
+   :format: html
+
+.. parsed-literal::
+
+	:html:`<samp><b>at</b>tach [<var>options</var>] <var>unit</var> <var>filename</var></samp>`
+
+	**// XEQ** *pname* **L** *nn* *D* *cart* **X** **X**
+	│  │   │     │ │  │ │    │ │
+	1  4   8    14 │ 19 21  26 28
+	             16
+
+	This shouldn't work:
+
+	.. math::
+
+		α_t(i) = P(O_1, O_2, … O_t, q_t = S_i λ)

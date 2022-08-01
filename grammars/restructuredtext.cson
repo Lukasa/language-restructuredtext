@@ -865,6 +865,19 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
+			
+			# Parsed (unquoted) literal text
+			{
+				contentName: "markup.raw.inner.parsed.restructuredtext"
+				begin: "^([ \\t]*)(\\.\\.)\\s(parsed-literal)(::)(?:\\s+([-\\w]+))?\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+				patterns: [include: "#inlines"]
+			}
 
 			# Math
 			{

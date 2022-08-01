@@ -1,3 +1,17 @@
+.. toctree::
+   :maxdepth: 2
+   :glob:
+
+   intro*
+   recipe/*
+   intro
+   strings
+   datatypes
+   numeric
+   intro
+   All about strings <strings>
+   datatypes
+
 .. py:function:: spam(eggs)
                  ham(eggs)
 

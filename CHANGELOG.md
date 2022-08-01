@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 
 [Unpublished]
 ------------------------------------------------------------------------
+* Fixed highlighting of inline markup in substitution definitions
 * Fixed untokenised escape sequences within interpreted text roles
 * Added HTML highlighting to ``` :html:`…` ``` roles
 * Added HTML highlighting to `.. code html::` blocks

@@ -496,7 +496,7 @@ repository:
 					5: name: "punctuation.definition.substitution.end.restructuredtext"
 					6: name: "support.directive.restructuredtext"
 					7: name: "punctuation.separator.key-value.restructuredtext"
-					8: name: "string.unquoted.substitution.data.restructuredtext"
+					8: name: "string.unquoted.substitution.data.restructuredtext", patterns: [include: "#inlines"]
 			}
 		]
 

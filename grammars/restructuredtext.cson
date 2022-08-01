@@ -646,7 +646,7 @@ repository:
 			{
 				contentName: "source.embedded.xml"
 				patterns: [include: "text.xml"]
-				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(xml)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?|raw)(::)\\s+((?:pseudo)?xml)\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -803,6 +803,61 @@ repository:
 				contentName: "source.embedded.yaml"
 				patterns: [include: "source.yaml"]
 				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?)(::)\\s+(yaml)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
+			# Roff
+			{
+				contentName: "text.embedded.roff"
+				patterns: [{
+					match: "(?:^|\\G)[ \\t]*(\\S.*)"
+					captures:
+						1: patterns: [include: "text.roff"]
+				}]
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?|raw)(::)\\s+(manpage|man|roff)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
+			# LaTeX
+			{
+				contentName: "text.embedded.tex.latex"
+				patterns: [include: "text.tex.latex"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?|raw)(::)\\s+((?:xe)?(?:la)?tex)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
+			# Texinfo
+			{
+				contentName: "text.embedded.texinfo"
+				patterns: [include: "text.texinfo"]
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?|raw)(::)\\s+(texinfo)\\s*$"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
+			# Verbatim text, or an unrecognised format
+			{
+				contentName: "markup.raw.inner.restructuredtext"
+				begin: "^([ \\t]*)(\\.\\.)\\s(code(?:-block)?|raw)(::)(?:\\s+([-\\w]+))?\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"

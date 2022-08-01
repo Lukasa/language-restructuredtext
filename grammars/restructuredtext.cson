@@ -567,7 +567,7 @@ repository:
 
 			# HTML
 			{
-				begin: "^([ \\t]*)(\\.\\.)\\s(raw)(::)\\s+(html)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s(raw|code(?:-block)?)(::)\\s+(html)\\s*$"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				patterns: [include: "text.html.basic"]
 				beginCaptures:

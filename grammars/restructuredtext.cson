@@ -564,6 +564,41 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: patterns: [include: "#uri"]
 			}
+			
+			# Table of contents
+			{
+				name:  "meta.toctree.restructuredtext"
+				begin: "^(\\s*)(\\.\\.)\\s(toctree)(::)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+				patterns: [
+					{
+						# Leading options
+						name:  "meta.field-list.restructuredtext"
+						begin: "(?<=::)\\G"
+						end:   "^(?=[ \\t]*$)"
+						patterns: [include: "#toctree-options"]
+					}
+					{
+						# Page entry: “Description <filename>”
+						name: "meta.entry.restructuredtext"
+						match: "^\\s+(?!\\G)(\\S.*?)\\s+(<.*?>)[ \\s]*$"
+						captures:
+							1: name: "markup.list.description.restructuredtext"
+							2: patterns: [include: "#xref-target"]
+					}
+					{
+						# Page entry: “filename-and-description”
+						name: "meta.entry.restructuredtext"
+						match: "^\\s+(?!\\G)(\\S.*?)[ \\s]*$"
+						captures:
+							1: patterns: [include: "#xref-target"]
+					}
+				]
+			}
 
 			# HTML
 			{
@@ -1139,3 +1174,61 @@ repository:
 					6: name: "punctuation.separator.key-value.restructuredtext"
 			}
 	]
+
+
+	"toctree-options":
+		patterns: [
+			{
+				# Caption text
+				name:  "meta.toctree-option.caption.restructuredtext"
+				begin: "(:caption:)\\s+(?=\\S)"
+				end:   "$"
+				beginCaptures:
+					1: patterns: [include: "#tag-name"]
+				contentName: "string.unquoted.caption.restructuredtext"
+			}
+			{
+				# Minimum or maximum depths to traverse a hierarchical list
+				name:  "meta.toctree-option.$2.restructuredtext"
+				begin: "(:((?:min|max)depth):)\\s+"
+				end:   "$"
+				beginCaptures:
+					1: patterns: [include: "#tag-name"]
+				patterns: [
+					{
+						# Valid, base-10 integer
+						name: "constant.numeric.integer.restructuredtext"
+						match: "\\G-?\\d+(?=\\s*$)"
+					}
+					{
+						# Unexpected junk
+						name: "invalid.illegal.bad-integer.restructuredtext"
+						match: "\\G(\\S.+?)(?=\\s*$)"
+					}
+				]
+			}
+			{include: "#doctree-options"}
+			{include: "#directive-options"}
+		]
+
+
+	# Cross-reference destination
+	# https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#cross-referencing-syntax
+	"xref-target":
+		patterns: [{
+			match: "(?:^|\\G)(<)(.*)(>)$"
+			captures:
+				1: name: "punctuation.definition.angle.bracket.begin.restructuredtext"
+				2: patterns: [include: "#xref-target"]
+				3: name: "punctuation.definition.angle.bracket.end.restructuredtext"
+		},{
+			match: "(?:^|\\G)(?:(!)|(~))?(?!<)((.+))(?<!<)$"
+			captures:
+				1: name: "keyword.operator.suppress-reference.restructuredtext"
+				2: name: "keyword.operator.last-component-only.restructuredtext"
+				3: name: "string.other.link.destination.restructuredtext"
+				4: patterns: [{
+					name: "keyword.operator.glob.wildcard.restructuredtext"
+					match: "\\*"
+				}]
+		}]

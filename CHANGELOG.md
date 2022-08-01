@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 * Added HTML highlighting to `.. code html::` blocks
 * Improved highlighting of `.. parsed-literal::` blocks
 * Improved highlighting of `.. raw::` blocks with recognised formats
+* Improved highlighting of `.. toctree::` directives
 
 
 [v1.1.2]

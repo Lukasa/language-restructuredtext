@@ -1,4 +1,8 @@
+`aaa <a.foo>`_
+
 .. toctree::
+   :caption: Table of Contents
+   :name: mastertoc
    :maxdepth: 2
    :glob:
 
@@ -11,6 +15,9 @@
    intro
    All about strings <strings>
    datatypes
+   !Nada
+   files/*
+   Queue.Queue.get <~Queue.Queue.get>
 
 .. py:function:: spam(eggs)
                  ham(eggs)

@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 [Unpublished]
 ------------------------------------------------------------------------
 * Fixed untokenised escape sequences within interpreted text roles
+* Added embedded HTML highlighting to ``` :html:`…` ``` roles
 
 
 [v1.1.2]

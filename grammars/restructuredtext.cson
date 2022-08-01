@@ -43,6 +43,7 @@ repository:
 			{include: "#substitution"}
 			{include: "#literal"}
 			{include: "#math-inline"}
+			{include: "#html-inline"}
 			{include: "#interpreted-line"}
 			{include: "#anonymous-link"}
 			{include: "#link-reference"}
@@ -498,6 +499,22 @@ repository:
 					8: name: "string.unquoted.substitution.data.restructuredtext"
 			}
 		]
+
+
+	# Interpreted text: Embedded HTML markup
+	"html-inline":
+		name: "markup.other.command.restructuredtext"
+		contentName: "text.embedded.html.basic"
+		patterns: [include: "text.html.basic"]
+		begin: "(:)(html)(:)(`)"
+		end:   "`"
+		beginCaptures:
+			1: name: "punctuation.definition.intepreted.restructuredtext"
+			2: name: "entity.name.role.restructuredtext"
+			3: name: "punctuation.definition.intepreted.restructuredtext"
+			4: name: "punctuation.definition.intepreted.restructuredtext"
+		endCaptures:
+			0: name: "punctuation.section.intepreted.end.restructuredtext"
 
 
 	# Intepreted text: Multiline with role

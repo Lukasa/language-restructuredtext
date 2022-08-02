@@ -14,6 +14,22 @@ firstLineMatch: """(?x)
 		rst
 	(?=\\s|:|$)
 """
+injections:
+	"L:meta.numref.restructuredtext":
+		patterns: [{
+			# printf(3)-style placeholder
+			name: "constant.other.placeholder.figure-number.restructuredtext"
+			match: "(%)s"
+			captures:
+				1: name: "punctuation.definition.placeholder.restructuredtext"
+		},{
+			# “{name}” and “{number}” placeholders
+			name: "constant.other.placeholder.figure-$2.restructuredtext"
+			match: "({)(name|number)(})"
+			captures:
+				1: name: "punctuation.definition.placeholder.begin.restructuredtext"
+				3: name: "punctuation.definition.placeholder.end.restructuredtext"
+		}]
 
 repository:
 
@@ -40,15 +56,13 @@ repository:
 			{include: "#escape"}
 			{include: "#emphasis"}
 			{include: "#link-definition"}
+			{include: "#role"}
 			{include: "#substitution"}
 			{include: "#literal"}
-			{include: "#math-inline"}
-			{include: "#html-inline"}
 			{include: "#interpreted-line"}
 			{include: "#anonymous-link"}
 			{include: "#link-reference"}
 			{include: "#interpreted-block"}
-			{include: "#link-text"}
 			{include: "#footnotes"}
 			{include: "#citations"}
 		]
@@ -136,34 +150,6 @@ repository:
 
 
 
-
-	# Intepreted text: Multiline with role
-	"interpreted-block":
-		name: "markup.other.command.restructuredtext"
-		contentName: "string.other.interpreted.restructuredtext"
-		begin: "(:)([-A-z0-9:_.]*?)(:)(`)"
-		end:   "(`)"
-		beginCaptures:
-			1: name: "punctuation.definition.intepreted.restructuredtext"
-			2: name: "entity.name.role.restructuredtext"
-			3: name: "punctuation.definition.intepreted.restructuredtext"
-			4: name: "punctuation.definition.intepreted.restructuredtext"
-		endCaptures:
-			1: name: "punctuation.definition.intepreted.restructuredtext"
-		patterns: [
-			{include: "#escape"}
-			
-			# Manpage reference: `ls(1)`
-			name: "meta.manpage.link.inline.restructuredtext"
-			match: "(?<=:manpage:`)\\G([-.\\w]+)(\\()(\\d+)(\\))"
-			captures:
-				1: name: "markup.bold.manpage-name.restructuredtext"
-				2: name: "punctuation.definition.round.bracket.begin.restructuredtext"
-				3: name: "constant.numeric.integer.restructuredtext"
-				4: name: "punctuation.definition.round.bracket.begin.restructuredtext"
-		]
-
-
 	# Intepreted text: Single line
 	"interpreted-line":
 		name: "markup.other.command.restructuredtext"
@@ -182,18 +168,30 @@ repository:
 			2: name: "markup.underline.link.restructuredtext"
 
 
-	# Links: `text`_
-	"link-text":
-		name: "meta.link.inline.restructuredtext"
-		match: "(`)([^<`]+)\\s+(<)(.*?)(>)(`_)"
-		captures:
-			1: name: "punctuation.definition.link.restructuredtext"
-			2: name: "string.other.link.title.restructuredtext"
-			3: name: "punctuation.definition.location.restructuredtext"
-			4: name: "markup.underline.link.restructuredtext"
-			5: name: "punctuation.definition.location.restructuredtext"
-			6: name: "punctuation.definition.link.restructuredtext"
+	# Stuff matched inside hyperlinks and cross-references
+	link:
+		patterns: [{
+			# :ref:`Title <target>`
+			match: "\\G\\s*((?:[^<`\\\\]|\\.)++)?\\s*((<)((?:[^>`\\\\]|\\.)++)(>))\\s*(?=`|$)"
+			captures:
+				1: patterns: [include: "#link-text"]
+				2: name: "meta.link-destination.restructuredtext"
+				3: name: "punctuation.definition.angle.bracket.begin.restructuredtext"
+				4: name: "constant.other.reference.link.restructuredtext"
+				5: name: "punctuation.definition.angle.bracket.end.restructuredtext"
+		},{
+			# :ref:`target-only`
+			match: "\\G\\s*((?:[^`\\\\]|\\.)++)\\s*(?=`|$)"
+			captures:
+				0: name: "meta.link-destination.restructuredtext"
+				1: name: "constant.other.reference.link.restructuredtext"
+		}]
 
+	# Pattern rules “clamped” to a fixed-length capturing group, necessary for injections
+	"link-text":
+		name:  "entity.name.reference.restructuredtext"
+		begin: "(?:^|\\G)"
+		end:   "$"
 
 
 	citations:
@@ -455,6 +453,7 @@ repository:
 			2: "name": "punctuation.definition.field.restructuredtext"
 
 
+	# Substitution reference: “|linked|_” or “|unlinked|”
 	substitution:
 		name: "support.variable.substitution.restructuredtext"
 		match: "(?<!\\\\)(\\|)[^|]+(?<!\\\\)(\\|_{0,2})"
@@ -466,7 +465,7 @@ repository:
 	"substitution-definition":
 		patterns: [
 
-			# Image substitution
+			# Image substitution – “.. |foo| image:: ./path/to/image.png”
 			{
 				name: "meta.substitution-definition.image.restructuredtext"
 				begin: "^(\\s*)(\\.\\.)\\s(\\|)(?=\\S)([^\\|]+)((?<=\\S)\\|)\\s+(image)(::)\\s*(\\S+)"
@@ -483,7 +482,7 @@ repository:
 			}
 
 
-			# Generic/custom definition
+			# Generic/custom definition – “.. |foo| something else:: …”
 			{
 				name: "meta.substitution-definition.restructuredtext"
 				begin: "^(\\s*)(\\.\\.)\\s(\\|)(?=\\S)([^\\|]+)((?<=\\S)\\|)\\s+(\\S+.*(?=::))(::)(.*)"
@@ -501,36 +500,261 @@ repository:
 		]
 
 
-	# Interpreted text: Embedded HTML markup
-	"html-inline":
-		name: "markup.other.command.restructuredtext"
-		contentName: "text.embedded.html.basic"
-		patterns: [include: "text.html.basic"]
-		begin: "(:)(html)(:)(`)"
-		end:   "`"
+	# Interpreted text role
+	role:
+		name:  "meta.interpreted-role.restructuredtext"
+		begin: "((:)\\w+(?:[-_.:+]\\w+)*+(:))(?=`)"
+		end:   "(?!\\G)"
 		beginCaptures:
-			1: name: "punctuation.definition.intepreted.restructuredtext"
-			2: name: "entity.name.role.restructuredtext"
-			3: name: "punctuation.definition.intepreted.restructuredtext"
-			4: name: "punctuation.definition.intepreted.restructuredtext"
-		endCaptures:
-			0: name: "punctuation.section.intepreted.end.restructuredtext"
+			1: name: "keyword.operator.role.restructuredtext"
+			2: name: "punctuation.definition.role.name.begin.restructuredtext"
+			3: name: "punctuation.definition.role.name.end.restructuredtext"
+		patterns: [{
+			begin: "\\G`"
+			end:   "`"
+			beginCaptures: 0: name: "punctuation.definition.role.body.begin.restructuredtext"
+			endCaptures:   0: name: "punctuation.definition.role.body.end.restructuredtext"
+			patterns: [
+				{include: "#role-abbr"}
+				{include: "#role-code"}
+				{include: "#role-command"}
+				{include: "#role-emphasis"}
+				{include: "#role-html"}
+				{include: "#role-literal"}
+				{include: "#role-manpage"}
+				{include: "#role-math"}
+				{include: "#role-numref"}
+				{include: "#role-pep"}
+				{include: "#role-ref"}
+				{include: "#role-rfc"}
+				{include: "#role-strong"}
+				{include: "#role-subscript"}
+				{include: "#role-superscript"}
+				{include: "#role-titleref"}
+				{include: "#role-other"}
+			]
+		}]
 
 
-	# Intepreted text: Multiline with role
-	"math-inline":
-		name: "markup.other.command.restructuredtext"
-		contentName: "markup.math.inline.restructuredtext"
+	# Abbreviation — “:abbr:`FAQ (Frequently Asked Questions)`”
+	"role-abbr":
+		patterns: [{
+			# Sphinx's `:abbr:` role
+			begin: "(?i)(?<=:abbr:`)\\G"
+			end:   "(?=`)"
+			patterns: [
+				{include: "#escape"}
+				{
+					# The abbreviated text
+					name:  "meta.abbreviation.restructuredtext"
+					begin: "\\G\\s*"
+					end:   "(?=\\s*(?:\\(|`))"
+					contentName: "constant.other.abbreviation.restructuredtext"
+					patterns: [include: "#escape"]
+				}
+				{
+					# The meaning of the abbreviation, enclosed in brackets
+					name:  "meta.explanation.restructuredtext"
+					begin: "\\("
+					end:   "(\\))|((?:[^\\x29`]|\\.)*+)(?=`)"
+					contentName: "string.quoted.brackets.restructuredtext"
+					beginCaptures:
+						0: name: "punctuation.definition.string.begin.restructuredtext"
+					endCaptures:
+						1: name: "punctuation.definition.string.end.restructuredtext"
+						2: name: "invalid.illegal.unclosed-parenthetical.restructuredtext"
+					patterns: [include: "#escape"]
+				}
+			]
+		},{
+			# Docutils's default “:abbreviation:” and “:acronym:” roles, neither of which expose the “explanation”
+			# attribute of the doctree node (see https://docutils.sourceforge.io/docs/ref/doctree.html#examples).
+			name:  "meta.abbreviation.restructuredtext"
+			begin: "(?i)(?<=:abbreviation:`|:acronym:`|:a[bc]:`)\\G"
+			end:   "(?=`)"
+			contentName: "constant.other.abbreviation.restructuredtext"
+			patterns: [include: "#escape"]
+		}]
+
+
+	# Inline code
+	"role-code":
+		name:  "markup.raw.code.monospace.literal.restructuredtext"
+		begin: "(?i)(?<=:code:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Literal text, which isn't necessarily source code
+	"role-literal":
+		name:  "markup.raw.monospace.literal.restructuredtext"
+		begin: "(?i)(?<=:literal:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Command name, displayed in a monospaced bold face
+	"role-command":
+		name:  "markup.bold.restructuredtext"
+		begin: "(?i)(?<=:command:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Emphasised text, usually rendered in italics
+	"role-emphasis":
+		name:  "markup.italic.emphasis.restructuredtext"
+		begin: "(?i)(?<=:emphasis:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Strongly emphasised text, usually rendered in bold
+	"role-strong":
+		name:  "markup.bold.emphasis.strong.restructuredtext"
+		begin: "(?i)(?<=:strong:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Inline mathematical expression – :math:`1 + 2`
+	"role-math":
+		name:  "markup.math.inline.restructuredtext"
+		begin: "(?i)(?<=:math:`)\\G"
+		end:   "(?=`)"
 		patterns: [include: "text.tex#math"]
-		begin: "(:)(math)(:)(`)"
-		end:   "(`)"
-		beginCaptures:
-			1: name: "punctuation.definition.intepreted.restructuredtext"
-			2: name: "entity.name.role.restructuredtext"
-			3: name: "punctuation.definition.intepreted.restructuredtext"
-			4: name: "punctuation.definition.intepreted.restructuredtext"
-		endCaptures:
-			1: name: "punctuation.definition.intepreted.restructuredtext"
+
+
+	# Embedded HTML markup
+	"role-html":
+		name: "text.embedded.html.basic"
+		begin: "(?xi)
+			(?: (?<=:html:`)
+			|   (?<=:raw-html:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [include: "text.html.basic"]
+
+
+	# Manpage reference – :manpage:`ls(1)`
+	"role-manpage":
+		name:  "meta.manpage.link.inline.restructuredtext"
+		begin: "(?i)(?<=:manpage:`)\\G"
+		end:   "(?=`)"
+		patterns: [
+			{include: "hidden.manref"}
+			{
+				# Copied from above grammar; see `manref.cson` at Alhadis/language-roff@6f08acf
+				match: "([-.\\w]+)(\\()(\\d+(?!\\d)|(?:[lnop]|tcl)(?=[/\\)]))([\\w:/]*?(?:/(?!/)[-\\w:./]+)?)(\\))"
+				captures:
+					1: name: "markup.bold.manpage-name.restructuredtext"
+					2: name: "punctuation.section.round.bracket.begin.restructuredtext"
+					3: name: "constant.language.manpage-section.restructuredtext"
+					4: name: "constant.language.manpage-group.restructuredtext"
+					5: name: "punctuation.section.round.bracket.end.restructuredtext"
+			}
+		]
+
+
+	# Link to a referenced figure, section, table or code-block
+	"role-numref":
+		name:  "meta.numref.restructuredtext"
+		begin: "(?i)(?<=:numref:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#link"]
+
+
+	# Link to a Python Enhancement Proposal (PEP)
+	"role-pep":
+		begin: "(?xi)
+			(?: (?<= :pep:`)
+			|   (?<= :pep-reference:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [{
+			# Valid integer
+			match: "\\G(\\d+)(?=`)"
+			captures:
+				0: name: "constant.numeric.pep-number.restructuredtext"
+				1: name: "markup.underline.link.pep.$1.hyperlink.restructuredtext"
+		},{
+			# Some weird junk
+			name: "invalid.illegal.bad-integer.restructuredtext"
+			match: "[^`]+"
+		}]
+
+
+	# Roles for linking and cross-referencing resources
+	"role-ref":
+		begin: "(?xi)
+			(?: (?<=:ref:`)
+			|   (?<=:doc:`)
+			|   (?<=:download:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [include: "#link"]
+
+
+	# Request for Comments link: RFC 2822
+	"role-rfc":
+		begin: "(?xi)
+			(?: (?<= :rfc:`)
+			|   (?<= :rfc-reference:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [{
+			# Valid integer
+			match: "\\G(\\d+)(?=`)"
+			captures:
+				0: name: "constant.numeric.rfc-number.restructuredtext"
+				1: name: "markup.underline.link.rfc.$1.hyperlink.restructuredtext"
+		},{
+			# Some weird junk
+			name: "invalid.illegal.bad-integer.restructuredtext"
+			match: "[^`]+"
+		}]
+
+
+	# Subscripted text
+	"role-subscript":
+		name: "markup.subscript.restructuredtext"
+		begin: "(?xi)
+			(?: (?<=:sub:`)
+			|   (?<=:subscript:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Superscripted text
+	"role-superscript":
+		name: "markup.superscript.restructuredtext"
+		begin: "(?xi)
+			(?: (?<=:sup:`)
+			|   (?<=:superscript:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Title of a referenced creative work
+	"role-titleref":
+		name: "markup.italic.title-reference.restructuredtext"
+		begin: "(?xi)
+			(?: (?<= :t:`)
+			|   (?<= :title:`)
+			|   (?<= :title-reference:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Fallback for any text role we don't recognise
+	"role-other":
+		name:  "string.interpolated.restructuredtext"
+		begin: "(?<=:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
 
 
 	directives:

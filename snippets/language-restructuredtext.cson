@@ -27,7 +27,7 @@
 		body:   ".. container:: ${1:class}\n\n\t$0"
 	"contents directive":
 		prefix: "contents"
-		body:   "..contents:: ${1:title}\n\t:depth: ${2:2}"
+		body:   ".. contents:: ${1:title}\n\t:depth: ${2:2}"
 	"csv-table directive":
 		prefix: "csv-table"
 		body:   ".. csv-table:: ${1:title}\n\n\t$0"

@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 
 [Unpublished]
 ------------------------------------------------------------------------
+* [[`#67`][]]: Fixed malformed syntax in `contents` snippet
 * Fixed highlighting of inline markup in substitution definitions
 * Fixed untokenised escape sequences within interpreted text roles
 * Added HTML highlighting to ``` :html:`…` ``` roles
@@ -15,6 +16,8 @@ This project adheres to [Semantic Versioning](http://semver.org).
 * Improved highlighting of `.. parsed-literal::` blocks
 * Improved highlighting of `.. raw::` blocks with recognised formats
 * Improved highlighting of `.. toctree::` directives
+
+[`#67`]:  https://github.com/Lukasa/language-restructuredtext/issues/67
 
 
 [v1.1.2]

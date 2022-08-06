@@ -531,8 +531,8 @@ repository:
 				{include: "#role-strong"}
 				{include: "#role-subscript"}
 				{include: "#role-superscript"}
-				{include: "#role-titleref"}
 				{include: "#role-term"}
+				{include: "#role-titleref"}
 				{include: "#role-other"}
 			]
 		}]
@@ -587,26 +587,18 @@ repository:
 		patterns: [include: "#escape"]
 
 
-	# Defining instance of a term
-	"role-dfn":
-		name:  "markup.italic.definition.restructuredtext"
-		begin: "(?i)(?<=:dfn:`)\\G"
-		end:   "(?=`)"
-		patterns: [include: "#escape"]
-		
-
-	# Literal text, which isn't necessarily source code
-	"role-literal":
-		name:  "markup.raw.monospace.literal.restructuredtext"
-		begin: "(?i)(?<=:literal:`)\\G"
-		end:   "(?=`)"
-		patterns: [include: "#escape"]
-
-
 	# Command name, displayed in a monospaced bold face
 	"role-command":
 		name:  "markup.bold.restructuredtext"
 		begin: "(?i)(?<=:command:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# Defining instance of a term
+	"role-dfn":
+		name:  "markup.italic.definition.restructuredtext"
+		begin: "(?i)(?<=:dfn:`)\\G"
 		end:   "(?=`)"
 		patterns: [include: "#escape"]
 
@@ -619,22 +611,6 @@ repository:
 		patterns: [include: "#escape"]
 
 
-	# Strongly emphasised text, usually rendered in bold
-	"role-strong":
-		name:  "markup.bold.emphasis.strong.restructuredtext"
-		begin: "(?i)(?<=:strong:`)\\G"
-		end:   "(?=`)"
-		patterns: [include: "#escape"]
-
-
-	# Inline mathematical expression – :math:`1 + 2`
-	"role-math":
-		name:  "markup.math.inline.restructuredtext"
-		begin: "(?i)(?<=:math:`)\\G"
-		end:   "(?=`)"
-		patterns: [include: "text.tex#math"]
-
-
 	# Embedded HTML markup
 	"role-html":
 		name: "text.embedded.html.basic"
@@ -644,6 +620,14 @@ repository:
 			) \\G"
 		end: "(?=`)"
 		patterns: [include: "text.html.basic"]
+
+
+	# Literal text, which isn't necessarily source code
+	"role-literal":
+		name:  "markup.raw.monospace.literal.restructuredtext"
+		begin: "(?i)(?<=:literal:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
 
 
 	# Manpage reference – :manpage:`ls(1)`
@@ -664,6 +648,14 @@ repository:
 					5: name: "punctuation.section.round.bracket.end.restructuredtext"
 			}
 		]
+
+
+	# Inline mathematical expression – :math:`1 + 2`
+	"role-math":
+		name:  "markup.math.inline.restructuredtext"
+		begin: "(?i)(?<=:math:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "text.tex#math"]
 
 
 	# Link to a referenced figure, section, table or code-block
@@ -705,7 +697,7 @@ repository:
 		patterns: [include: "#link"]
 
 
-	# Request for Comments link: RFC 2822
+	# Link to a Request for Comments (RFC)
 	"role-rfc":
 		begin: "(?xi)
 			(?: (?<= :rfc:`)
@@ -723,6 +715,14 @@ repository:
 			name: "invalid.illegal.bad-integer.restructuredtext"
 			match: "[^`]+"
 		}]
+
+
+	# Strongly emphasised text, usually rendered in bold
+	"role-strong":
+		name:  "markup.bold.emphasis.strong.restructuredtext"
+		begin: "(?i)(?<=:strong:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
 
 
 	# Subscripted text

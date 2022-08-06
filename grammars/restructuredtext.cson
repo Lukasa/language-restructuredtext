@@ -518,6 +518,7 @@ repository:
 				{include: "#role-abbr"}
 				{include: "#role-code"}
 				{include: "#role-command"}
+				{include: "#role-dfn"}
 				{include: "#role-emphasis"}
 				{include: "#role-html"}
 				{include: "#role-literal"}
@@ -531,6 +532,7 @@ repository:
 				{include: "#role-subscript"}
 				{include: "#role-superscript"}
 				{include: "#role-titleref"}
+				{include: "#role-term"}
 				{include: "#role-other"}
 			]
 		}]
@@ -584,6 +586,14 @@ repository:
 		end:   "(?=`)"
 		patterns: [include: "#escape"]
 
+
+	# Defining instance of a term
+	"role-dfn":
+		name:  "markup.italic.definition.restructuredtext"
+		begin: "(?i)(?<=:dfn:`)\\G"
+		end:   "(?=`)"
+		patterns: [include: "#escape"]
+		
 
 	# Literal text, which isn't necessarily source code
 	"role-literal":
@@ -732,6 +742,20 @@ repository:
 		begin: "(?xi)
 			(?: (?<=:sup:`)
 			|   (?<=:superscript:`)
+			) \\G"
+		end: "(?=`)"
+		patterns: [include: "#escape"]
+
+
+	# References to various symbols and term definitions
+	"role-term":
+		name: "variable.parameter.reference.restructuredtext"
+		begin: "(?xi)
+			(?: (?<=:term:`)
+			|   (?<=:envvar:`)
+			|   (?<=:keyword:`)
+			|   (?<=:option:`)
+			|   (?<=:token:`)
 			) \\G"
 		end: "(?=`)"
 		patterns: [include: "#escape"]

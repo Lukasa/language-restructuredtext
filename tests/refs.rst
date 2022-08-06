@@ -32,3 +32,5 @@ There
 * Section.1 is :numref:`Sect.{number} {name} <foo>`
 
 :envvar:`PATH`
+
+Python packages are installed in :file:`/usr/local/lib/python3.{x}/site-packages`.

@@ -520,6 +520,7 @@ repository:
 				{include: "#role-command"}
 				{include: "#role-dfn"}
 				{include: "#role-emphasis"}
+				{include: "#role-file"}
 				{include: "#role-html"}
 				{include: "#role-literal"}
 				{include: "#role-manpage"}
@@ -609,6 +610,25 @@ repository:
 		begin: "(?i)(?<=:emphasis:`)\\G"
 		end:   "(?=`)"
 		patterns: [include: "#escape"]
+
+
+	# Filename or directory
+	"role-file":
+		name:  "meta.link-destination.filename.restructuredtext"
+		begin: "(?i)(?<=:file:`)\\G"
+		end:   "(?=`)"
+		contentName: "constant.other.reference.link.restructuredtext"
+		patterns: [
+			{include: "#escape"}
+			
+			# Bracketed sections represent “variable” components of a filename
+			name: "meta.embedded.line.restructuredtext"
+			match: "({)((?:[^\\\\}]|\\\\.)*+)(})"
+			captures:
+				1: name: "punctuation.section.embedded.begin.restructuredtext"
+				2: name: "variable.parameter.placeholder.restructuredtext", patterns: [include: "#escape"]
+				3: name: "punctuation.section.embedded.end.restructuredtext"
+		]
 
 
 	# Embedded HTML markup

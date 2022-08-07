@@ -44,8 +44,11 @@ repository:
 			{include: "#tables"}
 			{include: "#headings"}
 			{include: "#substitution-definition"}
+			{include: "#citation-definition"}
+			{include: "#footnote-definition"}
 			{include: "#directives"}
 			{include: "#raw-blocks"}
+			{include: "#link-target"}
 			{include: "#inlines"}
 			{include: "#tag-name"}
 			{include: "#doctests"}
@@ -59,28 +62,19 @@ repository:
 		patterns: [
 			{include: "#escape"}
 			{include: "#emphasis"}
-			{include: "#link-definition"}
+			{include: "#link-target-inline"}
 			{include: "#role"}
 			{include: "#substitution"}
 			{include: "#literal"}
-			{include: "#interpreted-line"}
-			{include: "#anonymous-link"}
 			{include: "#link-reference"}
 			{include: "#interpreted-block"}
-			{include: "#footnotes"}
-			{include: "#citations"}
+			{include: "#footnote"}
+			{include: "#citation"}
 		]
 
 	escape:
 		match: "\\\\."
 		name: "constant.character.escape.backslash.restructuredtext"
-
-
-	# Path/URL
-	uri:
-		name: "string.other.uri.restructuredtext"
-		match: "\\S+"
-		captures: 0: name: "markup.link.underline.restructuredtext"
 
 
 	# Numeric length values
@@ -154,78 +148,256 @@ repository:
 
 
 
-	# Intepreted text: Single line
-	"interpreted-line":
-		name: "markup.other.command.restructuredtext"
-		match: "(`)[^`]+(`)(?!_)"
-		captures:
-			1: name: "punctuation.definition.intepreted.restructuredtext"
-			2: name: "punctuation.definition.intepreted.restructuredtext"
-
-
-	# Anonymous links: url__
-	"anonymous-link":
-		name: "meta.link.restructuredtext"
-		match: "\\s*(__)\\s+(.+)"
-		captures:
-			1: name: "punctuation.definition.link.restructuredtext"
-			2: name: "markup.underline.link.restructuredtext"
-
-
 	# Stuff matched inside hyperlinks and cross-references
 	link:
 		patterns: [{
-			# :ref:`Title <target>`
-			match: "\\G\\s*((?:[^<`\\\\]|\\.)++)?\\s*((<)((?:[^>`\\\\]|\\.)++)(>))\\s*(?=`|$)"
+			# `Title <target>`
+			match: "\\G\\s*((?:[^`\\\\]|\\\\.)+\\s+)?((<)((?:[^`\\\\<>_]|_(?!>)|\\\\.)+)(_)?(>))\\s*(?=`|$)"
 			captures:
-				1: patterns: [include: "#link-text"]
+				1: patterns: [{
+					name:  "entity.name.reference.restructuredtext"
+					begin: "(?:^|\\G)"
+					end:   "$"
+					patterns: [include: "#escape"]
+				}]
 				2: name: "meta.link-destination.restructuredtext"
 				3: name: "punctuation.definition.angle.bracket.begin.restructuredtext"
-				4: name: "constant.other.reference.link.restructuredtext"
-				5: name: "punctuation.definition.angle.bracket.end.restructuredtext"
+				4: name: "constant.other.reference.link.restructuredtext", patterns: [include: "#escape"]
+				5: name: "punctuation.definition.reference.named.restructuredtext"
+				6: name: "punctuation.definition.angle.bracket.end.restructuredtext"
 		},{
-			# :ref:`target-only`
+			# `target-only`
 			match: "\\G\\s*((?:[^`\\\\]|\\.)++)\\s*(?=`|$)"
 			captures:
-				0: name: "meta.link-destination.restructuredtext"
-				1: name: "constant.other.reference.link.restructuredtext"
+				1: patterns: [{
+					name:  "meta.link-destination.restructuredtext"
+					begin: "(?:^|\\G)"
+					end:   "$"
+					contentName: "constant.other.reference.link.restructuredtext"
+					patterns: [include: "#escape"]
+				}]
 		}]
 
-	# Pattern rules “clamped” to a fixed-length capturing group, necessary for injections
-	"link-text":
-		name:  "entity.name.reference.restructuredtext"
-		begin: "(?:^|\\G)"
-		end:   "$"
+
+	# Hyperlink reference
+	"link-reference":
+		patterns: [{
+			# Single-line
+			match: "(?<=^|\\s)(?:(`(?:[^\\\\`]|\\\\.)*+`__?)|\\b((?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++__?))\\b(?=$|\\s)"
+			captures:
+				1: patterns: [include: "#link-reference-quoted"]
+				2: patterns: [include: "#link-reference-unquoted"]
+		},{
+			# Multi-line
+			begin: "(?<=^|\\s)(?=`(?:[^\\\\`]|\\\\.)++$)"
+			end:   "(?!\\G)"
+			patterns: [include: "#link-reference-quoted"]
+		}]
 
 
-	citations:
+	# Backquoted link reference: “`name`_”
+	"link-reference-quoted":
+		name:  "meta.link-reference.quoted.restructuredtext"
+		begin: "(?:\\G|^)`"
+		end:   "(`)(?:(__)\\b|(_)\\b)?"
+		beginCaptures:
+			0: name: "punctuation.definition.link.begin.restructuredtext"
+		endCaptures:
+			1: name: "punctuation.definition.link.end.restructuredtext"
+			2: name: "punctuation.definition.reference.anonymous.restructuredtext"
+			3: name: "punctuation.definition.reference.named.restructuredtext"
+		patterns: [{
+			# Embedded URI
+			name:  "meta.embedded-target.restructuredtext"
+			begin: "\\G(?=.*(?:\\G|(?<=\\s))<(?:[^\\\\<>`]|\\\\.)++>\\s*(?:$|`))"
+			end:   "(?=\\s*(?:$|`))"
+			patterns: [include: "#link"]
+		},{
+			# Contents of a multiline link reference, sans indentation
+			match: "(?:\\G|^\\s*)((?!\\s)(?:[^\\\\`]|\\\\.)++)"
+			captures: 1:
+				name: "constant.other.reference.link.restructuredtext"
+				patterns: [include: "#escape"]
+		}]
+
+
+	# Simple link reference: “name_”
+	"link-reference-unquoted":
+		name:  "meta.link-reference.unquoted.restructuredtext"
+		begin: "(?:\\G|^)\\b(?=\\w)(?!_)"
+		end:   "(?:(__)\\b|(_)\\b)|(?=_\\W)"
+		contentName: "constant.other.reference.link.restructuredtext"
+		endCaptures:
+			1: name: "punctuation.definition.reference.anonymous.restructuredtext"
+			2: name: "punctuation.definition.reference.named.restructuredtext"
 		patterns: [
-
-			# Replacement
-			{
-				name: "meta.link.citation.def.restructuredtext"
-				match: "^(\\.\\.)\\s+((\\[)[A-z][A-z0-9]*(\\]))(_)\\s+(.*)"
-				captures:
-					1: name: "punctuation.definition.link.restructuredtext"
-					2: name: "constant.other.citation.link.restructuredtext"
-					3: name: "punctuation.definition.constant.restructuredtext"
-					4: name: "punctuation.definition.constant.restructuredtext"
-					5: name: "punctuation.definition.constant.restructuredtext"
-					6: name: "string.other.citation.restructuredtext"
-			}
-
-			# Citation reference
-			{
-				name: "meta.link.citation.restructuredtext"
-				match: "((\\[)[A-z][A-z0-9_-]*(\\]))(_)"
-				captures:
-					1: name: "constant.other.citation.link.restructuredtext"
-					2: name: "punctuation.definition.constant.restructuredtext"
-					3: name: "punctuation.definition.constant.restructuredtext"
-					4: name: "punctuation.definition.constant.restructuredtext"
-			}
+			{match: "[-_.:+][A-Za-z0-9]"}
+			{include: "#escape"}
 		]
 
+
+	# Hyperlink target definitions
+	"link-target":
+		patterns: [{
+			# Anonymous hyperlink target: “.. __: http://target.url/”
+			name:  "meta.definition.link-target.anonymous.restructuredtext"
+			begin: "(?:^(\\s*)|(?!^)\\G\\s*)(?:(\\.\\.)\\s+(__)(:)|(__))(?:$|\\s+)"
+			end:   "^(?:(?=\\s*$)|(?!\\1[ \\t]+\\S))"
+			beginCaptures:
+				2: name: "punctuation.definition.directive.restructuredtext"
+				3: name: "constant.language.anonymous-link.restructuredtext"
+				4: name: "punctuation.separator.key-value.restructuredtext"
+				5: name: "constant.language.anonymous-link.restructuredtext"
+			patterns: [include: "#link-target-innards"]
+		},{
+			# Named hyperlink target: “.. _name: …”
+			name:  "meta.definition.link-target.named.restructuredtext"
+			begin: """(?x)
+				(?: ^(\\s*) | (?!^)\\G\\s*)
+				(\\.\\.) \\s+ (_)
+				(
+					# Phrase reference: “.. _`name`: …”
+					(`) ((?:[^\\\\`]|\\\\.)*+) (`)
+					|
+					# Name reference:   “.. _name: …”
+					(?!`)
+					(
+						(?: [^\\\\:]
+						|   : (?!$|\\s)
+						|   \\\\.
+						)++
+					)
+				) (:) (?:$|\\s+)
+			"""
+			end: "^(?:(?=\\s*$)|(?!\\1[ \\t]+\\S))"
+			beginCaptures:
+				2: name: "punctuation.definition.directive.restructuredtext"
+				3: name: "punctuation.definition.link.restructuredtext"
+				4: name: "entity.name.link.restructuredtext"
+				5: name: "punctuation.definition.link.begin.restructuredtext"
+				6: patterns: [include: "#escape"]
+				7: name: "punctuation.definition.link.end.restructuredtext"
+				8: patterns: [include: "#escape"]
+				9: name: "punctuation.separator.key-value.restructuredtext"
+			patterns: [include: "#link-target-innards"]
+		}]
+
+
+	# Partial or complete segment of a link target's destination
+	"link-target-innards":
+		patterns: [{
+			# Link reference contained by opening line: `foo-bar`_
+			match: "\\G(?<=[ \\t])(?:`(?:[^\\\\`]|\\\\.)*+`|\\b(?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++)_(?=\\s*$)"
+			captures:
+				0: patterns: [include: "#link-reference"]
+		},{
+			# Link reference starting on opening line `foo…\n…bar`_
+			begin: "\\G(?<=[ \\t])(?=`(?:[^\\\\`]|\\\\.)*+$)"
+			end: "(?!\\G)"
+			patterns: [include: "#link-reference-quoted"]
+		},{
+			# Link reference on next line
+			applyEndPatternLast: true
+			begin: "\\G(?=\\s*$)"
+			end: "^(\\s*(?:`(?:[^\\\\`]|\\\\.)*+`|\\b(?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++)__?\\b)?|(?<=`__|`_)(?=\\s*$)"
+			endCaptures:
+				1: patterns: [include: "#link-reference"]
+			patterns: [{
+				begin: "^\\s*(?=`(?:[^\\\\`]|\\\\.)*+$)"
+				end:   "(?!\\G)"
+				patterns: [include: "#link-reference-quoted"]
+			}]
+		},{
+			# Regular URI
+			match: "(?:^\\s*|\\G|(?<=\\s))((?:[^\\\\\\s]|\\\\.)++)(?=$|\\s)"
+			captures: 1:
+				name: "constant.other.reference.link.restructuredtext"
+				patterns: [include: "#escape"]
+		}]
+
+
+	# Inline internal link target: “_`name`”
+	"link-target-inline":
+		name:  "meta.definition.link-target.inline.internal.restructuredtext"
+		match: "\\b(_)((`)(?:[^\\\\`]|\\\\.)*+)(`)"
+		captures:
+			1: name: "punctuation.definition.link.restructuredtext"
+			2: name: "entity.name.link.restructuredtext"
+			3: name: "punctuation.definition.link.begin.restructuredtext"
+			4: name: "punctuation.definition.link.end.restructuredtext"
+
+
+	# Citation reference: “[label]_”
+	citation:
+		name: "meta.citation.reference.restructuredtext"
+		match: "(\\[)((?=[A-Za-z])(?:[-_.:+]?[A-Za-z0-9])++)(\\])(_)"
+		captures:
+			1: name: "punctuation.definition.citation.begin.restructuredtext"
+			2: name: "constant.other.reference.link.restructuredtext"
+			3: name: "punctuation.definition.citation.end.restructuredtext"
+			4: name: "punctuation.definition.reference.restructuredtext"
+
+
+	# Citation definition: “.. [label] Details”
+	"citation-definition":
+		name:  "meta.citation.definition.restructuredtext"
+		begin: "(?:^(\\s*)|(?!^)\\G\\s*)(\\.\\.)\\s+(\\[)((?=[A-Za-z])(?:[-_.:+]?[A-Za-z0-9])++)(\\])(?:$|\\s+)"
+		end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+		beginCaptures:
+			2: name: "punctuation.definition.directive.restructuredtext"
+			3: name: "punctuation.definition.citation.begin.restructuredtext"
+			4: name: "entity.name.citation.restructuredtext"
+			5: name: "punctuation.definition.citation.end.restructuredtext"
+		contentName: "string.unquoted.citation.restructuredtext"
+		patterns: [include: "#all"]
+
+
+	# Footnote reference
+	footnote:
+		patterns: [{
+			# Manually-numbered: “[0]_”
+			name:  "meta.footnote.reference.numbered.manual.restructuredtext"
+			begin: "(?=\\[[0-9]+\\]_)"
+			end:   "(?!\\G)"
+			patterns: [include: "#footnote-name"]
+		},{
+			# Auto-numbered: “[#]_” or “[#foo]_”
+			name:  "meta.footnote.reference.numbered.auto.restructuredtext"
+			begin: "(?=\\[#(?:(?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++)?\\]_)"
+			end:   "(?!\\G)"
+			patterns: [include: "#footnote-name"]
+		},{
+			# Auto-symbol: “[*]_”
+			name:  "meta.footnote.reference.symbolic.auto.restructuredtext"
+			begin: "(?=\\[\\*\\]_)"
+			end:   "(?!\\G)"
+			patterns: [include: "#footnote-name"]
+		}]
+
+
+	# Footnote definition
+	"footnote-definition":
+		name: "meta.footnote.definition.restructuredtext"
+		begin: "^(\\s*)(\\.\\.)\\s+(\\[[^\\]]+\\])(?:$|\\s+)"
+		end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+		beginCaptures:
+			2: name: "punctuation.definition.link.restructuredtext"
+			3: patterns: [include: "#footnote-name"]
+		contentName: "string.unquoted.footnote.restructuredtext"
+		patterns: [include: "#all"]
+
+
+	# Bracketed footnote label
+	"footnote-name":
+		name:  "meta.footnote-name.restructuredtext"
+		begin: "(?:\\G|^)\\["
+		end:   "(\\])(_)?"
+		contentName: "constant.other.reference.link.restructuredtext"
+		beginCaptures:
+			0: name: "punctuation.definition.footnote.begin.restructuredtext"
+		endCaptures:
+			1: name: "punctuation.definition.footnote.end.restructuredtext"
+			2: name: "punctuation.definition.reference.restructuredtext"
 
 
 	comments:
@@ -267,108 +439,6 @@ repository:
 				end:   "^(?!\\1[\\t\\s]+\\S|\\s*$)|^(?=\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.comment.restructuredtext"
-			}
-		]
-
-
-
-	footnotes:
-		patterns: [
-
-			# Definition
-			{
-				name: "meta.link.footnote.def.restructuredtext"
-				begin: "^(\\s*)(\\.\\.)\\s+((\\[)(((#?)[^\\]]*?)|\\*)(\\]))\\s+"
-				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
-				patterns: [include: "#inlines"]
-				contentName: "string.other.footnote.restructuredtext"
-				captures:
-					2: name: "punctuation.definition.link.restructuredtext"
-					3: name: "constant.other.footnote.link.restructuredtext"
-					4: name: "punctuation.definition.constant.restructuredtext"
-					7: name: "punctuation.definition.constant.restructuredtext"
-					8: name: "punctuation.definition.constant.restructuredtext"
-			}
-
-			# Reference: [0]_
-			{
-				name: "meta.link.footnote.numeric.restructuredtext"
-				match: "((\\[)[0-9]+(\\]))(_)"
-				captures:
-					1: name: "constant.other.footnote.link"
-					2: name: "punctuation.definition.constant.restructuredtext"
-					3: name: "punctuation.definition.constant.restructuredtext"
-					4: name: "punctuation.definition.constant.restructuredtext"
-			}
-
-			# Reference: [#]_ or [#foo]_
-			{
-				name: "meta.link.footnote.auto.restructuredtext"
-				match: "((\\[#)[A-z0-9_]*(\\]))(_)"
-				captures:
-					1: name: "constant.other.footnote.link"
-					2: name: "punctuation.definition.constant.restructuredtext"
-					3: name: "punctuation.definition.constant.restructuredtext"
-					4: name: "punctuation.definition.constant.restructuredtext"
-			}
-
-			# Reference: [*]_
-			{
-				name: "meta.link.footnote.symbol.auto.restructuredtext"
-				match: "((\\[)\\*(\\]))(_)"
-				captures:
-					1: name: "constant.other.footnote.link.restructuredtext"
-					2: name: "punctuation.definition.constant.restructuredtext"
-					3: name: "punctuation.definition.constant.restructuredtext"
-					4: name: "punctuation.definition.constant.restructuredtext"
-			}
-		]
-
-
-
-	"link-definition":
-		patterns: [
-			{
-				name: "meta.link.reference.def.restructuredtext"
-				match: "(\\.\\.)\\s+(_)([-.:\+\\d\\w\\s()/]+?)(:)\\s+(.*)"
-				captures:
-					1: name: "punctuation.definition.link.restructuredtext"
-					2: name: "punctuation.definition.string.restructuredtext"
-					3: name: "string.other.link.title.restructuredtext"
-					4: name: "punctuation.separator.key-value.restructuredtext"
-					5: patterns: [include: "#uri"]
-			}
-
-			{
-				name: "meta.link.reference.def.restructuredtext"
-				match: "(\\.\\.)\\s+(_`)([^`]+)(`:)\\s+(.*)"
-				captures:
-					1: name: "punctuation.definition.link.restructuredtext"
-					2: name: "punctuation.definition.string.restructuredtext"
-					3: name: "string.other.link.title.restructuredtext"
-					4: name: "punctuation.separator.key-value.restructuredtext"
-					5: patterns: [include: "#uri"]
-			}
-		]
-
-
-	"link-reference":
-		patterns: [
-			{
-				name: "meta.link.reference"
-				match: "\\b([-.:+_\\d\\w]+)(_)\\b"
-				captures:
-					1: name: "string.other.link.title.restructuredtext"
-					2: name: "punctuation.definition.link.restructuredtext"
-			}
-
-			{
-				name: "meta.link.reference"
-				match: "(`)(.*?)(`__?)"
-				captures:
-					1: name: "punctuation.definition.link.restructuredtext"
-					2: name: "string.other.link.title.restructuredtext"
-					3: name: "punctuation.definition.link.restructuredtext"
 			}
 		]
 
@@ -482,7 +552,7 @@ repository:
 					5: name: "punctuation.definition.substitution.end.restructuredtext"
 					6: name: "support.directive.restructuredtext"
 					7: name: "punctuation.separator.key-value.restructuredtext"
-					8: patterns: [include: "#uri"]
+					8: name: "constant.other.reference.link.restructuredtext"
 			}
 
 
@@ -818,7 +888,7 @@ repository:
 					2: name: "punctuation.definition.directive.restructuredtext"
 					3: name: "support.directive.restructuredtext"
 					4: name: "punctuation.separator.key-value.restructuredtext"
-					5: patterns: [include: "#uri"]
+					5: name: "constant.other.reference.link.restructuredtext"
 			}
 
 			# Figure
@@ -834,43 +904,10 @@ repository:
 					2: name: "punctuation.definition.directive.restructuredtext"
 					3: name: "support.directive.restructuredtext"
 					4: name: "punctuation.separator.key-value.restructuredtext"
-					5: patterns: [include: "#uri"]
+					5: name: "constant.other.reference.link.restructuredtext"
 			}
 			
-			# Table of contents
-			{
-				name:  "meta.toctree.restructuredtext"
-				begin: "^(\\s*)(\\.\\.)\\s(toctree)(::)(?=\\s*$)"
-				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
-				beginCaptures:
-					2: name: "punctuation.definition.directive.restructuredtext"
-					3: name: "support.directive.restructuredtext"
-					4: name: "punctuation.separator.key-value.restructuredtext"
-				patterns: [
-					{
-						# Leading options
-						name:  "meta.field-list.restructuredtext"
-						begin: "(?<=::)\\G"
-						end:   "^(?=[ \\t]*$)"
-						patterns: [include: "#toctree-options"]
-					}
-					{
-						# Page entry: “Description <filename>”
-						name: "meta.entry.restructuredtext"
-						match: "^\\s+(?!\\G)(\\S.*?)\\s+(<.*?>)[ \\s]*$"
-						captures:
-							1: name: "markup.list.description.restructuredtext"
-							2: patterns: [include: "#xref-target"]
-					}
-					{
-						# Page entry: “filename-and-description”
-						name: "meta.entry.restructuredtext"
-						match: "^\\s+(?!\\G)(\\S.*?)[ \\s]*$"
-						captures:
-							1: patterns: [include: "#xref-target"]
-					}
-				]
-			}
+			{include: "#toctree"}
 
 			# HTML
 			{
@@ -1448,50 +1485,78 @@ repository:
 	]
 
 
-	"toctree-options":
-		patterns: [
-			{
-				# Caption text
-				name:  "meta.toctree-option.caption.restructuredtext"
-				begin: "(:caption:)\\s+(?=\\S)"
-				end:   "$"
-				beginCaptures:
-					1: patterns: [include: "#tag-name"]
-				contentName: "string.unquoted.caption.restructuredtext"
-			}
-			{
-				# Minimum or maximum depths to traverse a hierarchical list
-				name:  "meta.toctree-option.$2.restructuredtext"
-				begin: "(:((?:min|max)depth):)\\s+"
-				end:   "$"
-				beginCaptures:
-					1: patterns: [include: "#tag-name"]
-				patterns: [
-					{
-						# Valid, base-10 integer
-						name: "constant.numeric.integer.restructuredtext"
-						match: "\\G-?\\d+(?=\\s*$)"
-					}
-					{
-						# Unexpected junk
-						name: "invalid.illegal.bad-integer.restructuredtext"
-						match: "\\G(\\S.+?)(?=\\s*$)"
-					}
-				]
-			}
-			{include: "#doctree-options"}
-			{include: "#directive-options"}
-		]
+	# Table of contents
+	toctree:
+		name:  "meta.toctree.restructuredtext"
+		begin: "^(\\s*)(\\.\\.)\\s(toctree)(::)(?=\\s*$)"
+		end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+		beginCaptures:
+			2: name: "punctuation.definition.directive.restructuredtext"
+			3: name: "support.directive.restructuredtext"
+			4: name: "punctuation.separator.key-value.restructuredtext"
+		patterns: [{
+			# Leading options
+			name:  "meta.field-list.restructuredtext"
+			begin: "(?<=::)\\G"
+			end:   "^(?=[ \\t]*$)"
+			patterns: [
+				{include: "#toctree-caption"}
+				{include: "#toctree-depth"}
+				{include: "#doctree-options"}
+				{include: "#directive-options"}
+			]
+		},{
+			# Page entry: “Description <filename>”
+			name: "meta.entry.restructuredtext"
+			match: "^\\s+(?!\\G)(\\S.*?)\\s+(<.*?>)[ \\s]*$"
+			captures:
+				1: name: "markup.list.description.restructuredtext"
+				2: patterns: [include: "#toctree-target"]
+		},{
+			# Page entry: “filename-and-description”
+			name: "meta.entry.restructuredtext"
+			match: "^\\s+(?!\\G)(\\S.*?)[ \\s]*$"
+			captures:
+				1: patterns: [include: "#toctree-target"]
+		}]
+
+
+	# Caption for table of contents
+	"toctree-caption":
+		name:  "meta.toctree-option.caption.restructuredtext"
+		begin: "(:caption:)\\s+(?=\\S)"
+		end:   "$"
+		beginCaptures:
+			1: patterns: [include: "#tag-name"]
+		contentName: "string.unquoted.caption.restructuredtext"
+
+
+	# Minimum or maximum depth to traverse a hierarchical list
+	"toctree-depth":
+		name:  "meta.toctree-option.$2.restructuredtext"
+		begin: "(:((?:min|max)depth):)\\s+"
+		end:   "$"
+		beginCaptures:
+			1: patterns: [include: "#tag-name"]
+		patterns: [{
+			# Valid, base-10 integer
+			name: "constant.numeric.integer.restructuredtext"
+			match: "\\G-?\\d+(?=\\s*$)"
+		},{
+			# Unexpected junk
+			name: "invalid.illegal.bad-integer.restructuredtext"
+			match: "\\G(\\S.+?)(?=\\s*$)"
+		}]
 
 
 	# Cross-reference destination
 	# https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#cross-referencing-syntax
-	"xref-target":
+	"toctree-target":
 		patterns: [{
 			match: "(?:^|\\G)(<)(.*)(>)$"
 			captures:
 				1: name: "punctuation.definition.angle.bracket.begin.restructuredtext"
-				2: patterns: [include: "#xref-target"]
+				2: patterns: [include: "#toctree-target"]
 				3: name: "punctuation.definition.angle.bracket.end.restructuredtext"
 		},{
 			match: "(?:^|\\G)(?:(!)|(~))?(?!<)((.+))(?<!<)$"

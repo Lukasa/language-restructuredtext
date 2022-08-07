@@ -118,33 +118,48 @@ repository:
 
 			# Bold
 			{
-				name: "markup.bold.restructuredtext"
-				begin: "\\*\\*(?=[^\\*\\s])"
-				end:   "\\*\\*|^(?=\\s*$)"
+				contentName: "markup.bold.emphasis.strong.restructuredtext"
+				begin: """(?x)
+					(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+					\\*\\*
+					(?=\\S)
+					(?!\\*\\*(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+				"""
+				end: "(?<=\\S)\\*\\*(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])|^(?=\\s*$)"
 				beginCaptures: 0: "name": "punctuation.definition.bold.begin.restructuredtext"
 				endCaptures:   0: "name": "punctuation.definition.bold.end.restructuredtext"
-				patterns: [include: "#inlines"]
+				patterns: [include: "#escape"]
 			}
 
 			# Italic
 			{
-				name: "markup.italic.restructuredtext"
-				begin: "(?<!\\\\)\\*(?=[^\\*\\s])"
-				end:   "(?<!\\\\)\\*|^(?=\\s*$)"
+				contentName: "markup.italic.emphasis.restructuredtext"
+				begin: """(?x)
+					(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+					\\*
+					(?=\\S)
+					(?!\\*(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+				"""
+				end: "(?<=\\S)\\*(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])|^(?=\\s*$)"
 				beginCaptures: 0: name: "punctuation.definition.italic.begin.restructuredtext"
 				endCaptures:   0: name: "punctuation.definition.italic.end.restructuredtext"
-				patterns: [include: "#inlines"]
+				patterns: [include: "#escape"]
 			}
 		]
 
 
 	# Inline literal
 	literal:
-		name: "markup.raw.restructuredtext"
-		begin: "``"
-		end:   "``((?=[^`\\w\\d])|$)"
-		beginCaptures: 0: name: "punctuation.definition.raw.begin.restructuredtext"
-		endCaptures:   0: name: "punctuation.definition.raw.end.restructuredtext"
+		contentName: "markup.raw.monospace.literal.restructuredtext"
+		begin: """(?x)
+			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+			``
+			(?=\\S)
+			(?!``(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+		"""
+		end: "(?<=\\S)``(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
+		beginCaptures: 0: name: "punctuation.definition.literal.begin.restructuredtext"
+		endCaptures:   0: name: "punctuation.definition.literal.end.restructuredtext"
 
 
 
@@ -183,14 +198,19 @@ repository:
 	"link-reference":
 		patterns: [{
 			# Single-line
-			match: "(?<=^|\\s)(?:(`(?:[^\\\\`]|\\\\.)*+`__?)|\\b((?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++__?))\\b(?=$|\\s)"
+			match: "(?x)
+				(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+				(?:(`(?:[^\\\\`]|\\\\.)*+`__?)|\\b((?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++__?))
+				(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
 			captures:
 				1: patterns: [include: "#link-reference-quoted"]
 				2: patterns: [include: "#link-reference-unquoted"]
 		},{
 			# Multi-line
-			begin: "(?<=^|\\s)(?=`(?:[^\\\\`]|\\\\.)++$)"
-			end:   "(?!\\G)"
+			begin: "(?x)
+				(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+				(?=`(?:[^\\\\`]|\\\\.)++$)"
+			end: "(?!\\G)"
 			patterns: [include: "#link-reference-quoted"]
 		}]
 
@@ -224,8 +244,8 @@ repository:
 	# Simple link reference: “name_”
 	"link-reference-unquoted":
 		name:  "meta.link-reference.unquoted.restructuredtext"
-		begin: "(?:\\G|^)\\b(?=\\w)(?!_)"
-		end:   "(?:(__)\\b|(_)\\b)|(?=_\\W)"
+		begin: "(?:\\G|(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])))(?=\\w)(?!_)"
+		end:   "(?:(__)|(_))(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])|(?=_\\W)"
 		contentName: "constant.other.reference.link.restructuredtext"
 		endCaptures:
 			1: name: "punctuation.definition.reference.anonymous.restructuredtext"
@@ -319,7 +339,10 @@ repository:
 	# Inline internal link target: “_`name`”
 	"link-target-inline":
 		name:  "meta.definition.link-target.inline.internal.restructuredtext"
-		match: "\\b(_)((`)(?:[^\\\\`]|\\\\.)*+)(`)"
+		match: "(?x)
+			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+			(_)((`)(?:[^\\\\`]|\\\\.)*+)(`)
+			(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
 		captures:
 			1: name: "punctuation.definition.link.restructuredtext"
 			2: name: "entity.name.link.restructuredtext"
@@ -330,7 +353,10 @@ repository:
 	# Citation reference: “[label]_”
 	citation:
 		name: "meta.citation.reference.restructuredtext"
-		match: "(\\[)((?=[A-Za-z])(?:[-_.:+]?[A-Za-z0-9])++)(\\])(_)"
+		match: "(?x)
+			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+			(\\[)((?=[A-Za-z])(?:[-_.:+]?[A-Za-z0-9])++)(\\])(_)
+			(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
 		captures:
 			1: name: "punctuation.definition.citation.begin.restructuredtext"
 			2: name: "constant.other.reference.link.restructuredtext"
@@ -354,25 +380,24 @@ repository:
 
 	# Footnote reference
 	footnote:
-		patterns: [{
-			# Manually-numbered: “[0]_”
-			name:  "meta.footnote.reference.numbered.manual.restructuredtext"
-			begin: "(?=\\[[0-9]+\\]_)"
-			end:   "(?!\\G)"
-			patterns: [include: "#footnote-name"]
-		},{
-			# Auto-numbered: “[#]_” or “[#foo]_”
-			name:  "meta.footnote.reference.numbered.auto.restructuredtext"
-			begin: "(?=\\[#(?:(?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++)?\\]_)"
-			end:   "(?!\\G)"
-			patterns: [include: "#footnote-name"]
-		},{
-			# Auto-symbol: “[*]_”
-			name:  "meta.footnote.reference.symbolic.auto.restructuredtext"
-			begin: "(?=\\[\\*\\]_)"
-			end:   "(?!\\G)"
-			patterns: [include: "#footnote-name"]
-		}]
+		match: """(?x)
+			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+			(?:
+				# Manually-numbered: “[0]_”
+				(\\[[0-9]+\\]_)
+				|
+				# Auto-numbered: “[#]_” or “[#foo]_”
+				(\\[\\#(?:(?=\\w)(?!_)(?:[-_.:+]?[A-Za-z0-9])++)?\\]_)
+				|
+				# Auto-symbol: “[*]_”
+				(\\[\\*\\]_)
+			)
+			(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])
+		"""
+		captures:
+			1: name:  "meta.footnote.reference.numbered.manual.restructuredtext", patterns: [include: "#footnote-name"]
+			2: name:  "meta.footnote.reference.numbered.auto.restructuredtext",   patterns: [include: "#footnote-name"]
+			3: name:  "meta.footnote.reference.symbolic.auto.restructuredtext",   patterns: [include: "#footnote-name"]
 
 
 	# Footnote definition
@@ -576,16 +601,19 @@ repository:
 
 	# Interpreted text role
 	role:
-		name:  "meta.interpreted-role.restructuredtext"
-		begin: "((:)\\w+(?:[-_.:+]\\w+)*+(:))(?=`)"
-		end:   "(?!\\G)"
+		name: "meta.interpreted-role.restructuredtext"
+		begin: "(?x)
+			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+			((:)\\w+(?:[-_.:+]\\w+)*+(:))
+			(?=`(?=\\S)(?!`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])))"
+		end: "(?!\\G)"
 		beginCaptures:
 			1: name: "keyword.operator.role.restructuredtext"
 			2: name: "punctuation.definition.role.name.begin.restructuredtext"
 			3: name: "punctuation.definition.role.name.end.restructuredtext"
 		patterns: [{
 			begin: "\\G`"
-			end:   "`"
+			end:   "`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
 			beginCaptures: 0: name: "punctuation.definition.role.body.begin.restructuredtext"
 			endCaptures:   0: name: "punctuation.definition.role.body.end.restructuredtext"
 			patterns: [
@@ -618,14 +646,14 @@ repository:
 		patterns: [{
 			# Sphinx's `:abbr:` role
 			begin: "(?i)(?<=:abbr:`)\\G"
-			end:   "(?=`)"
+			end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 			patterns: [
 				{include: "#escape"}
 				{
 					# The abbreviated text
 					name:  "meta.abbreviation.restructuredtext"
 					begin: "\\G\\s*"
-					end:   "(?=\\s*(?:\\(|`))"
+					end:   "(?=\\s*(?:\\(|`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])))"
 					contentName: "constant.other.abbreviation.restructuredtext"
 					patterns: [include: "#escape"]
 				}
@@ -633,7 +661,7 @@ repository:
 					# The meaning of the abbreviation, enclosed in brackets
 					name:  "meta.explanation.restructuredtext"
 					begin: "\\("
-					end:   "(\\))|((?:[^\\x29`]|\\.)*+)(?=`)"
+					end:   "(\\))|((?:[^\\x29`]|\\.)*+)(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 					contentName: "string.quoted.brackets.restructuredtext"
 					beginCaptures:
 						0: name: "punctuation.definition.string.begin.restructuredtext"
@@ -648,7 +676,7 @@ repository:
 			# attribute of the doctree node (see https://docutils.sourceforge.io/docs/ref/doctree.html#examples).
 			name:  "meta.abbreviation.restructuredtext"
 			begin: "(?i)(?<=:abbreviation:`|:acronym:`|:a[bc]:`)\\G"
-			end:   "(?=`)"
+			end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 			contentName: "constant.other.abbreviation.restructuredtext"
 			patterns: [include: "#escape"]
 		}]
@@ -658,7 +686,7 @@ repository:
 	"role-code":
 		name:  "markup.raw.code.monospace.literal.restructuredtext"
 		begin: "(?i)(?<=:code:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -666,7 +694,7 @@ repository:
 	"role-command":
 		name:  "markup.bold.restructuredtext"
 		begin: "(?i)(?<=:command:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -674,7 +702,7 @@ repository:
 	"role-dfn":
 		name:  "markup.italic.definition.restructuredtext"
 		begin: "(?i)(?<=:dfn:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -682,7 +710,7 @@ repository:
 	"role-emphasis":
 		name:  "markup.italic.emphasis.restructuredtext"
 		begin: "(?i)(?<=:emphasis:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -690,7 +718,7 @@ repository:
 	"role-file":
 		name:  "meta.link-destination.filename.restructuredtext"
 		begin: "(?i)(?<=:file:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		contentName: "constant.other.reference.link.restructuredtext"
 		patterns: [
 			{include: "#escape"}
@@ -712,7 +740,7 @@ repository:
 			(?: (?<=:html:`)
 			|   (?<=:raw-html:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "text.html.basic"]
 
 
@@ -720,7 +748,7 @@ repository:
 	"role-literal":
 		name:  "markup.raw.monospace.literal.restructuredtext"
 		begin: "(?i)(?<=:literal:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -728,7 +756,7 @@ repository:
 	"role-manpage":
 		name:  "meta.manpage.link.inline.restructuredtext"
 		begin: "(?i)(?<=:manpage:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [
 			{include: "hidden.manref"}
 			{
@@ -748,7 +776,7 @@ repository:
 	"role-math":
 		name:  "markup.math.inline.restructuredtext"
 		begin: "(?i)(?<=:math:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "text.tex#math"]
 
 
@@ -756,7 +784,7 @@ repository:
 	"role-numref":
 		name:  "meta.numref.restructuredtext"
 		begin: "(?i)(?<=:numref:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#link"]
 
 
@@ -766,10 +794,10 @@ repository:
 			(?: (?<= :pep:`)
 			|   (?<= :pep-reference:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [{
 			# Valid integer
-			match: "\\G(\\d+)(?=`)"
+			match: "\\G(\\d+)(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 			captures:
 				0: name: "constant.numeric.pep-number.restructuredtext"
 				1: name: "markup.underline.link.pep.$1.hyperlink.restructuredtext"
@@ -787,7 +815,7 @@ repository:
 			|   (?<=:doc:`)
 			|   (?<=:download:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#link"]
 
 
@@ -797,10 +825,10 @@ repository:
 			(?: (?<= :rfc:`)
 			|   (?<= :rfc-reference:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [{
 			# Valid integer
-			match: "\\G(\\d+)(?=`)"
+			match: "\\G(\\d+)(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 			captures:
 				0: name: "constant.numeric.rfc-number.restructuredtext"
 				1: name: "markup.underline.link.rfc.$1.hyperlink.restructuredtext"
@@ -815,7 +843,7 @@ repository:
 	"role-strong":
 		name:  "markup.bold.emphasis.strong.restructuredtext"
 		begin: "(?i)(?<=:strong:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -826,7 +854,7 @@ repository:
 			(?: (?<=:sub:`)
 			|   (?<=:subscript:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -837,7 +865,7 @@ repository:
 			(?: (?<=:sup:`)
 			|   (?<=:superscript:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -851,7 +879,7 @@ repository:
 			|   (?<=:option:`)
 			|   (?<=:token:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -863,7 +891,7 @@ repository:
 			|   (?<= :title:`)
 			|   (?<= :title-reference:`)
 			) \\G"
-		end: "(?=`)"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 
@@ -871,7 +899,7 @@ repository:
 	"role-other":
 		name:  "string.interpolated.restructuredtext"
 		begin: "(?<=:`)\\G"
-		end:   "(?=`)"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
 

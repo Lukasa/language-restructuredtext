@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 * Fixed highlighting of inline markup in substitution definitions
 * Fixed runaway highlighting after empty comment markers
 * Fixed untokenised escape sequences within interpreted text roles
+* Added `.rest.txt` and `.rst.txt` to recognised file extensions
 * Added HTML highlighting to ``` :html:`…` ``` roles
 * Added HTML highlighting to `.. code html::` blocks
 * Improved highlighting of `.. parsed-literal::` blocks

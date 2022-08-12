@@ -1,6 +1,6 @@
 name: "reStructuredText"
 scopeName: "text.restructuredtext"
-fileTypes: ["rst", "rest"]
+fileTypes: ["rst", "rest", "rest.txt", "rst.txt"]
 patterns: [ include: "#all" ]
 limitLineLength: no
 firstLineMatch: """(?x)

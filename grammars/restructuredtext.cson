@@ -507,47 +507,51 @@ repository:
 			2: name: "punctuation.definition.reference.restructuredtext"
 
 
+	# Comment blocks
 	comments:
-		patterns: [
-
-			# Kludge to match empty/unindented block-comments
-			{
-				name:  "comment.block.empty-start.double-dot.restructuredtext"
-				begin: "^(\\.\\.)[\\t ]*$\\n?"
-				end:   "^(?<=\\G)\\s*$\\n?|^(?=\\S)"
-				beginCaptures:
-					1: name: "punctuation.definition.comment.restructuredtext"
-				patterns: [
-					# This exists to stop FirstMate ending too early
-					begin: "^(\\s+).*?\\S+\\s*$\\n"
-					end:   "^\\s*$\\n|^(?=\\S)"
-				]
-			}
-
-
-			# Kludge to match (most) indented block-comments
-			{
-				name: "comment.block.empty-start.double-dot.restructuredtext"
-				begin: "^([\\t ]*)(\\.\\.)[\\t ]*$\\n?"
-				end:   "^(?!\\1\\s*\\S)|^(?<!\\G)\\s*$\\n?|^(?=\\S)"
-				beginCaptures:
-					2: name: "punctuation.definition.comment.restructuredtext"
-				patterns: [
-					begin: "^(\\s+).*?\\S+\\s*$\\n"
-					end:   "^\\s*$\\n|^\\s*(?=\\S)"
-				]
-			}
-
-
-			# Every other comment with text on the starting line
-			{
-				name: "comment.block.double-dot.restructuredtext"
-				begin: "^(\\s*)(\\.\\.)(?=\\s|$)"
-				end:   "^(?!\\1[\\t\\s]+\\S|\\s*$)|^(?=\\S)"
-				beginCaptures:
-					2: name: "punctuation.definition.comment.restructuredtext"
-			}
-		]
+		patterns: [{
+			# Indented, contains text
+			name:  "comment.block.double-dot.indented.has-text.restructuredtext"
+			begin: "^([ \\t]+)(\\.\\.)\\s+(?=\\S)(?!\\[[^\\]]+\\](?:$|\\s))"
+			end:   "(?!\\G)^(?:(?=\\S)|(?!\\1[ \\t]+\\S|\\s*$))"
+			beginCaptures:
+				2: name: "punctuation.definition.comment.restructuredtext"
+		},{
+			# Indented, no text
+			name:  "comment.block.double-dot.indented.no-text.restructuredtext"
+			begin: "^([ \\t]+)(\\.\\.)[ \\t]*$"
+			end:   "(?!\\G)^(?:(?=\\S)|(?!\\1[ \\t]+\\S))"
+			beginCaptures:
+				2: name: "punctuation.definition.comment.restructuredtext"
+			patterns: [{
+				# Swallow blank lines
+				begin: "(?<!\\G)(?<=\\S)$"
+				end:   "^"
+				applyEndPatternLast: yes
+				patterns: [match: "^[ \\t]*$"]
+			}]
+		},{
+			# Unindented, contains text
+			name:  "comment.block.double-dot.unindented.has-text.restructuredtext"
+			begin: "^(\\.\\.)\\s+(?=\\S)(?!\\[[^\\]]+\\](?:$|\\s))"
+			end:   "(?!\\G)^(?=\\S)"
+			beginCaptures:
+				1: name: "punctuation.definition.comment.restructuredtext"
+		},{
+			# Unindented, no text
+			name:  "comment.block.double-dot.unindented.no-text.restructuredtext"
+			begin: "^(\\.\\.)[ \\t]*$"
+			end:   "(?!\\G)^(?=\\S|\\s*$)"
+			beginCaptures:
+				1: name: "punctuation.definition.comment.restructuredtext"
+			patterns: [{
+				# Swallow blank lines
+				begin: "(?<!\\G)(?<=\\S)$"
+				end:   "^"
+				applyEndPatternLast: yes
+				patterns: [match: "^[ \\t]*$"]
+			}]
+		}]
 
 
 	# Literal Blocks

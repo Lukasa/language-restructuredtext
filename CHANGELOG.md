@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 ------------------------------------------------------------------------
 * [[`#67`][]]: Fixed malformed syntax in `contents` snippet
 * Fixed highlighting of inline markup in substitution definitions
+* Fixed runaway highlighting after empty comment markers
 * Fixed untokenised escape sequences within interpreted text roles
 * Added HTML highlighting to ``` :html:`…` ``` roles
 * Added HTML highlighting to `.. code html::` blocks

@@ -68,7 +68,6 @@ repository:
 			{include: "#substitution"}
 			{include: "#literal"}
 			{include: "#link-reference"}
-			{include: "#interpreted-block"}
 			{include: "#footnote"}
 			{include: "#citation"}
 		]

@@ -708,7 +708,9 @@ repository:
 				{include: "#role-dfn"}
 				{include: "#role-emphasis"}
 				{include: "#role-file"}
+				{include: "#role-guilabel"}
 				{include: "#role-html"}
+				{include: "#role-kbd"}
 				{include: "#role-literal"}
 				{include: "#role-manpage"}
 				{include: "#role-math"}
@@ -818,6 +820,33 @@ repository:
 		]
 
 
+	# Label for an interactive component
+	"role-guilabel":
+		name: "string.other.ui-label.restructuredtext"
+		begin: "(?xi)
+			(?: (?<=:guilabel:`)
+			|   (?<=:menuselection:`)
+			) \\G"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [{
+			# Literal ampersand: “&&”
+			name: "constant.character.escape.ampersand.restructuredtext"
+			match: "&&"
+		},{
+			# Menu accelerator: “&File”
+			name: "meta.accelerator.restructuredtext"
+			match: "(&)([^\\\\`]|(\\\\`))"
+			captures:
+				1: name: "keyword.operator.menu.accelerator.restructuredtext"
+				2: name: "string.other.link.restructuredtext"
+				3: patterns: [include: "#escape"]
+		},{
+			# Menu level separator: “Start --> Programs”
+			name: "keyword.operator.menu.separator.restructuredtext"
+			match: "-->"
+		}, include: "#escape"]
+
+
 	# Embedded HTML markup
 	"role-html":
 		name: "text.embedded.html.basic"
@@ -827,6 +856,33 @@ repository:
 			) \\G"
 		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "text.html.basic"]
+
+
+	# Keystrokes
+	"role-kbd":
+		name:  "meta.keystrokes.restructuredtext"
+		begin: "(?i)(?<=:kbd:`)\\G"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [{
+			name:  "meta.separator.combinator.restructuredtext"
+			match: "[-+^]"
+		},{
+			name:  "entity.name.tag.keystroke.restructuredtext"
+			match: "(?xi)
+				(?:\\G|(?<=[-+^\\s`]))
+				( caps   \\s+ lock
+				| page   \\s+ down
+				| page   \\s+ up
+				| scroll \\s+ lock
+				| num    \\s+ lock
+				| sys    \\s+ rq
+				| back   \\s+ space
+				| ((?:[^-+^\\s\\\\`]|\\\\.)++)
+				) (?=$|[-+^\\s`])"
+			captures:
+				1: name: "markup.inserted.keystroke.restructuredtext" # HACK
+				2: patterns: [include: "#escape"]
+		}]
 
 
 	# Literal text, which isn't necessarily source code

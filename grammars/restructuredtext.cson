@@ -712,12 +712,18 @@ repository:
 				{include: "#role-html"}
 				{include: "#role-kbd"}
 				{include: "#role-literal"}
+				{include: "#role-mailheader"}
+				{include: "#role-makevar"}
 				{include: "#role-manpage"}
 				{include: "#role-math"}
+				{include: "#role-mimetype"}
+				{include: "#role-newsgroup"}
 				{include: "#role-numref"}
 				{include: "#role-pep"}
 				{include: "#role-ref"}
+				{include: "#role-regexp"}
 				{include: "#role-rfc"}
+				{include: "#role-samp"}
 				{include: "#role-strong"}
 				{include: "#role-subscript"}
 				{include: "#role-superscript"}
@@ -777,10 +783,10 @@ repository:
 		patterns: [include: "#escape"]
 
 
-	# Command name, displayed in a monospaced bold face
+	# Command or program name, displayed in a monospaced bold face
 	"role-command":
-		name:  "markup.bold.restructuredtext"
-		begin: "(?i)(?<=:command:`)\\G"
+		name:  "markup.bold.${1:/downcase}.restructuredtext"
+		begin: "(?i)(?<=:(command|program):`)\\G"
 		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
 
@@ -809,14 +815,7 @@ repository:
 		contentName: "constant.other.reference.link.restructuredtext"
 		patterns: [
 			{include: "#escape"}
-			
-			# Bracketed sections represent “variable” components of a filename
-			name: "meta.embedded.line.restructuredtext"
-			match: "({)((?:[^\\\\}]|\\\\.)*+)(})"
-			captures:
-				1: name: "punctuation.section.embedded.begin.restructuredtext"
-				2: name: "variable.parameter.placeholder.restructuredtext", patterns: [include: "#escape"]
-				3: name: "punctuation.section.embedded.end.restructuredtext"
+			{include: "#role-variable"}
 		]
 
 
@@ -893,6 +892,22 @@ repository:
 		patterns: [include: "#escape"]
 
 
+	# RFC 822-style mail header
+	"role-mailheader":
+		name:  "markup.italic.mail-header.restructuredtext"
+		begin: "(?i)(?<=:mailheader:`)\\G"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [include: "#escape"]
+
+
+	# make(1) variable
+	"role-makevar":
+		name:  "markup.bold.make-variable.restructuredtext"
+		begin: "(?i)(?<=:makevar:`)\\G"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [include: "#escape"]
+
+
 	# Manpage reference – :manpage:`ls(1)`
 	"role-manpage":
 		name:  "meta.manpage.link.inline.restructuredtext"
@@ -919,6 +934,22 @@ repository:
 		begin: "(?i)(?<=:math:`)\\G"
 		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "text.tex#math"]
+
+
+	# MIME content-type, presumably conforming to RFC 6838
+	"role-mimetype":
+		name:  "markup.italic.mime-type.restructuredtext"
+		begin: "(?i)(?<=:mimetype:`)\\G"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [include: "#escape"]
+
+
+	# Name of a Usenet newsgroup
+	"role-newsgroup":
+		name:  "markup.italic.newsgroup.link.restructuredtext"
+		begin: "(?i)(?<=:newsgroup:`)\\G"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [include: "#escape"]
 
 
 	# Link to a referenced figure, section, table or code-block
@@ -960,6 +991,17 @@ repository:
 		patterns: [include: "#link"]
 
 
+	# Regular expression literal, sans pickets
+	"role-regexp":
+		name:  "string.regexp.restructuredtext"
+		begin: "(?i)(?<=:regexp:`)\\G"
+		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [
+			{include: "source.regexp"}
+			{include: "source.regexp.python"}
+		]
+
+
 	# Link to a Request for Comments (RFC)
 	"role-rfc":
 		begin: "(?xi)
@@ -978,6 +1020,17 @@ repository:
 			name: "invalid.illegal.bad-integer.restructuredtext"
 			match: "[^`]+"
 		}]
+
+
+	# Literal text, typically representing a command's syntax or a user's input
+	"role-samp":
+		name:  "markup.raw.monospace.literal.samp.restructuredtext"
+		begin: "(?i)(?<=:samp:`)\\G"
+		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		patterns: [
+			{include: "#escape"}
+			{include: "#role-variable"}
+		]
 
 
 	# Strongly emphasised text, usually rendered in bold
@@ -1042,6 +1095,16 @@ repository:
 		begin: "(?<=:`)\\G"
 		end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [include: "#escape"]
+
+
+	# Bracketed sections representing “variable” components of otherwise verbatim text
+	"role-variable":
+		name: "meta.embedded.line.restructuredtext"
+		match: "({)((?:[^\\\\}]|\\\\.)*+)(})"
+		captures:
+			1: name: "punctuation.section.embedded.begin.restructuredtext"
+			2: name: "variable.parameter.placeholder.restructuredtext", patterns: [include: "#escape"]
+			3: name: "punctuation.section.embedded.end.restructuredtext"
 
 
 	directives:

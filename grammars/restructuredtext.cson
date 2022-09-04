@@ -64,7 +64,7 @@ repository:
 			{include: "#quoted"}
 			{include: "#emphasis"}
 			{include: "#link-target-inline"}
-			{include: "#role"}
+			{include: "#interpreted-text"}
 			{include: "#substitution"}
 			{include: "#literal"}
 			{include: "#link-reference"}
@@ -684,9 +684,16 @@ repository:
 		]
 
 
-	# Interpreted text role
-	role:
-		name: "meta.interpreted-role.restructuredtext"
+	# `Interpreted text`, enclosed by backticks
+	"interpreted-text":
+		patterns: [
+			{include: "#interpreted-text-marked"}
+			{include: "#interpreted-text-unmarked"}
+		]
+
+	# :role:`Multi-line interpreted text` with a leading role marker
+	"interpreted-text-marked":
+		name: "meta.interpreted-text.marked.leading-marker.restructuredtext"
 		begin: "(?x)
 			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s«»༺⟬⟮⸠⸡⸢⸤⸦⸨‚„‟‛])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
 			((:)\\w+(?:[-_.:+]\\w+)*+(:))
@@ -699,38 +706,57 @@ repository:
 		patterns: [{
 			begin: "\\G`"
 			end:   "(?=^\\s*$)|`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
-			beginCaptures: 0: name: "punctuation.definition.role.body.begin.restructuredtext"
-			endCaptures:   0: name: "punctuation.definition.role.body.end.restructuredtext"
-			patterns: [
-				{include: "#role-abbr"}
-				{include: "#role-code"}
-				{include: "#role-command"}
-				{include: "#role-dfn"}
-				{include: "#role-emphasis"}
-				{include: "#role-file"}
-				{include: "#role-guilabel"}
-				{include: "#role-html"}
-				{include: "#role-kbd"}
-				{include: "#role-literal"}
-				{include: "#role-mailheader"}
-				{include: "#role-makevar"}
-				{include: "#role-manpage"}
-				{include: "#role-math"}
-				{include: "#role-mimetype"}
-				{include: "#role-newsgroup"}
-				{include: "#role-numref"}
-				{include: "#role-numreg"}
-				{include: "#role-ref"}
-				{include: "#role-regexp"}
-				{include: "#role-samp"}
-				{include: "#role-strong"}
-				{include: "#role-subscript"}
-				{include: "#role-superscript"}
-				{include: "#role-term"}
-				{include: "#role-titleref"}
-				{include: "#role-other"}
-			]
+			beginCaptures: 0: name: "punctuation.definition.interpreted-text.begin.restructuredtext"
+			endCaptures:   0: name: "punctuation.definition.interpreted-text.end.restructuredtext"
+			patterns: [include: "#roles"]
 		}]
+
+	# `Single-line interpreted text` without a role marker
+	# NB: Multi-line forms of this construct aren't supported, because of TextMate's line-delimited nature, and
+	# the fact that hard-wrapped lines of interpreted text are much more likely to be link references instead.
+	"interpreted-text-unmarked":
+		name: "meta.interpreted-text.unmarked.restructuredtext"
+		match: "(?x)
+			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s«»༺⟬⟮⸠⸡⸢⸤⸦⸨‚„‟‛])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+			(`)((?!`|\\s)(?:[^`\\\\]|\\\\.)++)(`)
+			(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
+		captures:
+			1: name: "punctuation.definition.interpreted-text.begin.restructuredtext"
+			2: patterns: [include: "#escapes"]
+			3: name: "punctuation.definition.interpreted-text.end.restructuredtext"
+
+
+	# Contents of interpreted text spans prefixed (or affixed) with a role marker
+	roles:
+		patterns: [
+			{include: "#role-abbr"}
+			{include: "#role-code"}
+			{include: "#role-command"}
+			{include: "#role-dfn"}
+			{include: "#role-emphasis"}
+			{include: "#role-file"}
+			{include: "#role-guilabel"}
+			{include: "#role-html"}
+			{include: "#role-kbd"}
+			{include: "#role-literal"}
+			{include: "#role-mailheader"}
+			{include: "#role-makevar"}
+			{include: "#role-manpage"}
+			{include: "#role-math"}
+			{include: "#role-mimetype"}
+			{include: "#role-newsgroup"}
+			{include: "#role-numref"}
+			{include: "#role-numreg"}
+			{include: "#role-ref"}
+			{include: "#role-regexp"}
+			{include: "#role-samp"}
+			{include: "#role-strong"}
+			{include: "#role-subscript"}
+			{include: "#role-superscript"}
+			{include: "#role-term"}
+			{include: "#role-titleref"}
+			{include: "#role-other"}
+		]
 
 
 	# Abbreviation — “:abbr:`FAQ (Frequently Asked Questions)`”

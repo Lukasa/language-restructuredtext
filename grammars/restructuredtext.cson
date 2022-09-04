@@ -698,7 +698,7 @@ repository:
 			3: name: "punctuation.definition.role.name.end.restructuredtext"
 		patterns: [{
 			begin: "\\G`"
-			end:   "`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
+			end:   "(?=^\\s*$)|`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
 			beginCaptures: 0: name: "punctuation.definition.role.body.begin.restructuredtext"
 			endCaptures:   0: name: "punctuation.definition.role.body.end.restructuredtext"
 			patterns: [
@@ -719,10 +719,9 @@ repository:
 				{include: "#role-mimetype"}
 				{include: "#role-newsgroup"}
 				{include: "#role-numref"}
-				{include: "#role-pep"}
+				{include: "#role-numreg"}
 				{include: "#role-ref"}
 				{include: "#role-regexp"}
-				{include: "#role-rfc"}
 				{include: "#role-samp"}
 				{include: "#role-strong"}
 				{include: "#role-subscript"}
@@ -960,23 +959,60 @@ repository:
 		patterns: [include: "#link"]
 
 
-	# Link to a Python Enhancement Proposal (PEP)
-	"role-pep":
+	# Link to an enumerated document registry; i.e., PEPs and RFCs
+	"role-numreg":
+		name:  "meta.registry-link.${1:/downcase}${2:/downcase}${3:/downcase}${4:/downcase}-reference.restructuredtext"
 		begin: "(?xi)
-			(?: (?<= :pep:`)
-			|   (?<= :pep-reference:`)
+			(?: (?<= :(pep):`)
+			|   (?<= :(rfc):`)
+			|   (?<= :(pep)-reference:`)
+			|   (?<= :(rfc)-reference:`)
 			) \\G"
-		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+		end: "(?=^\\s*$)|(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 		patterns: [{
-			# Valid integer
-			match: "\\G(\\d+)(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+			# :pep:`Label <400#section>`
+			match: "(?:\\G|^)(?:((?:[^`\\\\]|\\\\.)+?)\\s*)?(<(?:[^`\\\\]|\\\\.)*>)(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
 			captures:
-				0: name: "constant.numeric.pep-number.restructuredtext"
-				1: name: "markup.underline.link.pep.$1.hyperlink.restructuredtext"
+				1: name: "entity.name.link-label.restructuredtext", patterns: [include: "#escape"]
+				2: patterns: [include: "#role-numreg-destination"]
 		},{
-			# Some weird junk
-			name: "invalid.illegal.bad-integer.restructuredtext"
-			match: "[^`]+"
+			# :pep:`400#section`
+			name:  "constant.other.reference.link.restructuredtext"
+			match: "(?:\\G|^)\\d+(?:[ \\s]*#((?:[^`\\\\]|\\\\.)*))?(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+			captures:
+				1: patterns: [include: "#escape"]
+		},{
+			# :pep:`400#…`
+			name:  "constant.other.reference.link.restructuredtext"
+			begin: "\\G\\d+\\s*#"
+			end:   "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+			patterns: [include: "#escape"]
+		},{
+			# :pep:`Multiline … label <400#>`
+			contentName: "entity.name.link-label.restructuredtext"
+			begin: "\\G"
+			end:   "(?=^[ \\t]*$)|(<(?:[^`\\\\]|\\\\.)*>)?(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
+			endCaptures:
+				1: patterns: [include: "#role-numreg-destination"]
+			patterns: [include: "#escape"]
+		}]
+
+	# Stuff matched inside the angle-bracketed destination of a PEP/RFC link
+	"role-numreg-destination":
+		name:  "meta.link-destination.restructuredtext"
+		begin: "(?:\\G|^)<"
+		end:   ">$|(?=^[ \\t]*$)"
+		beginCaptures: 0: name: "punctuation.definition.angle.bracket.begin.restructuredtext"
+		endCaptures:   0: name: "punctuation.definition.angle.bracket.end.restructuredtext"
+		patterns: [{
+			name:  "constant.other.reference.link.restructuredtext"
+			begin: "\\G\\d+(?=>?$|#)"
+			end:   "(?=>$)"
+			patterns: [include: "#escape"]
+		},{
+			name:  "invalid.illegal.invalid-proposal.restructuredtext"
+			begin: "\\G"
+			enD:   "(?=>$|^[ \\t]*$)"
 		}]
 
 
@@ -1000,26 +1036,6 @@ repository:
 			{include: "source.regexp"}
 			{include: "source.regexp.python"}
 		]
-
-
-	# Link to a Request for Comments (RFC)
-	"role-rfc":
-		begin: "(?xi)
-			(?: (?<= :rfc:`)
-			|   (?<= :rfc-reference:`)
-			) \\G"
-		end: "(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
-		patterns: [{
-			# Valid integer
-			match: "\\G(\\d+)(?=`(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))"
-			captures:
-				0: name: "constant.numeric.rfc-number.restructuredtext"
-				1: name: "markup.underline.link.rfc.$1.hyperlink.restructuredtext"
-		},{
-			# Some weird junk
-			name: "invalid.illegal.bad-integer.restructuredtext"
-			match: "[^`]+"
-		}]
 
 
 	# Literal text, typically representing a command's syntax or a user's input

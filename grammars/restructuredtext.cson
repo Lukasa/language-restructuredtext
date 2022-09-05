@@ -65,7 +65,7 @@ repository:
 			{include: "#emphasis"}
 			{include: "#link-target-inline"}
 			{include: "#interpreted-text"}
-			{include: "#substitution"}
+			{include: "#substitution-reference"}
 			{include: "#literal"}
 			{include: "#link-reference"}
 			{include: "#footnote"}
@@ -638,12 +638,43 @@ repository:
 
 
 	# Substitution reference: “|linked|_” or “|unlinked|”
-	substitution:
-		name: "support.variable.substitution.restructuredtext"
-		match: "(?<!\\\\)(\\|)[^|]+(?<!\\\\)(\\|_{0,2})"
+	"substitution-reference":
+		patterns: [
+			{include: "#substitution-reference-singleline"}
+			{include: "#substitution-reference-multiline"}
+		]
+
+	# Substitution names can be wrapped across lines (although not paragraph breaks),
+	# making this pattern problematic inside grid-tables and line-blocks. Hence why it's
+	# distinct from a more restrictive single-line variant so that multi-line substitutions
+	# can still be written inside paragraphs and similar block constructs.
+	"substitution-reference-multiline":
+		disabled: yes # TODO: Remove once the table rules have been refactored
+		name:  "meta.substitution-reference.restructuredtext"
+		begin: "(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s«»༺⟬⟮⸠⸡⸢⸤⸦⸨‚„‟‛])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))(\\|)"
+		end:   "(?=^\\s*$)|(\\|)(?:(__)\\b|(_)\\b)?(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
+		contentName: "entity.name.substitution.restructuredtext"
+		beginCaptures:
+			1: name: "punctuation.definition.substitution.start.restructuredtext"
+		endCaptures:
+			1: name: "punctuation.definition.substitution.end.restructuredtext"
+			2: name: "punctuation.definition.reference.anonymous.restructuredtext"
+			3: name: "punctuation.definition.reference.named.restructuredtext"
+
+	"substitution-reference-singleline":
+		name:  "meta.substitution-reference.restructuredtext"
+		match: """(?x)
+			(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s«»༺⟬⟮⸠⸡⸢⸤⸦⸨‚„‟‛])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))
+			(\\|)(?=[^|\\s])(.+?)(?<!\\s)(\\|)
+			(?:(__)\\b|(_)\\b)?
+			(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])
+		"""
 		captures:
-			1: name: "punctuation.definition.substitution.restructuredtext"
-			2: name: "punctuation.definition.substitution.restructuredtext"
+			1: name: "punctuation.definition.substitution.start.restructuredtext"
+			2: name: "entity.name.substitution.restructuredtext"
+			3: name: "punctuation.definition.substitution.end.restructuredtext"
+			4: name: "punctuation.definition.reference.anonymous.restructuredtext"
+			5: name: "punctuation.definition.reference.named.restructuredtext"
 
 
 	"substitution-definition":
@@ -652,7 +683,7 @@ repository:
 			# Image substitution – “.. |foo| image:: ./path/to/image.png”
 			{
 				name: "meta.substitution-definition.image.restructuredtext"
-				begin: "^(\\s*)(\\.\\.)\\s(\\|)(?=\\S)([^\\|]+)((?<=\\S)\\|)\\s+(image)(::)\\s*(\\S+)"
+				begin: "^(\\s*)(\\.\\.)\\s+(\\|)(?=[^|\\s])(.+?)((?<=\\S)\\|)\\s+(image)(::)\\s*(\\S+)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				patterns: [include: "#image-options"]
 				beginCaptures:
@@ -669,7 +700,7 @@ repository:
 			# Generic/custom definition – “.. |foo| something else:: …”
 			{
 				name: "meta.substitution-definition.restructuredtext"
-				begin: "^(\\s*)(\\.\\.)\\s(\\|)(?=\\S)([^\\|]+)((?<=\\S)\\|)\\s+(\\S+.*(?=::))(::)(.*)"
+				begin: "^(\\s*)(\\.\\.)\\s+(\\|)(?=[^|\\s])(.+?)((?<=\\S)\\|)\\s+(\\S+.*(?=::))(::)(.*)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				patterns: [include: "#directive-options"]
 				beginCaptures:

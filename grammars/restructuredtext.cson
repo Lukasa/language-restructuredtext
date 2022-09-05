@@ -753,7 +753,7 @@ repository:
 			(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
 		captures:
 			1: name: "punctuation.definition.interpreted-text.begin.restructuredtext"
-			2: patterns: [include: "#escapes"]
+			2: name: "string.interpolated.restructuredtext", patterns: [include: "#escapes"]
 			3: name: "punctuation.definition.interpreted-text.end.restructuredtext"
 
 

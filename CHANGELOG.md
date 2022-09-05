@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 [Unpublished]
 ------------------------------------------------------------------------
 * [[`#67`][]]: Fixed malformed syntax in `contents` snippet
+* Fixed variable-length whitespace not highlighted before directive name
 * Fixed highlighting of inline markup in substitution definitions
 * Fixed runaway highlighting after empty comment markers
 * Fixed untokenised escape sequences within interpreted text roles

@@ -566,9 +566,9 @@ repository:
 
 	# Interactive Python sessions
 	doctests:
-		name: "meta.doctest.restructuredtext"
+		name:  "meta.doctest.restructuredtext"
 		begin: "^(\\s*)(>>>)\\s+(.*)$\\n"
-		end:   "^\\s*$|^(?=\\1>>> )|^(?=>>>)|^(?!\\1)\\s+\\S"
+		end:   "(?=^\\s*$)|^(?=\\1>>> )|^(?=>>>)|^(?!\\1)\\s+\\S"
 		contentName: "markup.raw.restructuredtext"
 		beginCaptures:
 			2: name: "punctuation.separator.prompt.doctest.restructuredtext"
@@ -584,7 +584,7 @@ repository:
 				name: "meta.table.grid-table.restructuredtext"
 				contentName: "markup.other.table.restructuredtext"
 				begin: "(?=((\\+-[+-]+))|((\\+=[+=]+))\\s*$)"
-				end:   "^\\s*$"
+				end:   "(?=^\\s*$)"
 				patterns: [
 					{include: "#table-borders"}
 					{include: "#inlines"}
@@ -595,9 +595,9 @@ repository:
 			{
 				name: "punctuation.definition.table.simple-divider.restructuredtext"
 				match: """(?x)
-					^\\s*-{2,}\\s+-{2,}(?:\\s+-{2,})*\\s*$
+					^\\s*-{2,}\\s+-{2,}(?:\\s+-{2,})*(?=\\s*$)
 					|
-					^\\s*={2,}\\s+={2,}(?:\\s+={2,})*\\s*$
+					^\\s*={2,}\\s+={2,}(?:\\s+={2,})*(?=\\s*$)
 				"""
 			}
 		]
@@ -616,7 +616,7 @@ repository:
 
 			{
 				begin: "\\+(?==+(?=\\+|$))"
-				end:   "(?=\\+(?==)|$)|\\+\\s*$"
+				end:   "(?=\\+(?==)|$)|\\+(?=\\s*$)"
 				contentName: "punctuation.definition.table.header.row-divider.restructuredtext"
 				beginCaptures: 0: name: "punctuation.definition.table.joint.restructuredtext"
 				endCaptures:   0: name: "punctuation.definition.table.joint.restructuredtext"
@@ -1216,7 +1216,7 @@ repository:
 
 			# HTML
 			{
-				begin: "^([ \\t]*)(\\.\\.)\\s+(raw|code(?:-block)?)(::)\\s+(html)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(raw|code(?:-block)?)(::)\\s+(html)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				patterns: [include: "text.html.basic"]
 				beginCaptures:
@@ -1230,7 +1230,7 @@ repository:
 			{
 				contentName: "source.embedded.coffee"
 				patterns: [include: "source.coffee"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(coffee-?script)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(coffee-?script)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1243,7 +1243,7 @@ repository:
 			{
 				contentName: "source.embedded.js"
 				patterns: [include: "source.js"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(js|javascript)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(js|javascript)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1256,7 +1256,7 @@ repository:
 			{
 				contentName: "source.embedded.ts"
 				patterns: [include: "source.ts"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(typescript)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(typescript)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1269,7 +1269,7 @@ repository:
 			{
 				contentName: "source.embedded.json"
 				patterns: [include: "source.json"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(json)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(json)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1282,7 +1282,7 @@ repository:
 			{
 				contentName: "source.embedded.css"
 				patterns: [include: "source.css"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(css)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(css)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1295,7 +1295,7 @@ repository:
 			{
 				contentName: "source.embedded.xml"
 				patterns: [include: "text.xml"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+((?:pseudo)?xml)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+((?:pseudo)?xml)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1308,7 +1308,7 @@ repository:
 			{
 				contentName: "source.embedded.ruby"
 				patterns: [include: "source.ruby"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(ruby)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(ruby)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1321,7 +1321,7 @@ repository:
 			{
 				contentName: "source.embedded.java"
 				patterns: [include: "source.java"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(java)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(java)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1334,7 +1334,7 @@ repository:
 			{
 				contentName: "source.embedded.erlang"
 				patterns: [include: "source.erlang"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(erlang)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(erlang)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1347,7 +1347,7 @@ repository:
 			{
 				contentName: "source.embedded.cs"
 				patterns: [include: "source.cs"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(csharp|c#)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(csharp|c#)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1360,7 +1360,7 @@ repository:
 			{
 				contentName: "source.embedded.php"
 				patterns: [include: "source.php"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(php[3-5]?)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(php[3-5]?)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1373,7 +1373,7 @@ repository:
 			{
 				contentName: "source.embedded.shell"
 				patterns: [include: "source.shell"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(shell|(ba|k)?sh)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(shell|(ba|k)?sh)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1386,7 +1386,7 @@ repository:
 			{
 				contentName: "source.embedded.python"
 				patterns: [include: "source.python"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(py(thon)?|sage)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(py(thon)?|sage)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1399,7 +1399,7 @@ repository:
 			{
 				contentName: "source.embedded.python"
 				patterns: [include: "source.python"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(ipython)(::)\\s+(py(thon)?)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(ipython)(::)\\s+(py(thon)?)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1412,7 +1412,7 @@ repository:
 			{
 				contentName: "source.embedded.stata"
 				patterns: [include: "source.stata"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(stata)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(stata)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1425,7 +1425,7 @@ repository:
 			{
 				contentName: "source.embedded.python"
 				patterns: [include: "source.python"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(sas)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(sas)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1438,7 +1438,7 @@ repository:
 			{
 				contentName: "source.embedded.objc"
 				patterns: [include: "source.objc"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(objective-?c|obj-?c)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(objective-?c|obj-?c)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1451,7 +1451,7 @@ repository:
 			{
 				contentName: "source.embedded.yaml"
 				patterns: [include: "source.yaml"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(yaml)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(yaml)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1468,7 +1468,7 @@ repository:
 					captures:
 						1: patterns: [include: "text.roff"]
 				}]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(manpage|man|[ntg]?roff)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(manpage|man|[ntg]?roff)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1481,7 +1481,7 @@ repository:
 			{
 				contentName: "text.embedded.tex.latex"
 				patterns: [include: "text.tex.latex"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+((?:xe)?(?:la)?tex)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+((?:xe)?(?:la)?tex)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1494,7 +1494,7 @@ repository:
 			{
 				contentName: "text.embedded.texinfo"
 				patterns: [include: "text.texinfo"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(texinfo)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(texinfo)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1506,7 +1506,7 @@ repository:
 			# Verbatim text, or an unrecognised format
 			{
 				contentName: "markup.raw.inner.restructuredtext"
-				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)(?:\\s+([-\\w]+))?\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)(?:\\s+([-\\w]+))?(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1518,7 +1518,7 @@ repository:
 			# Parsed (unquoted) literal text
 			{
 				contentName: "markup.raw.inner.parsed.restructuredtext"
-				begin: "^([ \\t]*)(\\.\\.)\\s+(parsed-literal)(::)(?:\\s+([-\\w]+))?\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(parsed-literal)(::)(?:\\s+([-\\w]+))?(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1533,7 +1533,7 @@ repository:
 				name: "source.embedded.latex"
 				contentName: "markup.math.block.restructuredtext"
 				patterns: [include: "text.tex#math"]
-				begin: "^([ \\t]*)(\\.\\.)\\s+(math)(::)\\s*$"
+				begin: "^([ \\t]*)(\\.\\.)\\s+(math)(::)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1559,7 +1559,7 @@ repository:
 			# Directives
 			{
 				name: "meta.other.directive.restructuredtext"
-				match: "^\\s*(\\.\\.)\\s+([A-z][-A-z0-9_]+)(::)\\s*$"
+				match: "^\\s*(\\.\\.)\\s+([A-z][-A-z0-9_]+)(::)(?=\\s*$)"
 				captures:
 					1: name: "punctuation.definition.directive.restructuredtext"
 					2: name: "support.directive.restructuredtext"
@@ -1570,7 +1570,7 @@ repository:
 			# Directives with arguments
 			{
 				name: "meta.other.directive.restructuredtext"
-				match: "^\\s*(\\.\\.)\\s+([A-z][-A-z0-9_]+)(::)\\s+(.+?)\\s*$"
+				match: "^\\s*(\\.\\.)\\s+([A-z][-A-z0-9_]+)(::)\\s+(.+?)(?=\\s*$)"
 				captures:
 					1: name: "punctuation.definition.directive.restructuredtext"
 					2: name: "support.directive.restructuredtext"

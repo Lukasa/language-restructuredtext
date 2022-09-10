@@ -578,54 +578,178 @@ repository:
 	# Tables
 	tables:
 		patterns: [
-
-			# Grid tables
-			{
-				name: "meta.table.grid-table.restructuredtext"
-				contentName: "markup.other.table.restructuredtext"
-				begin: "(?=((\\+-[+-]+))|((\\+=[+=]+))\\s*$)"
-				end:   "(?=^\\s*$)"
-				patterns: [
-					{include: "#table-borders"}
-					{include: "#inlines"}
-				]
-			}
-
-			# Simple tables
-			{
-				name: "punctuation.definition.table.simple-divider.restructuredtext"
-				match: """(?x)
-					^\\s*-{2,}\\s+-{2,}(?:\\s+-{2,})*(?=\\s*$)
-					|
-					^\\s*={2,}\\s+={2,}(?:\\s+={2,})*(?=\\s*$)
-				"""
-			}
+			{include: "#table-grid"}
+			{include: "#table-simple"}
 		]
 
 
-	# Row and column dividers
-	"table-borders":
+	# Grid table
+	"table-grid":
+		name:  "meta.table.grid.restructuredtext"
+		begin: "(?:\\G|^)(?=\\s*\\+-+(?:\\+-+)*+\\+\\s*$)"
+		end:   "(?=^\\s*$)"
+		patterns: [{
+			# +--------+-------+
+			name:  "meta.separator.table.grid.restructuredtext"
+			match: "(?<!-|=)\\+-+(?:\\+[-=]+)*+\\+(?!-|=)"
+			captures: 0:
+				name: "punctuation.definition.table.grid-divider.horizontal.thin.restructuredtext"
+				patterns: [{
+					name: "invalid.illegal.mixed-border-styles.restructuredtext"
+					match: "=+"
+				}]
+		},{
+			# +========+=======+
+			name:  "meta.separator.table.grid.restructuredtext"
+			match: "(?<!-|=)\\+=+(?:\\+[-=]+)*+\\+(?!-|=)"
+			captures: 0:
+				name: "punctuation.definition.table.grid-divider.horizontal.thick.restructuredtext"
+				patterns: [{
+					name: "invalid.illegal.mixed-border-styles.restructuredtext"
+					match: "-+"
+				}]
+		},{
+			# … | …
+			name:  "meta.separator.table.grid.restructuredtext"
+			match: "(?<=\\s)\\|(?=\\s)|^\\s*\\||\\|[ \\t]*$"
+			captures: 0:
+				patterns: [{
+					name: "punctuation.definition.table.grid-divider.vertical.restructuredtext"
+					match: "\\|"
+				}]
+		},{
+			# Single grid-table cell
+			name: "meta.table-cell.restructuredtext"
+			match: """(?x)
+				(?<=  ^   \\|
+				|     \\s \\|
+				| [-=]\\+ \\|
+				| [-=]\\+
+				)
+				
+				(?: \\| [^|\\s]
+				|   [^|\\s] \\|
+				|   [^|+]
+				|   \\+ (?!(?:-+|=+)\\+)
+				)++
+				
+				(?= (?<=\\s) \\|
+				|   (?<!\\s) \\| \\s* $
+				|   (?<!-|=) \\+ (?:-+|=+) \\+
+				)
+			"""
+			captures: 0: patterns: [
+				# Embedded directive or comment
+				match: "^\\s*(?:\\.\\.(?=$|\\s).*?)(?=\\s*$)"
+				captures: 0: patterns: [
+					{include: "#directives"}
+					{include: "#comments"}
+				]
+				
+				{include: "#inlines"}
+				{include: "#table-simple"}
+				{include: "#table-simple-continuation"}
+				
+				# Pointless backslash
+				name: "constant.character.escape.backslash.restructuredtext"
+				match: "\\\\$"
+			]
+		}]
+
+
+	# “Simple” (row-oriented) table
+	"table-simple":
+		patterns: [{
+			# Indented
+			name:  "meta.table.simple.indented.restructuredtext"
+			begin: "(?=^\\s+={2,}(?:\\s+={2,})++[ \\t]*$)"
+			end:   "(?!\\G)"
+			applyEndPatternLast: yes
+			patterns: [{
+				name:  "meta.table-head.restructuredtext"
+				begin: "\\G(\\s+)(={2,}(?:\\s+={2,})++)[ \\t]*$"
+				end:   "(?=^\\1={2,}(?:\\s+={2,})*+[ \\t]*$)"
+				contentName: "markup.other.table.restructuredtext"
+				beginCaptures:
+					0: name: "meta.separator.table.simple.restructuredtext"
+					2: name: "punctuation.definition.table.simple-divider.restructuredtext"
+				patterns: [include: "#table-simple-innards"]
+			},{
+				name:  "meta.table-body.restructuredtext"
+				begin: "^(\\s+)(={2,}(?:\\s+={2,})+*)[ \\t]*$"
+				end:   "^\\1(={2,}(?:\\s+={2,})++)[ \\t]*$|(?=^\\s*$|^\\S|^(?!\\1)\\s+\\S)"
+				contentName: "markup.other.table.restructuredtext"
+				beginCaptures:
+					0: name: "meta.separator.table.simple.restructuredtext"
+					2: name: "punctuation.definition.table.simple-divider.restructuredtext"
+				endCaptures:
+					0: name: "meta.separator.table.simple.restructuredtext"
+					2: name: "punctuation.definition.table.simple-divider.restructuredtext"
+				patterns: [include: "#table-simple-body"]
+			}]
+		},{
+			# Unindented
+			name:  "meta.table.simple.unindented.restructuredtext"
+			begin: "(?=^={2,}(?:\\s+={2,})++[ \\t]*$)"
+			end:   "(?!\\G)"
+			applyEndPatternLast: yes
+			patterns: [{
+				name:  "meta.table-head.restructuredtext"
+				begin: "\\G(={2,}(?:\\s+={2,})++)[ \\t]*$"
+				end:   "(?=^={2,}(?:\\s+={2,})*+[ \\t]*$)"
+				contentName: "markup.other.table.restructuredtext"
+				beginCaptures:
+					0: name: "meta.separator.table.simple.restructuredtext"
+					1: name: "punctuation.definition.table.simple-divider.restructuredtext"
+				patterns: [include: "#table-simple-innards"]
+			},{
+				name:  "meta.table-body.restructuredtext"
+				begin: "^(={2,}(?:\\s+={2,})+*)[ \\t]*$"
+				end:   "^={2,}(?:\\s+={2,})++[ \\t]*$|(?=^\\s*$)"
+				contentName: "markup.other.table.restructuredtext"
+				beginCaptures:
+					0: name: "meta.separator.table.simple.restructuredtext"
+					1: name: "punctuation.definition.table.simple-divider.restructuredtext"
+				endCaptures:
+					0: name: "meta.separator.table.simple.restructuredtext"
+					1: name: "punctuation.definition.table.simple-divider.restructuredtext"
+				patterns: [include: "#table-simple-body"]
+			}]
+		}]
+
+	# Stuff shared between “#table-simple-{unindented,indented}” rules
+	"table-simple-body":
 		patterns: [
-			{
-				begin: "\\+(?=-+(?=\\+|$))"
-				end:   "(?=\\+(?=-)|$)|\\+(?=\\s|$)"
-				contentName: "punctuation.definition.table.row-divider.restructuredtext"
-				beginCaptures: 0: name: "punctuation.definition.table.joint.restructuredtext"
-				endCaptures:   0: name: "punctuation.definition.table.joint.restructuredtext"
-			}
+			{begin: "\\G$", end: "^"}
+			{begin: "$",    end: "^\\s*$|(?=^\\s*\\S)"}
+			{include: "#table-simple-innards"}
+			
+			# Truncated comment marker
+			name: "comment.block.double-dot.truncated.restructuredtext"
+			match: "(?:^|(?<=\\s))\\.\\.(?=$|\\s)(?!\\s+\\w+::)"
+			captures:
+				0: name: "punctuation.definition.comment.restructuredtext"
+		]
 
-			{
-				begin: "\\+(?==+(?=\\+|$))"
-				end:   "(?=\\+(?==)|$)|\\+(?=\\s*$)"
-				contentName: "punctuation.definition.table.header.row-divider.restructuredtext"
-				beginCaptures: 0: name: "punctuation.definition.table.joint.restructuredtext"
-				endCaptures:   0: name: "punctuation.definition.table.joint.restructuredtext"
-			}
+	# Continuation line or column span, decoupled for inclusion inside grid-tables
+	"table-simple-continuation":
+		name:  "meta.separator.table.simple.restructuredtext"
+		match: "^\\s*(-{2,}(?:\\s+-{2,})*+)[ \\t]*$"
+		captures:
+			1: name: "punctuation.definition.table.column-span.restructuredtext"
 
-			{
-				match: "\\|"
-				name: "punctuation.definition.table.header.column-divider.restructuredtext"
-			}
+	# Stuff matched between the dividing rows of a “simple” table
+	"table-simple-innards":
+		patterns: [
+			{include: "#table-simple-continuation"}
+		
+			# Border of a nested (simple) table
+			name: "meta.separator.table.simple.nested.restructuredtext"
+			match: "(?<=\\s)(?<!^)={2,}(?:\\s+={2,})*+(?=$|\\s)"
+			captures:
+				0: name: "punctuation.definition.table.simple-divider.restructuredtext"
+		
+			{include: "#inlines"}
 		]
 
 	# Named tag/field
@@ -649,7 +773,6 @@ repository:
 	# distinct from a more restrictive single-line variant so that multi-line substitutions
 	# can still be written inside paragraphs and similar block constructs.
 	"substitution-reference-multiline":
-		disabled: yes # TODO: Remove once the table rules have been refactored
 		name:  "meta.substitution-reference.restructuredtext"
 		begin: "(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s«»༺⟬⟮⸠⸡⸢⸤⸦⸨‚„‟‛])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))(\\|)"
 		end:   "(?=^\\s*$)|(\\|)(?:(__)\\b|(_)\\b)?(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"

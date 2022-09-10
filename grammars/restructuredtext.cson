@@ -40,7 +40,7 @@ repository:
 	all:
 		patterns: [
 			{include: "#escape"}
-			{include: "#line-blocks"}
+			{include: "#line-block"}
 			{include: "#tables"}
 			{include: "#headings"}
 			{include: "#substitution-definition"}
@@ -94,22 +94,34 @@ repository:
 			1: name: "punctuation.definition.heading.restructuredtext"
 
 
-	# Line blocks
-	"line-blocks":
-		name: "meta.line-block.restructuredtext"
-		begin: "^(\\s*)(\\|)(?!.*?(?<=\\S)\\|)"
-		end:   "^(?=\\s*$\\n?)"
-		beginCaptures:
-			2: name: "punctuation.separator.line-block.restructuredtext"
-		patterns: [
-			{
-				match: "^\\s*(\\|)"
-				captures:
-					1: name: "punctuation.separator.line-block.restructuredtext"
-			}
+	# Line of text comprising a line-block
+	"line-block":
+		patterns: [{
+			# Indented
+			name:  "meta.line-block.indented.restructuredtext"
+			begin: "(?:\\G|^)(\\s+)(\\|)(?:(\\s+)(?=\\S)|(?=\\s*$))"
+			end:   "^(?=\\1\\|(?:\\s+(?=\\S)|(?=\\s*$))|\\s*$|(?:(?!\\1)\\s+)?\\S|\\1(?:[^|\\s]|\\|\\S))"
+			beginCaptures:
+				2: patterns: [include: "#line-block-border"]
+				3: name: "punctuation.whitespace.leading.line-indent.restructuredtext"
+			contentName: "markup.quote.preserved-whitespace.restructuredtext"
+		},{
+			# Unindented
+			name:  "meta.line-block.unindented.restructuredtext"
+			begin: "(?:\\G|^)(\\|)(?:(\\s+)(?=\\S)|(?=\\s*$))"
+			end:   "^(?=\\|(?:\\s+(?=\\S)|(?=\\s*$))|\\s*$|[^|\\s]|\\|\\S)"
+			beginCaptures:
+				1: patterns: [include: "#line-block-border"]
+				2: name: "punctuation.whitespace.leading.line-indent.restructuredtext"
+			contentName: "markup.quote.preserved-whitespace.restructuredtext"
+		}]
 
-			{include: "#inlines"}
-		]
+	# Tokenised border prefixing a line-block
+	"line-block-border":
+		name: "punctuation.definition.quote.line-block.restructuredtext"
+		match: "\\|"
+		captures:
+			0: name: "sublimelinter.gutter-mark.restructuredtext"
 
 
 	# Inhibit inline markup when start/end-string is surrounded by a quoted or bracketed character pair
@@ -742,13 +754,19 @@ repository:
 	"table-simple-innards":
 		patterns: [
 			{include: "#table-simple-continuation"}
-		
-			# Border of a nested (simple) table
-			name: "meta.separator.table.simple.nested.restructuredtext"
-			match: "(?<=\\s)(?<!^)={2,}(?:\\s+={2,})*+(?=$|\\s)"
-			captures:
-				0: name: "punctuation.definition.table.simple-divider.restructuredtext"
-		
+			{
+				# Border of a nested (simple) table
+				name: "meta.separator.table.simple.nested.restructuredtext"
+				match: "(?<=\\s)(?<!^)={2,}(?:\\s+={2,})*+(?=$|\\s)"
+				captures:
+					0: name: "punctuation.definition.table.simple-divider.restructuredtext"
+			}
+			{
+				# Embedded line-block, truncated at multiple blanks
+				match: "(?:^|(?<=\\s{2}))\\|(?=$|\\s)(?:\\s\\S+)*+"
+				captures:
+					0: patterns: [include: "#line-block"]
+			}
 			{include: "#inlines"}
 		]
 
@@ -774,7 +792,7 @@ repository:
 	# can still be written inside paragraphs and similar block constructs.
 	"substitution-reference-multiline":
 		name:  "meta.substitution-reference.restructuredtext"
-		begin: "(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s«»༺⟬⟮⸠⸡⸢⸤⸦⸨‚„‟‛])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))(\\|)"
+		begin: "(?:^|(?<=[-:/'\"<\x28\\\x5B{\\s«»༺⟬⟮⸠⸡⸢⸤⸦⸨‚„‟‛])|(?<![\\x00-\\x9F])(?<=[\\p{Ps}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}]))(\\|)(?=[^|\\s])"
 		end:   "(?=^\\s*$)|(\\|)(?:(__)\\b|(_)\\b)?(?=$|[-.,:;!?\\\\/'\"\x29\\\x5D}>\\s«»༻⟭⟯⸡⸠⸣⸥⸧⸩‚„‟‛]|(?![\\x00-\\x9F])[\\p{Pe}\\p{Pi}\\p{Pf}\\p{Pd}\\p{Po}])"
 		contentName: "entity.name.substitution.restructuredtext"
 		beginCaptures:

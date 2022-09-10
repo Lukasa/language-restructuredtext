@@ -51,7 +51,7 @@ repository:
 			{include: "#link-target"}
 			{include: "#inlines"}
 			{include: "#tag-name"}
-			{include: "#doctests"}
+			{include: "#doctest"}
 			{include: "#domains"}
 			{include: "#comments"}
 		]
@@ -576,15 +576,72 @@ repository:
 			3: name: "punctuation.section.raw.restructuredtext"
 
 
-	# Interactive Python sessions
-	doctests:
-		name:  "meta.doctest.restructuredtext"
-		begin: "^(\\s*)(>>>)\\s+(.*)$\\n"
-		end:   "(?=^\\s*$)|^(?=\\1>>> )|^(?=>>>)|^(?!\\1)\\s+\\S"
-		contentName: "markup.raw.restructuredtext"
-		beginCaptures:
-			2: name: "punctuation.separator.prompt.doctest.restructuredtext"
-			3: patterns: [include: "source.python"]
+	# Interactive Python session
+	doctest:
+		patterns: [{
+			# Indented
+			name:  "meta.doctest.indented.restructuredtext"
+			begin: "^(?=(\\s+)>>>(?:\\s+\\S.*)?[ \\t]*$)"
+			end:   "^(?=\\s*$)|^(?=(?:(?!\\1)\\s+)?\\S)"
+			patterns: [{
+				# Interpreter input: “>>> …”
+				begin: "^(\\s+)(>>>)\\s+(\\S.*)?(?=[ \\t]*$)"
+				end:   "(?=^\\s*$)|^(?!\\1((?!(?:>>>|\\.{3})\\s+)\\s*\\S.*[ \\t]*)$)"
+				beginCaptures:
+					2: name: "punctuation.separator.prompt.primary.doctest.restructuredtext"
+					3: name: "source.embedded.python", patterns: [include: "source.python"]
+				endCaptures:
+					1: name: "markup.raw.output.doctest.restructuredtext"
+				patterns: [{
+					# Interpreter output
+					match: "^\\s+(?!(?:>>>|\\.{3})\\s+)(\\S.*)(?=[ \\t]*$)"
+					captures:
+						1: name: "markup.raw.output.doctest.restructuredtext"
+				}]
+			},{
+				# Interpreter input, cotninued: “... …”
+				begin: "^(\\s+)(\\.{3})\\s+(\\S.*)?(?=[ \\t]*$)"
+				end:   "(?=^\\s*$)|^(?!\\1((?!(?:>>>|\\.{3})\\s+)\\s*\\S.*[ \\t]*)$)"
+				beginCaptures:
+					2: name: "punctuation.separator.prompt.secondary.doctest.restructuredtext"
+					3: name: "source.embedded.python", patterns: [include: "source.python"]
+				endCaptures:
+					1: name: "markup.raw.output.doctest.restructuredtext"
+				patterns: [{
+					# Interpreter output
+					match: "^\\s+(?!(?:>>>|\\.{3})\\s+)(\\S.*)(?=[ \\t]*$)"
+					captures:
+						1: name: "markup.raw.output.doctest.restructuredtext"
+				}]
+			},{
+				# Interpreter output
+				name: "markup.raw.output.doctest.restructuredtext"
+				match: "^(?!(?:>>>|\\.{3})\\s+)(\\s*\\S.*[ \\t]*)$"
+			}]
+		},{
+			# Unindented
+			name:  "meta.doctest.unindented.restructuredtext"
+			begin: "^(?=>>>(?:\\s+\\S.*)?[ \\t]*$)"
+			end:   "^(?=\\s*$)"
+			patterns: [{
+				# Interpreter input: “>>> …”
+				match: "^(>>>)\\s+(\\S.*)?(?=[ \\t]*$)"
+				captures:
+					1: name: "punctuation.separator.prompt.primary.doctest.restructuredtext"
+					2: name: "source.embedded.python", patterns: [include: "source.python"]
+			},{
+				# Interpreter input, cotninued: “... …”
+				match: "^(\\.{3})\\s+(\\S.*)?(?=[ \\t]*$)"
+				captures:
+					1: name: "punctuation.separator.prompt.secondary.doctest.restructuredtext"
+					2: name: "source.embedded.python", patterns: [include: "source.python"]
+			},{
+				# Interpreter output
+				name: "markup.raw.output.doctest.restructuredtext"
+				match: "^(?!(?:>>>|\\.{3})\\s+)(\\s*\\S.*[ \\t]*)$"
+			}]
+		}]
+		
 
 
 	# Tables

@@ -774,7 +774,7 @@ repository:
 			},{
 				name:  "meta.table-body.restructuredtext"
 				begin: "^(={2,}(?:\\s+={2,})+*)[ \\t]*$"
-				end:   "^={2,}(?:\\s+={2,})++[ \\t]*$|(?=^\\s*$)"
+				end:   "^(={2,}(?:\\s+={2,})++)[ \\t]*$|(?=^\\s*$)"
 				contentName: "markup.other.table.restructuredtext"
 				beginCaptures:
 					0: name: "meta.separator.table.simple.restructuredtext"

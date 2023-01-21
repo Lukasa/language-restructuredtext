@@ -895,6 +895,31 @@ repository:
 			}
 
 
+			# Unicode character code(s) — “.. |->| unicode:: U+2192 .. Arrow”
+			{
+				name:  "meta.substitution-definition.unicode.restructuredtext"
+				begin: "(?i)^(\\s*)(\\.\\.)\\s+(\\|)(?=[^|\\s])(.+?)((?<=\\S)\\|)\\s+(unicode)(::)[ \\t]*"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "punctuation.definition.substitution.start.restructuredtext"
+					4: name: "entity.name.substitution.restructuredtext"
+					5: name: "punctuation.definition.substitution.end.restructuredtext"
+					6: name: "support.directive.restructuredtext"
+					7: name: "punctuation.separator.key-value.restructuredtext"
+				patterns: [
+					# Whitespace-trimming options
+					name:  "meta.unicode-option.${1:/downcase}.restructuredtext"
+					match: "(?i)(:[lr]?trim:)(?=$|\\s)"
+					captures:
+						1: [include: "#tag-name"]
+					
+					{include: "#directive-options"}
+					{include: "#unicode-innards"}
+				]
+			}
+
+
 			# Generic/custom definition – “.. |foo| something else:: …”
 			{
 				name: "meta.substitution-definition.restructuredtext"
@@ -911,6 +936,40 @@ repository:
 					8: name: "string.unquoted.substitution.data.restructuredtext", patterns: [include: "#inlines"]
 			}
 		]
+
+
+	# Stuff matched inside a “unicode::” directive
+	"unicode-innards":
+		patterns: [{
+			# Codepoint, hexadecimal: “0x203B \u203B \x203B U+203B”
+			name:  "constant.numeric.integer.codepoint.hexadecimal.restructuredtext"
+			match: "(?i)(?:^|(?<=\\s))(?:0x|(\\\\)?[ux]|U\\+)[0-9A-F]+(?=$|\\s)"
+			captures:
+				1: name: "constant.character.escape.backslash.restructuredtext"
+		},{
+			# Codepoint, decimal: “8251”
+			name:  "constant.numeric.integer.codepoint.decimal.restructuredtext"
+			match: "(?:^|(?<=\\s))[0-9]+(?=$|\\s)"
+		},{
+			# XML-style entity: “&#x203b;”
+			name: "constant.character.entity.xml"
+			match: "(?i)(?:^|(?<=\\s))(&)(#x[0-9A-F]+)(;)(?=$|\\s)"
+			captures:
+				1: name: "punctuation.definition.constant.xml"
+				2: name: "entity.name.other.codepoint.hexadecimal.xml"
+				3: name: "punctuation.definition.entity.end.xml"
+		},{
+			# Trailing comment: “ .. XYZ”
+			name:  "comment.line.double-dot.trailing.restructuredtext"
+			begin: "\\s+(\\.\\.)[ \\t]+(?=\\S)"
+			end:   "(?=\\s*$)"
+			beginCaptures:
+				1: name: "punctuation.definition.comment.restructuredtext"
+		},{
+			# Anything else: verbatim text
+			name:  "string.unquoted.substitution.data.restructuredtext"
+			match: "(?:^|(?<=\\s))(?!\\.\\.\\s+\\S)[^\\s]+"
+		}]
 
 
 	# `Interpreted text`, enclosed by backticks

@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 * Added `.rest.txt` and `.rst.txt` to recognised file extensions
 * Added HTML highlighting to ``` :html:`…` ``` roles
 * Added HTML highlighting to `.. code html::` blocks
+* Improved highlighting of `unicode::` directives inside substitutions
 * Improved highlighting of `.. parsed-literal::` blocks
 * Improved highlighting of `.. raw::` blocks with recognised formats
 * Improved highlighting of `.. toctree::` directives

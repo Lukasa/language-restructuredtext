@@ -1777,7 +1777,7 @@ repository:
 			{
 				contentName: "source.embedded.powershell"
 				patterns: [include: "source.powershell"]
-				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(powershell|pwsh|ps1)(?=\\s*$)"
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(posh|powershell|ps1|psm1|pwsh)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"
@@ -1790,7 +1790,7 @@ repository:
 			{
 				contentName: "source.embedded.batchfile"
 				patterns: [include: "source.batchfile"]
-				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(batchfile|batch|bat)(?=\\s*$)"
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+((?:dos|win)?batch|bat)(?=\\s*$)"
 				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
 				beginCaptures:
 					2: name: "punctuation.definition.directive.restructuredtext"

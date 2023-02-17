@@ -1773,6 +1773,32 @@ repository:
 					5: name: "entity.name.directive.restructuredtext"
 			}
 			
+			# PowerShell
+			{
+				contentName: "source.embedded.powershell"
+				patterns: [include: "source.powershell"]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(powershell|pwsh|ps1)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
+			# Batchfile/CMD.EXE
+			{
+				contentName: "source.embedded.batchfile"
+				patterns: [include: "source.batchfile"]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(batchfile|batch|bat)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
 			# Verbatim text, or an unrecognised format
 			{
 				contentName: "markup.raw.inner.restructuredtext"

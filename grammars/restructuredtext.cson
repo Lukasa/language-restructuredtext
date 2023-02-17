@@ -1760,6 +1760,19 @@ repository:
 					5: name: "entity.name.directive.restructuredtext"
 			}
 			
+			# PostScript
+			{
+				contentName: "source.embedded.postscript"
+				patterns: [include: "source.postscript#main"]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(postscript|ps|eps)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
 			# Verbatim text, or an unrecognised format
 			{
 				contentName: "markup.raw.inner.restructuredtext"

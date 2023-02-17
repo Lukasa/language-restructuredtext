@@ -1799,6 +1799,32 @@ repository:
 					5: name: "entity.name.directive.restructuredtext"
 			}
 			
+			# Swift
+			{
+				contentName: "source.embedded.swift"
+				patterns: [include: "source.swift"]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(swift)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
+			# AppleScript
+			{
+				contentName: "source.embedded.applescript"
+				patterns: [include: "source.applescript"]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(applescript)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
 			# Verbatim text, or an unrecognised format
 			{
 				contentName: "markup.raw.inner.restructuredtext"

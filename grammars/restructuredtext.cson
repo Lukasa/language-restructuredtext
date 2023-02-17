@@ -1717,6 +1717,23 @@ repository:
 					5: name: "entity.name.directive.restructuredtext"
 			}
 			
+			# INI
+			{
+				contentName: "source.embedded.ini"
+				patterns: [{
+					match: "(?:^|\\G)[ \\t]*(\\S.*)"
+					captures:
+						1: patterns: [include: "source.ini"]
+				}]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(cfg|dosini|ini)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
 			# Roff
 			{
 				contentName: "text.embedded.roff"

@@ -1733,6 +1733,32 @@ repository:
 					4: name: "punctuation.separator.key-value.restructuredtext"
 					5: name: "entity.name.directive.restructuredtext"
 			}
+
+			# Pic/pikchr
+			{
+				contentName: "source.embedded.pic"
+				patterns: [include: "source.pic"]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+([dg]?pic|pikchr|pic2plot|dformat)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
+			
+			# Ditroff
+			{
+				contentName: "source.embedded.ditroff"
+				patterns: [include: "source.ditroff"]
+				begin: "(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(ditroff|groff[-_]?out|grout)(?=\\s*$)"
+				end:   "^(?!\\s*$|\\1[ \\t]+\\S)"
+				beginCaptures:
+					2: name: "punctuation.definition.directive.restructuredtext"
+					3: name: "support.directive.restructuredtext"
+					4: name: "punctuation.separator.key-value.restructuredtext"
+					5: name: "entity.name.directive.restructuredtext"
+			}
 			
 			# LaTeX
 			{

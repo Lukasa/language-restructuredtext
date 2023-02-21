@@ -745,7 +745,7 @@ repository:
 				patterns: [include: "#table-simple-innards"]
 			},{
 				name:  "meta.table-body.restructuredtext"
-				begin: "^(\\s+)(={2,}(?:\\s+={2,})+*)[ \\t]*$"
+				begin: "^(\\s+)(={2,}(?:\\s+={2,})++)[ \\t]*$"
 				end:   "^\\1(={2,}(?:\\s+={2,})++)[ \\t]*$|(?=^\\s*$|^\\S|^(?!\\1)\\s+\\S)"
 				contentName: "markup.other.table.restructuredtext"
 				beginCaptures:
@@ -773,7 +773,7 @@ repository:
 				patterns: [include: "#table-simple-innards"]
 			},{
 				name:  "meta.table-body.restructuredtext"
-				begin: "^(={2,}(?:\\s+={2,})+*)[ \\t]*$"
+				begin: "^(={2,}(?:\\s+={2,})++)[ \\t]*$"
 				end:   "^(={2,}(?:\\s+={2,})++)[ \\t]*$|(?=^\\s*$)"
 				contentName: "markup.other.table.restructuredtext"
 				beginCaptures:

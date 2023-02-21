@@ -912,7 +912,7 @@ repository:
 					name:  "meta.unicode-option.${1:/downcase}.restructuredtext"
 					match: "(?i)(:[lr]?trim:)(?=$|\\s)"
 					captures:
-						1: [include: "#tag-name"]
+						1: patterns: [include: "#tag-name"]
 					
 					{include: "#directive-options"}
 					{include: "#unicode-innards"}

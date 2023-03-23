@@ -1,0 +1,74 @@
+<document source="/Users/Alhadis/Labs/Sandbox/src/index.rst" title="A string with a slash that's pointing back\wards">
+    <image uri="be:ll:.png" width="300px">
+    <comment xml:space="preserve">
+        Unpretty-printed text.
+        <#text>
+            'Comment\'s "first" line.\n'
+            "Comment's second line.\n"
+            'l\u202dr\n \x27'
+            'padding_character(\x80)\n'
+            '\n'
+            'Etc.'
+    <field_list>
+        <field>
+            <field_name>
+                <#text>
+                    'Foo'
+            <field_body>
+                <paragraph>
+                    <#text>
+                        'More text'
+                <note>
+                    <paragraph>
+                        <#text>
+                            'Whatever\n'
+                            'you reckon, mate.'
+    <paragraph>
+        <#text>
+            'Before'
+    <literal_block classes="code ruby r00b" xml:space="preserve">
+        <inline classes="ln">
+            <#text>
+                '1 '
+        <inline classes="name">
+            <#text>
+                'require_relative'
+        <inline classes="whitespace">
+            <#text>
+                ' '
+        <inline classes="literal string double">
+            <#text>
+                '"./this.rb"'
+    <paragraph>
+        <#text>
+            'After'
+    
+    <!-- Nodes with special highlighting -->
+    <paragraph>
+        Some 
+        <strong>
+            bold
+         and 
+        <emphasis>
+            italic
+         text. 
+        <problematic ids="problematic-1" refid="system-message-1">
+            ``
+        Literal
+
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="24" source="src/index.rst" type="WARNING">
+        <paragraph>
+            Inline literal start-string without end-string.
+
+    <system_message level="3" line="22" source="src/index.rst" type="ERROR">
+        <paragraph>
+            Unknown directive type "invalid".
+        <literal_block xml:space="preserve">
+            .. invalid::
+
+    <system_message level="4" line="21" source="src/index.rst" type="SEVERE">
+        <paragraph>
+            Problems with "include" directive path:
+            InputError: [Errno 2] No such file or directory: "src/some-file-that-doesn't-exist.lol".
+        <literal_block xml:space="preserve">
+            .. include:: some-file-that-doesn't-exist.lol

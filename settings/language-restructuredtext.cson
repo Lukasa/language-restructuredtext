@@ -2,3 +2,15 @@
 	editor:
 		commentStart: ".. "
 		increaseIndentPattern: "::\\s*$"
+
+".text.pseudoxml":
+	editor:
+		commentStart: "<!--"
+		commentEnd:   "-->"
+		increaseIndentPattern: """(?ix)
+			^ \\s* <
+			# Don't indent after XML-style comments, or empty element types
+			# Source: https://docutils.sourceforge.io/docs/ref/docutils.dtd
+			(?!(?:image|pending|transition)(?=$|\\s|>)|!--)
+			[^<>]* >? \\s* $
+		"""

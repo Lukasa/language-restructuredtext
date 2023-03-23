@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 * Fixed runaway highlighting after empty comment markers
 * Fixed untokenised escape sequences within interpreted text roles
 * Added `.rest.txt` and `.rst.txt` to recognised file extensions
+* Added grammar for highlighting [Docutils pseudo-XML][1]
 * Added HTML highlighting to ``` :html:`…` ``` roles
 * Added HTML highlighting to `.. code html::` blocks
 * Improved highlighting of `unicode::` directives inside substitutions
@@ -21,8 +22,8 @@ This project adheres to [Semantic Versioning](http://semver.org).
 * Improved highlighting of `.. raw::` blocks with recognised formats
 * Improved highlighting of `.. toctree::` directives
 
-[`#67`]:  https://github.com/Lukasa/language-restructuredtext/issues/67
-
+[`#67`]: https://github.com/Lukasa/language-restructuredtext/issues/67
+[1]:     https://docutils.sourceforge.io/docs/ref/doctree.html#pseudo-xml
 
 [v1.1.2]
 ------------------------------------------------------------------------

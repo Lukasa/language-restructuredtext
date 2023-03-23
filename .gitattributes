@@ -1,1 +1,2 @@
 tests/* linguist-vendored
+*.pseudoxml linguist-language=XML
